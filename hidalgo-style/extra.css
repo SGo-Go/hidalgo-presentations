@@ -1,0 +1,161 @@
+/* ########################################################## */
+/* @file
+   @copyright (C) 2020
+      All rights reserved.
+
+   Use, modification, and distribution is subject to the license.
+
+   @author Sergiy Gogolenko <sergiy.gogolenko@gmail.com> */
+/* ########################################################## */
+
+.header-x {
+    position: absolute;
+    line-height: 80px;
+    top: .5em;
+    left: 0;
+    right: 0;
+
+    height:80px;
+    /* background-color: white; */
+    color: #2d5986;
+
+    font-size: 30px;
+    font-family: "Lato", sans-serif;
+    font-weight: normal;
+}
+
+.header-x hr {
+    height:2px;
+    border-width:.5px;
+    border-style: inset;
+    color: #e6e600;
+    
+    background-color: GoldenRod;
+    
+    margin-top: 40px;
+    margin-bottom: 40px;
+    margin-left: 0;
+    margin-right: 0;
+}
+
+.footer-x {
+    position: absolute;
+    bottom: 0.5em;
+    left: 0;
+    right: 0;
+    display: flex;
+
+    height:80px;
+    background-color: #2d5986;
+    color: white;
+
+    font-size: 30px;
+    font-family: "Lato", sans-serif;
+    font-weight: normal;
+}
+
+.footer-x::after {
+    content: "";
+    clear: both;
+    display: table;
+}
+
+.header-x .left, .footer-x .left {
+    float: left;
+    width: 25.0%;
+    padding: 5px;
+}
+
+.header-x .right, .footer-x .right {
+    position: relative;
+    float: right;
+    width: 25.0%;
+
+    text-align: right;
+    vertical-align: bottom;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.header-x .center, .footer-x .center {
+    float: center;
+    width: 50.0%;
+    padding: 5px;
+
+    font-size: 1.em;
+
+    text-align: center;
+    vertical-align: bottom;
+    display: inline-block;
+    vertical-align: middle;
+    line-height: normal;
+}
+
+.header-x .right img, .footer-x .right img {
+    float:right;
+    height:80px;
+    vertical-align: middle;
+    padding-left: 5px;
+}
+
+.header-x .left img, .footer-x .left img {
+    float:left;
+    height:80px;
+    vertical-align: middle;
+    padding-right: 5px;
+}
+
+img.title-logo {
+    border:0;
+    border-radius: 75px;
+    border-color: white;
+    background-color: #2d5986;
+    padding: 20px; 
+    height: 150px;
+    /* background-image: url("./hidalgo-style/hidalgo-logo.png"); */
+    /* background: url(./hidalgo-style/hidalgo-logo.png) no-repeat top left; */
+
+    alt: "HiDALGO";
+}
+
+
+/* #left { */
+/*   left:-8.33%; */
+/*   text-align: left; */
+/*   float: left; */
+/*   width:50%; */
+/*   z-index:-10; */
+/* } */
+
+/* #right { */
+/*   left:31.25%; */
+/*   top: 75px; */
+/*   float: right; */
+/*   text-align: right; */
+/*   z-index:-10; */
+/*   width:50%; */
+/* } */
+
+.width100 { width: 100%; }
+.width75 { width: 75%; }
+.width50 { width: 50%; }
+.floatLeft { float: left; }
+.floatRight { float: right; }
+.alignLeft { text-align: left; }
+.alignRight { text-align: right; }
+
+.clear         { clear: both; }
+.float-left    { float: left; }
+.float-right   { float: right; }
+
+.highlight     { background: #FFFFCC; }
+
+.wrap          { width: 960px; margin: 0 auto; }
+
+.img-left      { float: left; margin: 4px 10px 4px 0; }
+.img-right     { float: right; margin: 4px 0 4px 10px; }
+
+.nopadding     { padding: 0; }
+.noindent      { margin-left: 0; padding-left: 0; }
+.nobullet      { list-style: none; list-style-image: none; }

@@ -1,0 +1,600 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Towards Accurate Simulation of Global Challenges on Data Centers Infrastructures via Coupling of Models and Data Sources</title>
+<meta name="author" content="Sergiy Gogolenko"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/css/theme/beige.css" id="theme"/>
+
+<link rel="stylesheet" href="./hidalgo-style/extra.css"/>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="header-x"><div class="left"><img src="./hidalgo-style/iccs-logo.png"></div><div class="right">2020-06-12 Fri 14:10<br></div></div> <div class="footer-x"><div class="left"><img src="./hidalgo-style/hidalgo-logo.png"></div><div class="center"><b>Sergiy Gogolenko</b><br><i><small>Towards Accurate Simulation of Global Challenges on Data Centers Infrastructures via Coupling of Models and Data Sources</small></i></div> <div class="right"><img src="./hidalgo-style/Flag_of_Europe.svg" alt="HiDALGO"><b>EU</b> <small>founded project</small><br><b>#824115</b><br><sup><sup><sup><sup><sup><sup><sup><b><code>@O_TTT_O</code><b></sup></sup></sup></sup></sup></sup></sup></div></div>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-background="./hidalgo-style/hidalgo-logo.png" data-background-size="35%" data-background-position="top">
+<h1><small>Towards Accurate Simulation of Global Challenges on Data Centers Infrastructures via Coupling of Models and Data Sources</sup></small></h1><h2><a href='mailto:<a href="mailto:gogolenko@hlrs.de">gogolenko@hlrs.de</a>'>Sergiy Gogolenko</a></h2><h4></h4><h3>ICCS'2020 <small><sup>@</sup></small> <del>Amsterdam (NL)</del> remote&compfn;2020-06-12 Fri 14:10</h3> <!-- <p>View online: <a href="http://sgo-go.github.io/hidalgo-presentations/20200603-ICCS.html">http://sgo-go.github.io/hidalgo-presentations/20200603-ICCS.html</a></p><p>This could be the file name in the <code>src</code> attribute of an <code>img</code> element for a QR code:  -->
+</section>
+
+</section>
+<section id="slide-org60808af" data-background="https://apolitical.co/wp-content/uploads/2018/12/Screen-Shot-2018-12-04-at-13.55.24.png" data-background-size="1000px" data-background-opacity="0.15">
+<h3 id="org60808af">Computational global systems science applications and HiDALGO</h3>
+<p>
+<b>Goal</b>: evidence based <i>policy-making</i> for current and upcoming situations via accurate <i>GC simulations</i>
+</p>
+
+<p>
+<b>Accurate digital twinning</b> of GCs <font color="darkgray">&#10155;</font> <b>coupled simulations</b>
+</p>
+<ul>
+<li><b>models</b> for diverse <i>social</i> and <i>physical</i> phenomena (often multiscale)</li>
+<li><b>massive</b> <i>static</i> and <i>streaming</i> <b>data sets</b></li>
+
+</ul>
+
+</section>
+<section id="slide-org4b4b85b" data-background="./figs/hidalgo-approach.png" data-background-size="1400px" data-background-opacity="0.15">
+<h3 id="org4b4b85b">Technical Challenges in simulating GC across data centers</h3>
+<div class="column" style="float:left; width:%50">
+<p>
+<b>HPC and data centers environments</b>:
+</p>
+<ul>
+<li><i>static data</i> on efficient PDFS</li>
+<li><i>security restrictions</i> for external data</li>
+<li><i>proprietary</i> software, models, and data</li>
+<li>expensive simulations</li>
+
+</ul>
+
+</div>
+
+<div class="column" style="float:right; width:%50">
+<p>
+<b>GC simulations</b>:
+</p>
+<ul>
+<li>combine comp. <i>expensive models</i></li>
+<li>greedy to <i>"external" data</i>
+<ul>
+<li>streaming data:
+<ul>
+<li>sensors, SN, TC, etc.</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+</div>
+
+<div class="column" style="float:left; width:%100">
+<p>
+<b>Technical Challenges</b>:
+</p>
+<ul>
+<li class="fragment appear">involve <b>external data sources</b> into the static simulations</li>
+<li class="fragment appear">couple <b>across data centers</b></li>
+
+</ul>
+</div>
+
+<aside class="notes">
+<p>
+HPC environments:
+</p>
+<ul>
+<li>typically operate static data on efficient parallel distributed file systems</li>
+<li>severe security restrictions for incoming data from external sources</li>
+
+</ul>
+
+<p>
+GC simulations
+</p>
+<ul>
+<li>extensively use recent data from external sources</li>
+<li>streaming data: physical sensors, social networks, mobile operators, etc.</li>
+
+</ul>
+
+</aside>
+
+</section>
+</section>
+<section>
+<section id="slide-orgf11475e" data-background="https://aer.eu/wp-content/uploads/2019/10/SDGs-Summit-article-cover-.png" data-background-opacity="0.25">
+<h2 id="orgf11475e">Representative Global Challenges</h2>
+</section>
+<section id="slide-org27b9176" data-background="https://d15l9woddkztht.cloudfront.net/logos/unhcr-united-nations-high-commissioner-for-refugees.svg" data-background-size="1400px" data-background-opacity="0.2">
+<h3 id="org27b9176">Human migration</h3>
+<div class="column" style="float:left; width:%50">
+<ul>
+<li><b>Data</b>:
+<ul>
+<li>ECMWF weather/climate data</li>
+<li>UNHCR refugee data</li>
+<li>food security data</li>
+<li>telecommunication data</li>
+
+</ul></li>
+<li><b>Models and software</b>:
+<ul>
+<li>macro- and micro-</li>
+<li>ABM with location network
+<ul>
+<li><a href="http://www.github.com/djgroen/flee-release"><code>Flee</code></a> framework (<code>python3</code>)</li>
+
+</ul></li>
+<li>weather/climate forecasts</li>
+<li>GIS: OSM driven toolkit</li>
+
+</ul></li>
+<li data-fragment-index="1" class="fragment appear"><b>Usage</b>: Burundi, CAR, <span class="underline">S.Sudan</span>, Mali</li>
+
+</ul>
+
+</div>
+
+<div class="column" style="float:right; position:absolute; width:%50">
+<ul>
+<li data-fragment-index="1" class="fragment appear"><div class="figure" style="position: relative;width: 40%;float:right;">
+
+<div class="figure">
+<p><img src="./figs/south_sudan_location_graph.jpg" alt="south_sudan_location_graph.jpg" width="100%" />
+</p>
+</div>
+</div></li>
+
+</ul>
+</div>
+
+</section>
+<section id="slide-orgb1018f5" data-background="./figs/uap_gyor.png" data-background-size="1500px" data-background-opacity="0.25">
+<h3 id="orgb1018f5">Urban air pollution</h3>
+<div class="column" style="float:left; width:%50">
+<ul>
+<li><b>Models and software</b>:
+<ul>
+<li>ABMS for traffic
+<ul>
+<li><a href="http://www.github.com/djgroen/flee-release"><code>SUMO</code></a> framework</li>
+
+</ul></li>
+<li>CFD for NO<sub>x</sub> spread in air
+<ul>
+<li><code>OpenFOAM</code>, ANSYS <code>Fluent</code></li>
+<li><font color="red">&Cross;</font> <del><code>Fenics-HPC</code></del>, <font color="red">&Cross;</font> <del><code>NEK5000</code></del></li>
+
+</ul></li>
+<li>weather/climate forecasts</li>
+
+</ul></li>
+
+</ul>
+</div>
+
+<div class="column" style="float:right; width:%50">
+<ul>
+<li><b>Data</b>:
+<ul>
+<li>weather/climate data</li>
+<li>streaming from sensors</li>
+<li>OpenStreetMaps, other</li>
+
+</ul></li>
+
+<li data-fragment-index="1" class="fragment appear"><b>Usage</b>: twins for
+<ul>
+<li><font color="green">&check;</font> <span class="underline">Györ</span> (HG)</li>
+<li>EU: Stuttgart(DE), Graz(AT)</li>
+<li>US: Milwakee(WS)</li>
+
+</ul></li>
+
+</ul>
+</div>
+
+</section>
+<section id="slide-org8e2560d" data-background="https://blog.eonetwork.org/wp-content/uploads/2018/07/iStock-481683826_resize-1024x915.jpg" data-background-opacity="0.15">
+<h3 id="org8e2560d">Social network analysis</h3>
+<div class="column" style="float:left; width:%50">
+<ul>
+<li><b>Models and software</b>:
+<ul>
+<li>ABMS for message spread</li>
+<li>numerical linear algebra
+<ul>
+<li><code>PETSc</code>, <code>SLEPc</code></li>
+<li>eigenvalues histogram</li>
+
+</ul></li>
+<li>nets: <a href="https://github.com/networkit"><code>NetworKit</code></a>, <a href="http://snap.stanford.edu/"><code>Snap</code></a></li>
+
+</ul></li>
+
+</ul>
+
+</div>
+
+<div class="column" style="float:right; width:%50">
+<ul>
+<li><b>Data</b>:
+<ul>
+<li>streaming from <code>Twitter</code></li>
+<li>telecommunication data</li>
+<li>SNAP datasets</li>
+
+</ul></li>
+<li data-fragment-index="1" class="fragment appear"><b>Usage</b>:
+<ul>
+<li>COVID-19 tweets</li>
+
+</ul></li>
+
+</ul>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgb02bcb9">
+<h2 id="orgb02bcb9">Generalized Workflow</h2>
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figs/hidalgo_workflow.svg" class="org-svg" width="80%">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org1720137">
+<h2 id="org1720137">High-Level Design</h2>
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figs/HiDALGO-System-Workflow.svg" class="org-svg" width="80%">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section id="slide-org889a0aa" data-background="./figs/HiDALGO-WM.svg" data-background-size="1400px" data-background-opacity="0.15">
+<h3 id="org889a0aa">Orchestrator &amp; monitor</h3>
+<div class="column" style="float:left; width:%50">
+
+<p>
+<b><a href="https://en.wikipedia.org/wiki/Cloudify">Cloudify</a></b>:
+</p>
+<ul>
+<li><i>Clouds</i> out-of-the-box</li>
+<li><i>coupling</i> mechanisms:
+<ul>
+<li><code>job_depends_on</code></li>
+
+</ul></li>
+<li>OASIS TOSCA <i>standard</i></li>
+<li>Web <i>GUI</i></li>
+<li>many <i>extensions</i></li>
+
+</ul>
+</div>
+
+<div class="column" style="float:right; width:%50">
+<p>
+<b><a href="https://github.com/ari-apc-lab/croupier">Croupiuer</a></b> extension:
+</p>
+<ul>
+<li><i>workload managers</i>:
+<ul>
+<li>HPC: <font color="green">&check;</font> <code>Slurm</code>, <font color="green">&check;</font> <code>Torque</code></li>
+<li>HPDA: <font color="gold">&circlearrowleft;</font> <code>Mesos</code></li>
+
+</ul></li>
+<li data-fragment-index="1" class="fragment appear"><i>coupling</i> mechanisms:
+<ul>
+<li><code>job_mpi_coupled_with</code></li>
+<li><code>job_data_coupled_with</code>
+<ul>
+<li>streaming data with <code>Kafka</code></li>
+
+</ul></li>
+
+</ul></li>
+<li><i>data catalogues</i>: <font color="gold">&circlearrowleft;</font> <code>CKAN</code></li>
+
+</ul>
+</div>
+
+</section>
+<section id="slide-org9a991dd" data-background="./figs/coupling.jpg" data-background-size="1500px" data-background-opacity="0.15">
+<h3 id="org9a991dd">Coupling: locally simulated models</h3>
+<div class="column" style="float:left; width:%50">
+<ul>
+<li data-fragment-index="1" class="fragment shrink"><b>Notation</b>
+<ul>
+<li><font color="darksilver">&RightTeeArrow;</font> acyclic coupling</li>
+<li>cyclic coupling:
+<ul>
+<li><font color="darksilver">&#10562;</font> sequential</li>
+<li><font color="darksilver">&LeftArrowRightArrow;</font> concurrent</li>
+
+</ul></li>
+
+</ul></li>
+<li data-fragment-index="1" class="fragment appear"><b>SNA</b>:
+<ul>
+<li>sim<font color="darksilver">&RightTeeArrow;</font>verify/validate</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+
+<div class="column" style="float:right; width:%50">
+<ul>
+<li data-fragment-index="1" class="fragment appear"><b>Migration</b>:
+<ul>
+<li>conflict model <font color="darksilver">&RightTeeArrow;</font> migration model</li>
+<li>migration model <font color="darksilver">&RightTeeArrow;</font> validation activities</li>
+<li>coarse-grained national <font color="darksilver">&LeftArrowRightArrow;</font> refined local</li>
+
+</ul></li>
+<li data-fragment-index="1" class="fragment appear"><b>UAP</b>:
+<ul>
+<li>traffic model <font color="darksilver">&RightTeeArrow;</font> CFD model of NO<sub>x</sub> flows</li>
+<li>WCD <font color="darksilver">&RightTeeArrow;</font> CFD model of NO<sub>x</sub> flows</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+
+</section>
+<section id="slide-org66f5341" data-background="./figs/HiDALGO-data.svg" data-background-size="1400px" data-background-opacity="0.15">
+<h3 id="org66f5341">Coupling: external data sources</h3>
+<div class="column" style="float:left; width:%50">
+<p>
+<b><a href="https://en.wikipedia.org/wiki/CKAN"><code>CKAN</code></a></b> (<b>DMS/DC</b>):
+</p>
+<ul>
+<li><i>consistency</i> in harvesting</li>
+<li>adequate level of <i>security</i></li>
+<li><i>extensible</i> via plugins</li>
+<li>data <i>delivery methods</i>:
+<ul>
+<li><font color="green">&check;</font> <i>files</i></li>
+<li><font color="green">&check;</font> <i>links</i> to external sources</li>
+<li><font color="green">&check;</font> profiled <i>harvester</i></li>
+
+</ul></li>
+
+</ul>
+</div>
+
+<div class="column" style="float:right; width:%50">
+<p>
+<b>Apache <a href="https://en.wikipedia.org/wiki/Apache_Kafka"><code>Kafka</code></a></b>:
+</p>
+<ul>
+<li>real-time <i>data pipelines</i></li>
+<li><i>streaming data</i> in HiDALGO
+<ul>
+<li><font color="gold">&circlearrowleft;</font> <a href="https://en.wikipedia.org/wiki/Twitter"><code>Twitter</code></a> (with <a href="https://www.tweepy.org/"><code>tweepy</code></a>)</li>
+<li>camera based traffic</li>
+<li>monitor based pollution</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+
+<aside class="notes">
+<p>
+Data Management System
+</p>
+<ul>
+<li>consistency in data harvesting and processing</li>
+
+</ul>
+
+</aside>
+
+</section>
+<section id="slide-org3356ac8" data-background="./figs/ecmwf-polytope.png" data-background-size="1400px" data-background-opacity="0.10">
+<h3 id="org3356ac8">Coupling: across HPC centres</h3>
+<div class="column" style="float:left; width:%50">
+<ul>
+<li><b>specialized data center</b>:
+<ul>
+<li>ECMWF: WCDF</li>
+
+</ul></li>
+<li data-fragment-index="1" class="fragment appear"><b>vision</b>:
+<ul>
+<li>bring <i>users</i> to the data</li>
+<li>use data while it is <i>hot</i></li>
+<li><i>access</i> using <i>metadata</i></li>
+
+</ul></li>
+<li data-fragment-index="3" class="fragment appear"><b>software</b>: <a href="https://git.ecmwf.int/projects/LEX/repos/polytope-client/"><code>Polytope</code></a></li>
+
+</ul>
+</div>
+
+<div class="column" style="float:right; width:%50">
+<ul>
+<li data-fragment-index="1" class="fragment appear"><b>goal</b>:
+<ul>
+<li>enable coupling to build a workflow</li>
+
+</ul></li>
+<li data-fragment-index="2" class="fragment appear"><b>implementation</b>:
+<ul>
+<li><font color="green">&check;</font> Step 1: <i>Static coupling</i>
+<ul>
+<li>static <i>reanalysis data</i> (calibration)</li>
+
+</ul></li>
+<li><font color="gold">&circlearrowleft;</font> Step 2: <i>Dynamic coupling</i>
+<ul>
+<li><i>forecast</i> data via a REST API</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-orgfc0019b" data-background="./figs/don_quijote_fighting_sheep.jpg" data-background-size="1400px" data-background-opacity="0.4">
+<h2 id="orgfc0019b">Future work</h2>
+<ul>
+<li>develop mechanisms for moving/handling <i>large simulation results</i>
+<ul>
+<li>Simulation <font color="darkgray">&#10155;</font> <b>HPDA</b> (Apache <a href="https://en.wikipedia.org/wiki/Apache_Flink"><code>Flink</code></a>) <font color="darkgray">&#10155;</font> { DMS/DS | Visualization }</li>
+
+</ul></li>
+<li>improve mechanisms for <i>acyclic coupling across data centers</i></li>
+<li>implement <i>strong coupling</i> in the case studies</li>
+<li>evaluate <i>performance</i> for the proposed solutions</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org33f73a9" data-background="./figs/partners.png" data-background-size="1000px" data-background-opacity="0.25">
+<h2 id="org33f73a9">Contributors</h2>
+<ul>
+<li><b>BUL</b>: Derek Groen, Diana Suleimenova, <i>Imran Mahmood</i></li>
+<li><b>PSNC</b>: Marcin Lawenda</li>
+<li><b>ATOS</b>: <i>F. Javier Nieto De Santos</i></li>
+<li><b>ECMWF</b>: John Hanley, <i>Milana Vuckovic</i></li>
+<li><b>KNOW</b>: Mark Kroell, Bernhard Geiger</li>
+<li><b>PLUS</b>: <i>Robert Elsaesser</i></li>
+<li><b>SZE</b>: <i>Zoltán Horváth</i></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgae9b8fa" data-background="./hidalgo-style/hidalgo-logo.png" data-background-size="1400px" data-background-opacity="0.25">
+<h2 id="orgae9b8fa">Thank you for your attention!</h2>
+<p>
+<a href="https://hidalgo-project.eu">https://hidalgo-project.eu</a>
+</p>
+
+<p>
+<a href='mailto:contact@hidalgo-project.eu'>contact@hidalgo-project.eu</a>
+</p>
+
+<p>
+<a href='https://www.facebook.com/EU.Project.HiDALGO'><img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" style="height:1.5em; border-radius: 50%;border: 0px solid blue;" /></a>
+<a href='https://twitter.com/EU_HiDALGO'><img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Twitter_Logo.png" style="height:1.5em; border-radius: 50%;border: 0px solid blue;" /></a>
+<a href='https://www.researchgate.net/project/HiDALGO-HPC-and-Big-Data-Technologies-for-Global-Challenges'><img src="https://user-images.githubusercontent.com/511683/28757557-f82cff1a-7585-11e7-9317-072a838dcca3.png" style="height:1.5em; border-radius: 50%;border: 0px solid green;" /></a>
+</p>
+
+
+<p>
+June 12
+</p>
+<small>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-right" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-right">14:30-14:50</td>
+<td class="org-left"><b>Zoltán Horváth</b></td>
+<td class="org-left"><i>Improving accuracy of multi-scale urban air pollution simulation via coupling with sensor data and meteorological forcasts MMS</i></td>
+</tr>
+
+<tr>
+<td class="org-right">14:50-15:10</td>
+<td class="org-left"><b>Milana Vuckovic</b></td>
+<td class="org-left"><i>Building cloud-based data services to enable earth-science workflows across HPC centres MMS</i></td>
+</tr>
+
+<tr>
+<td class="org-right">15:10-15:30</td>
+<td class="org-left"><b>Imran Mahmood</b></td>
+<td class="org-left"><i>An Agent-based Multiscale Simulation of Forced Migration: A case study of South Sudan</i></td>
+</tr>
+</tbody>
+</table>
+</small>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/lib/js/head.min.js"></script>
+<script src="./reveal.js/js/reveal.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+
+overview: true,
+width: 1400,
+height: 1000,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'convex', // see README of reveal.js for options
+transitionSpeed: 'default',
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+ { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }]
+
+});
+</script>
+</body>
+</html>

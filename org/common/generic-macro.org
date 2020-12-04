@@ -1,0 +1,23 @@
+# ##########################################################
+# @file
+# @copyright (C) 2020
+#    All rights reserved.
+#
+# Use, modification, and distribution is subject to the license.
+#
+# @author Sergiy Gogolenko <sergiy.gogolenko@gmail.com>
+#
+# ##########################################################
+
+#+MACRO: color @@html:<font color="$1">$2</font>@@
+#+MACRO: done @@html:<font color="green">&check;</font>@@
+#+MACRO: ongoing @@html:<font color="gold">&circlearrowleft;</font>@@
+#+MACRO: pending @@html:<font color="red">&Cross;</font>@@
+#+MACRO: cancel @@html:<font color="red">&Cross;</font>@@
+#+MACRO: to_cyclic @@html:<font color="darksilver">&#10562;</font>@@
+#+MACRO: cyclic @@html:<font color="darksilver">&LeftArrowRightArrow;</font>@@
+#+MACRO: acyclic @@html:<font color="darksilver">&RightTeeArrow;</font>@@
+#+MACRO: to @@html:<font color="darkgray">&#10155;</font>@@
+#+MACRO: begin_column #+REVEAL_HTML: <div class="column" style="float:$1; width:$2">
+#+MACRO: end_column #+REVEAL_HTML: </div>
+#+MACRO: mailto @@html:<a href='mailto:$1'>$2</a>@@

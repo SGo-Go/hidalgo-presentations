@@ -1,0 +1,18 @@
+# ##########################################################
+# @file
+# @copyright (C) 2020
+#    All rights reserved.
+#
+# Use, modification, and distribution is subject to the license.
+#
+# @author Sergiy Gogolenko <sergiy.gogolenko@gmail.com>
+#
+# ##########################################################
+
+#+INCLUDE: ./generic-macro.org
+
+#+MACRO: researchgate @@html:<a href='https://www.researchgate.net/$1'><img src="https://user-images.githubusercontent.com/511683/28757557-f82cff1a-7585-11e7-9317-072a838dcca3.png" style="height:1.5em; border-radius: 50%;border: 0px solid green;" /></a>@@ 
+#+MACRO: facebook @@html:<a href='https://www.facebook.com/$1'><img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" style="height:1.5em; border-radius: 50%;border: 0px solid blue;" /></a>@@ 
+#+MACRO: twitter @@html:<a href='https://twitter.com/$1'><img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Twitter_Logo.png" style="height:1.5em; border-radius: 50%;border: 0px solid blue;" /></a>@@ 
+# https://cdn.pixabay.com/photo/2017/08/23/11/30/twitter-2672572_960_720.jpg
+#+MACRO: logo_ref @@html:<a href='$1'><img src='$2' style="height:2em; border: 0px solid white;" /></a>@@

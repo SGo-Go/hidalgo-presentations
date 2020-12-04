@@ -1,0 +1,7 @@
+# -*- mode: org -*-
+#+TITLE: HiDALGO Presentations
+#+AUTHOR: Sergiy Gogolenko
+
+[https://github.com/hakimel/reveal.js.git][reveal.js]] presentations of the HiDALGO project at different venues:
+- /[[http://sgo-go.github.io/hidalgo-presentations/20200603-ICCS.html][Towards Accurate Simulation of Global Challenges on Data Centers Infrastructures via Coupling of Models and Data Sources]]/. [[https://www.iccs-meeting.org/iccs2020/][International Conference on Computational Science 2020]].
+

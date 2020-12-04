@@ -1,0 +1,379 @@
+# -*- mode: org -*-
+#+STARTUP: showall
+
+#+INCLUDE: ../common/hidalgo-macro.org
+
+#+OPTIONS: reveal_progress:t reveal_width:1400 reveal_height:1000
+#+REVEAL_THEME: beige 
+#+REVEAL_HLEVEL: 1
+#+REVEAL_EXTRA_CSS: ./hidalgo-style/extra.css
+#+REVEAL_TITLE_SLIDE: <h1><small>%t</sup></small></h1><h2><a href='mailto:%e'>%a</a></h2><h4>%A</h4><h3>%c&compfn;%d</h3> <!-- <p>View online: <a href="%u">%u</a></p><p>This could be the file name in the <code>src</code> attribute of an <code>img</code> element for a QR code: %q -->
+#+REVEAL_PREAMBLE: <div class="header-x"><div class="left"><img src="./hidalgo-style/iccs-logo.png"></div><div class="right">%d<br>%A</div></div> <div class="footer-x"><div class="left"><img src="./hidalgo-style/hidalgo-logo.png"></div><div class="center"><b>%a</b><br><i><small>%t</small></i></div> <div class="right"><img src="./hidalgo-style/Flag_of_Europe.svg" alt="HiDALGO"><b>EU</b> <small>founded project</small><br><b>#824115</b><br><sup><sup><sup><sup><sup><sup><sup><b><code>@O_TTT_O</code><b></sup></sup></sup></sup></sup></sup></sup></div></div>
+
+#+REVEAL_TITLE_SLIDE_BACKGROUND: ./hidalgo-style/hidalgo-logo.png
+#+REVEAL_TITLE_SLIDE_BACKGROUND_POSITION: top
+#+REVEAL_TITLE_SLIDE_BACKGROUND_SIZE: 35%
+
+#+REVEAL_TALK_URL: http://sgo-go.github.io/hidalgo-presentations/20200603-ICCS.html
+
+#+TITLE: Towards Accurate Simulation of Global Challenges on Data Centers Infrastructures via Coupling of Models and Data Sources
+#+AUTHOR: Sergiy Gogolenko 
+#+EMAIL: gogolenko@hlrs.de
+#+CREATOR: ICCS'2020 <small><sup>@</sup></small> <del>Amsterdam (NL)</del> remote
+#+DATE: <2020-06-12 14:10>
+#+OPTIONS: author:t date:t num:nil toc:nil
+#+OPTIONS: author:t date:t created:nill email:t tex:t
+#+TIME: 15min
+
+** Computational global systems science applications and HiDALGO
+  :PROPERTIES:
+  :reveal_background: https://apolitical.co/wp-content/uploads/2018/12/Screen-Shot-2018-12-04-at-13.55.24.png
+  :reveal_background_size: 1000px
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+
+*Goal*: evidence based /policy-making/ for current and upcoming situations via accurate /GC simulations/
+
+*Accurate digital twinning* of GCs {{{to}}} *coupled simulations*
+- *models* for diverse /social/ and /physical/ phenomena (often multiscale)
+- *massive* /static/ and /streaming/ *data sets*
+
+** Technical Challenges in simulating GC across data centers
+  :PROPERTIES:
+  :reveal_background: ./figs/hidalgo-approach.png
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+
+{{{begin_column(left,%50)}}}
+*HPC and data centers environments*:
+- /static data/ on efficient PDFS
+- /security restrictions/ for external data
+- /proprietary/ software, models, and data
+- expensive simulations
+# for external data sources
+{{{end_column}}}
+
+{{{begin_column(right,%50)}}}
+*GC simulations*:
+- combine comp. /expensive models/
+- greedy to /"external" data/
+  - streaming data:
+    - sensors, SN, TC, etc.
+{{{end_column}}}
+
+{{{begin_column(left,%100)}}}
+*Technical Challenges*:
+#+ATTR_REVEAL: :frag (appear)
+- involve *external data sources* into the static simulations
+- couple *across data centers*
+{{{end_column}}}
+
+#+BEGIN_NOTES
+HPC environments:
+- typically operate static data on efficient parallel distributed file systems
+- severe security restrictions for incoming data from external sources
+
+GC simulations
+- extensively use recent data from external sources
+- streaming data: physical sensors, social networks, mobile operators, etc.
+#+END_NOTES
+
+* Representative Global Challenges
+  :PROPERTIES:
+  :reveal_background: https://aer.eu/wp-content/uploads/2019/10/SDGs-Summit-article-cover-.png
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+** Human migration
+  :PROPERTIES:
+  :reveal_background: https://d15l9woddkztht.cloudfront.net/logos/unhcr-united-nations-high-commissioner-for-refugees.svg
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.2"
+  :END:
+# ({{{date(%Y)}}})
+
+{{{begin_column(left,%50)}}}
+#+ATTR_REVEAL: :frag (none none appear) :frag_idx (- - 1)
+- *Data*:
+  - ECMWF weather/climate data
+  - UNHCR refugee data
+  - food security data
+  - telecommunication data
+- *Models and software*:
+  - macro- and micro-
+  - ABM with location network
+    - [[http://www.github.com/djgroen/flee-release][~Flee~]] framework (~python3~)
+  - weather/climate forecasts
+  - GIS: OSM driven toolkit
+- *Usage*: Burundi, CAR, _S.Sudan_, Mali
+# Burundi, Central African Republic, Mali and South Sudan
+# Syria, Afghanistan and
+# South Sudan
+{{{end_column}}}
+
+{{{begin_column(right; position:absolute,%50)}}}
+#+ATTR_REVEAL: :frag (appear) :frag_idx (1)
+- 
+  #+REVEAL_HTML: <div class="figure" style="position: relative;width: 40%;float:right;">
+  #+ATTR_HTML: :width 100%
+  [[./figs/south_sudan_location_graph.jpg]]
+  #+REVEAL_HTML: </div>
+{{{end_column}}}
+
+** Urban air pollution
+  :PROPERTIES:
+  :reveal_background: ./figs/uap_gyor.png
+  :reveal_background_size: 1500px
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+{{{begin_column(left,%50)}}}
+- *Models and software*:
+  - ABMS for traffic
+    - [[http://www.github.com/djgroen/flee-release][~SUMO~]] framework
+  - CFD for NO_x spread in air
+    - ~OpenFOAM~, ANSYS ~Fluent~
+    - {{{cancel}}} +~Fenics-HPC~+, {{{cancel}}} +~NEK5000~+
+  - weather/climate forecasts
+{{{end_column}}}
+
+{{{begin_column(right,%50)}}}
+#+ATTR_REVEAL: :frag (none appear) :frag_idx (- 1)
+- *Data*:
+  - weather/climate data
+  - streaming from sensors
+  - OpenStreetMaps, other
+
+- *Usage*: twins for
+  - {{{done}}} _Györ_ (HG)
+  - EU: Stuttgart(DE), Graz(AT)
+  - US: Milwakee(WS)
+{{{end_column}}}
+
+# June 12, 14:30-14:50 Zoltán Horváth /Improving accuracy of multi-scale urban air pollution simulation via coupling with sensor data and meteorological forcasts MMS/
+
+** Social network analysis
+  :PROPERTIES:
+  :reveal_background: https://blog.eonetwork.org/wp-content/uploads/2018/07/iStock-481683826_resize-1024x915.jpg
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+  # :reveal_background_size: 1500px
+  # https://svgsilh.com/svg/1614045.svg
+
+{{{begin_column(left,%50)}}}
+- *Models and software*:
+  - ABMS for message spread 
+  - numerical linear algebra
+    - ~PETSc~, ~SLEPc~
+    - eigenvalues histogram
+  - nets: [[https://github.com/networkit][~NetworKit~]], [[http://snap.stanford.edu/][~Snap~]]
+# https://raw.githubusercontent.com/networkit/networkit/Dev/docs/logo/logo_color.png
+# http://snap.stanford.edu/images/snap_logo.png
+{{{end_column}}}
+
+{{{begin_column(right,%50)}}}
+#+ATTR_REVEAL: :frag (none appear) :frag_idx (- 1)
+- *Data*:
+  - streaming from ~Twitter~
+  - telecommunication data
+  - SNAP datasets
+- *Usage*:
+  - COVID-19 tweets
+{{{end_column}}}
+
+* Generalized Workflow
+
+#+ATTR_HTML: :width 80%
+[[./figs/hidalgo_workflow.svg]]
+
+* High-Level Design
+
+#+ATTR_HTML: :width 80%
+[[./figs/HiDALGO-System-Workflow.svg]]
+
+** Orchestrator & monitor
+  :PROPERTIES:
+  :reveal_background: ./figs/HiDALGO-WM.svg
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+
+{{{begin_column(left,%50)}}}
+# +ATTR_REVEAL: :frag (none shrink none none none none) :frag_idx (- 1 - - - -)
+# https://upload.wikimedia.org/wikipedia/en/d/d1/Cloudify_Logo.png
+*[[https://en.wikipedia.org/wiki/Cloudify][Cloudify]]*:
+  - /Clouds/ out-of-the-box
+  - /coupling/ mechanisms:
+    - ~job_depends_on~
+  - OASIS TOSCA /standard/
+  - Web /GUI/
+  - many /extensions/
+{{{end_column}}}
+#  - dependencies between tasks
+# cyclic coupling with simulations on different HPC centres
+
+{{{begin_column(right,%50)}}}
+*[[https://github.com/ari-apc-lab/croupier][Croupiuer]]* extension:
+  #+ATTR_REVEAL: :frag (none appear none) :frag_idx (- 1 -)
+  - /workload managers/:
+    - HPC: {{{done}}} ~Slurm~, {{{done}}} ~Torque~
+    - HPDA: {{{ongoing}}} ~Mesos~
+  - /coupling/ mechanisms:
+    - ~job_mpi_coupled_with~
+    - ~job_data_coupled_with~
+      - streaming data with ~Kafka~
+  - /data catalogues/: {{{ongoing}}} ~CKAN~
+{{{end_column}}}
+
+** Coupling: locally simulated models
+  :PROPERTIES:
+  :reveal_background: ./figs/coupling.jpg
+  :reveal_background_size: 1500px
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+
+{{{begin_column(left,%50)}}}
+#+ATTR_REVEAL: :frag (shrink appear) :frag_idx (1 1)
+- *Notation*
+  - {{{acyclic}}} acyclic coupling
+  - cyclic coupling:
+    - {{{to_cyclic}}} sequential
+    - {{{cyclic}}} concurrent
+- *SNA*:
+  - sim{{{acyclic}}}verify/validate
+#  - tweets{{{acyclic}}}analyze/sim
+{{{end_column}}}
+
+{{{begin_column(right,%50)}}}
+#+ATTR_REVEAL: :frag (appear appear) :frag_idx (1 1)
+- *Migration*:
+  - conflict model {{{acyclic}}} migration model
+  - migration model {{{acyclic}}} validation activities
+  - coarse-grained national {{{cyclic}}} refined local
+- *UAP*:
+  - traffic model {{{acyclic}}} CFD model of NO_x flows
+  - WCD {{{acyclic}}} CFD model of NO_x flows
+#  - streaming data {{{acyclic}}} traffic model
+{{{end_column}}}
+
+** Coupling: external data sources
+  :PROPERTIES:
+  :reveal_background: ./figs/HiDALGO-data.svg
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+
+{{{begin_column(left,%50)}}}
+*[[https://en.wikipedia.org/wiki/CKAN][~CKAN~]]* (*DMS/DC*):
+- /consistency/ in harvesting
+- adequate level of /security/
+- /extensible/ via plugins
+- data /delivery methods/:
+  - {{{done}}} /files/
+  - {{{done}}} /links/ to external sources
+  - {{{done}}} profiled /harvester/
+{{{end_column}}}
+
+{{{begin_column(right,%50)}}}
+*Apache [[https://en.wikipedia.org/wiki/Apache_Kafka][~Kafka~]]*:
+- real-time /data pipelines/
+- /streaming data/ in HiDALGO
+  - {{{ongoing}}} [[https://en.wikipedia.org/wiki/Twitter][~Twitter~]] (with [[https://www.tweepy.org/][~tweepy~]])
+  - camera based traffic
+  - monitor based pollution
+# https://upload.wikimedia.org/wikipedia/commons/thumb/5/51/Twitter_logo.svg/2000px-Twitter_logo.svg.png
+# https://www.iqraprimary.com/wp-content/uploads/2019/09/twitter-logo.png
+{{{end_column}}}
+
+#+BEGIN_NOTES
+Data Management System
+- consistency in data harvesting and processing
+#+END_NOTES
+
+** Coupling: across HPC centres
+  :PROPERTIES:
+  :reveal_background: ./figs/ecmwf-polytope.png
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.10"
+  :END:
+
+# enable users to build custom workflows utilizing ECMWF's weather forecast and climate data
+{{{begin_column(left,%50)}}}
+#+ATTR_REVEAL: :frag (none appear appear) :frag_idx (- 1 3)
+- *specialized data center*:
+  - ECMWF: WCDF
+- *vision*:
+  - bring /users/ to the data
+  - use data while it is /hot/
+  - /access/ using /metadata/
+- *software*: [[https://git.ecmwf.int/projects/LEX/repos/polytope-client/][~Polytope~]]
+{{{end_column}}}
+
+{{{begin_column(right,%50)}}}
+#+ATTR_REVEAL: :frag (appear appear) :frag_idx (1 2)
+- *goal*:
+  - enable coupling to build a workflow
+- *implementation*:
+  - {{{done}}} Step 1: /Static coupling/
+    - static /reanalysis data/ (calibration)
+  - {{{ongoing}}} Step 2: /Dynamic coupling/
+    - /forecast/ data via a REST API
+{{{end_column}}}
+
+* Future work
+  :PROPERTIES:
+  :reveal_background: ./figs/don_quijote_fighting_sheep.jpg
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.4"
+  :END:
+
+- develop mechanisms for moving/handling /large simulation results/
+  - Simulation {{{to}}} *HPDA* (Apache [[https://en.wikipedia.org/wiki/Apache_Flink][~Flink~]]) {{{to}}} { DMS/DS | Visualization }
+- improve mechanisms for /acyclic coupling across data centers/
+- implement /strong coupling/ in the case studies
+- evaluate /performance/ for the proposed solutions
+
+* Contributors
+  :PROPERTIES:
+  :reveal_background: ./figs/partners.png
+  :reveal_background_size: 1000px
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+- *BUL*: Derek Groen, Diana Suleimenova, /Imran Mahmood/
+- *PSNC*: Marcin Lawenda
+- *ATOS*: /F. Javier Nieto De Santos/
+- *ECMWF*: John Hanley, /Milana Vuckovic/
+- *KNOW*: Mark Kroell, Bernhard Geiger
+- *PLUS*: /Robert Elsaesser/
+- *SZE*: /Zoltán Horváth/
+
+* Thank you for your attention!
+  :PROPERTIES:
+  :reveal_background: ./hidalgo-style/hidalgo-logo.png
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+    # :PROPERTIES:
+    # :reveal_extra_attr: data-background-iframe="https://hidalgo-project.eu/" data-background-interactive data-background-opacity="0.2"
+    # :END:
+
+[[https://hidalgo-project.eu]]
+
+{{{mailto(contact@hidalgo-project.eu,contact@hidalgo-project.eu)}}}
+
+{{{facebook(EU.Project.HiDALGO)}}}
+{{{twitter(EU_HiDALGO)}}}
+{{{researchgate(project/HiDALGO-HPC-and-Big-Data-Technologies-for-Global-Challenges)}}}
+# https://twitter.com/EU_HiDALGO
+
+
+June 12
+#+REVEAL_HTML: <small>
+|-------------+-------------------+----------------------------------------------------------------------------------------------------------------------------------|
+| 14:30-14:50 | *Zoltán Horváth*  | /Improving accuracy of multi-scale urban air pollution simulation via coupling with sensor data and meteorological forcasts MMS/ |
+| 14:50-15:10 | *Milana Vuckovic* | /Building cloud-based data services to enable earth-science workflows across HPC centres MMS/                                    |
+| 15:10-15:30 | *Imran Mahmood*   | /An Agent-based Multiscale Simulation of Forced Migration: A case study of South Sudan/                                          |
+|-------------+-------------------+----------------------------------------------------------------------------------------------------------------------------------|
+#+REVEAL_HTML: </small>
