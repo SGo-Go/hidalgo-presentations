@@ -1,0 +1,478 @@
+# -*- mode: org -*-
+#+INCLUDE: ./org/common/hidalgo-style.org
+
+#+TITLE: Introduction to the Project HiDALGO and its Services
+#+AUTHOR: Sergiy Gogolenko 
+#+REVEAL_ACADEMIC_TITLE: High-Performance Computing Center, Stuttgart, DE
+# HiDALGO consortium
+#+EMAIL: gogolenko@hlrs.de
+#+CREATOR: HiDALGO workshop <small><sup>@</sup></small> <b>HiPEAC</b>
+#+DATE: 2021-01-20
+#+OPTIONS: author:t date:t num:nil toc:nil created:nill email:t tex:t
+#+REVEAL_TALK_URL: http://sgo-go.github.io/hidalgo-presentations/20210120-HiPEAC-HiDALGO.html
+#+TIME: 25min
+
+* Introduction
+  :PROPERTIES:
+  :reveal_background: https://aer.eu/wp-content/uploads/2019/10/SDGs-Summit-article-cover-.png
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+** Global Challenges: Media and Pop Culture
+
+# <img height="600" src="https://m.media-amazon.com/images/M/MV5BNDVhMGNhYjEtMDkwZi00NmQ5LWFkODktYzhiYjY2NTZmYTNhXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg">
+#+BEGIN_EXPORT html
+<div class="image-stack-overlapped">
+  <a href="https://en.wikipedia.org/wiki/Frozen_Planet">
+    <img class="image1-overlapped" height="600" src="https://fanart.tv/fanart/tv/251418/tvposter/frozen-planet-536514f13374c.jpg">
+  </a>
+    <img class="image2-overlapped" height="600" src="https://upload.wikimedia.org/wikipedia/en/c/c6/Chasing_Ice_poster.jpg">
+  <a href="https://en.wikipedia.org/wiki/Human_Flow">
+    <img class="image1-overlapped" height="600" src="https://image.tmdb.org/t/p/original/qrGah3hibZspmdQmj3yeYwnc0mP.jpg"></a>
+  <a href="https://en.wikipedia.org/wiki/The_Social_Dilemma">
+    <img class="image1-overlapped" height="600" src="https://upload.wikimedia.org/wikipedia/en/2/27/Social_dilemma_xlg.jpg"></a>
+</div>
+#+END_EXPORT
+
+# https://en.wikipedia.org/wiki/The_Social_Dilemma
+# https://en.wikipedia.org/wiki/Chasing_Ice
+# https://en.wikipedia.org/wiki/Citizenfour
+# https://en.wikipedia.org/wiki/Human_Flow
+# https://en.wikipedia.org/wiki/European_migrant_crisis
+
+** Global Challenges: Art
+  :PROPERTIES:
+  :reveal_extra_attr: data-background-iframe="https://en.wikipedia.org/wiki/Climate_change_art" data-background-opacity="0.2" data-background-interactive
+  :END:
+
+#+BEGIN_EXPORT html
+<div class="image-stack-overlapped">
+<a href="https://en.wikipedia.org/wiki/Frozen_Planet">
+<img class="image1-overlapped" height="600" src="https://upload.wikimedia.org/wikipedia/commons/4/45/Gabriele_Evertz_Double_1999-2000_Acrylic_on_Canvas.jpg">
+</a>
+<img class="image2-overlapped" height="600" src="http://images.mid-day.com/images/2017/mar/26James-Balog-1.jpg">
+</div>
+#+END_EXPORT
+
+# https://phys.org/news/2017-03-captures-world-glacier-decade.html
+# https://i.dailymail.co.uk/1/2017/03/25/06/wire-280249-1490423005-598_634x422.jpg
+# https://scx1.b-cdn.net/csz/news/800/2017/peopleattend.jpg
+# https://scx1.b-cdn.net/csz/news/800/2017/aboytoucheso.jpg
+
+** CoE for Global Challenges
+  :PROPERTIES:
+  :reveal_background: ./figs/partners.png
+  :reveal_background_size: 1000px
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+
+{{{begin_column(left,%50)}}}
+- *Consortium*:
+  - /13/ partners
+  - /7/ countries
+- coordination: /ATOS/
+- TM: /HLRS/ (DE)
+- *Runtime*
+  - duration: /36M/
+  - start: /Dec 2018/
+- *Fund*:
+  - EU Horizon 2020
+  - {{{euro}}}7'991'500.00
+{{{end_column}}}
+
+{{{begin_column(right,%50)}}}
+  #+REVEAL_HTML: <div class="figure" style="position: relative;width: 90%;float:right;">
+  #+ATTR_HTML: :width 100%
+  [[./figs/partners.png]]
+  #+REVEAL_HTML: </div>
+{{{end_column}}}
+
+** HiDALGO Motivation and Main Objectives
+  :PROPERTIES:
+  :reveal_background: ./figs/policy-making.png
+  :reveal_background: https://apolitical.co/wp-content/uploads/2018/12/Screen-Shot-2018-12-04-at-13.55.24.png
+  :reveal_background_size: 900px
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+
+#+REVEAL_HTML: <div class="alert alert-info">
+*Goal*: evidence based _/policy-making/_ for current and upcoming situations via accurate /GC simulations/
+#+REVEAL_HTML: </div>
+
+
+#+REVEAL_HTML: <div class="alert alert-info">
+*High Level Ambition & Project Targets*
+#+REVEAL_HTML: <hr/>
+#+ATTR_REVEAL: :frag (appear appear appear) :frag_idx (1 2 3)
+- Benefit from the /_synergies_/ between HPC, HPDA, AI, and GCs
+  - baseline for HPC, HPDA, and AI in the domain of GCs
+  - focus on highly accurate models
+- Provide a /_single entry point_/ for decision makers (and other entities)
+  - a multi-domain portal for the GC community
+- /_Connect_ & _train_/ the different communities
+# - Provide a /single entry point/ for decision makers (& other relevant entities) in the GC ecosystem
+#+REVEAL_HTML: </div>
+
+# *Project Targets*
+# - Establish the baseline for HPC, HPDA and AI oriented computing in the domain of GCs
+#   - Advance state-of-the-art mechanisms for data analytics
+#   - Develop an AI-based integrated simulation workflow
+# - Focus on highly accurate models & significantly improved simulation results
+#   - Build-up coupled simulations for highly complex phenomena
+#   - Integrate real-world data in static simulations
+# - Enhance and advertise a multi-domain portal for the GC community
+
+* Use Cases
+  :PROPERTIES:
+  :reveal_background: ./figs/global-challenges.png
+  :reveal_background_size: 1000px
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+** What challenges to choose?
+  :PROPERTIES:
+  :reveal_background: https://flytoy.pl/pol_pl_Homo-Deus-A-Brief-History-of-Tomorrow-ENG-3223_1.jpg
+  :reveal_background_size: 1000px
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+#+REVEAL_HTML: <small>
+#+BEGIN_QUOTE
+For the first time in history, more people die today from eating too much than from eating too little;
+more people die from old age than from infectious diseases;
+and more people commit suicide than are killed by soldiers, terrorists and criminals combined.
+
+    --- *Yuval Harari* "[[https://en.wikipedia.org/wiki/Homo_Deus:_A_Brief_History_of_Tomorrow][Homo Deus: A Brief History of Tomorrow]]"
+#+END_QUOTE
+#+REVEAL_HTML: </small>
+
+#+REVEAL_HTML: <div class="alert alert-info">
+Top news of the last months:
+#+REVEAL_HTML: <hr/>
+#+ATTR_REVEAL: :frag (appear appear appear) :frag_idx (1 2 3)
+- pandemic: [[https://en.wikipedia.org/wiki/COVID-19_pandemic][COVID-19]] 
+- armed conflict: [[https://en.wikipedia.org/wiki/Tigray_War][Ethiopia's Tigray crisis]]
+- social media: [[https://en.wikipedia.org/wiki/2021_storming_of_the_United_States_Capitol][storming of the US Capitol]]
+# - contaminating earth
+#+REVEAL_HTML: </div>
+
+#+BEGIN_NOTES
+Some claim that famine, plague, and war are essentially problems of the former centuries
+and we need to look in the future.
+#+END_NOTES
+
+** Refugee and human migration simulation
+  :PROPERTIES:
+  :reveal_background: https://d15l9woddkztht.cloudfront.net/logos/unhcr-united-nations-high-commissioner-for-refugees.svg
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.2"
+  :END:
+
+#+REVEAL_HTML: <div class="alert alert-info">
+- develop realistic models for simulating refugee streams
+- complete data collection on refugee movements
+- investigate the consequences of a nation closing its borders
+#+REVEAL_HTML: </div>
+
+{{{begin_column(left,%50)}}}
+- *HPC in migration use case*:
+  - expensive simulations
+  - ensemble runs
+- *HPDA in migration use case*:
+  - process GIS data
+  - analyse weather/climate data
+  - post-process results
+  - synthetic data
+- *Usage*: Burundi, CAR, _S.Sudan_, Mali
+{{{end_column}}}
+# - ensemble runs (test policies for many scenarios, VVUQ)
+
+{{{begin_column(right; position:absolute,%50)}}}
+  #+REVEAL_HTML: <div class="figure" style="position: relative;width: 50%;float:right;">
+  #+ATTR_HTML: :width 100%
+  [[./figs/use_cases/south_sudan_migration.png]]
+  #+REVEAL_HTML: </div>
+{{{end_column}}}
+
+** COVID and Flu spread simulation
+  :PROPERTIES:
+  :reveal_background: https://upload.wikimedia.org/wikipedia/commons/8/82/SARS-CoV-2_without_background.png
+  :reveal_background_size: 1000px
+  :reveal_extra_attr: data-background-opacity="0.2"
+  :END:
+
+#+REVEAL_HTML: <div class="alert alert-info">
+- simulate epidemics spread across the /local/ area
+- determine people infected, ICU occupation, etc.
+- investigate the effects of applying certain policies (i.e., curfews)
+#+REVEAL_HTML: </div>
+
+{{{begin_column(left; position:absolute,%50)}}}
+  #+REVEAL_HTML: <div class="figure" style="position: relative;width: 80%;float:left;">
+  #+ATTR_HTML: :width 100%
+  [[./figs/use_cases/facs-relults.png]]
+  #+REVEAL_HTML: </div>
+{{{end_column}}}
+
+{{{begin_column(right,%50)}}}
+- *HPC in epidemiology use case*:
+  - expensive simulations
+  - ensemble runs
+- *HPDA in epidemiology use case*:
+  - pre-process GIS inputs
+  - post-process results
+  - analyse weather/climate data
+  - synthetic inputs
+- *Usage*: London, Madrid
+{{{end_column}}}
+# - ensemble runs (test policies for many scenarios, VVUQ)
+
+** Urban air pollution simulation
+  :PROPERTIES:
+  :reveal_background: ./figs/uap_gyor.png
+  :reveal_background_size: 1500px
+  :reveal_extra_attr: data-background-opacity="0.1"
+  :END:
+
+#+REVEAL_HTML: <div class="alert alert-info">
+# *Goals*:
+  - simulate pollution in cities based on real-world sensor data
+  - couple models for traffic, air flow, and weather simulation
+  - design evidence-based decision models to leverage green growth
+#+REVEAL_HTML: </div>
+
+{{{begin_column(left; position:absolute,%50)}}}
+  #+REVEAL_HTML: <div class="figure" style="position: relative;width: 80%;float:left;">
+  #+ATTR_HTML: :width 100%
+  [[./figs/uap_gyor.png]]
+  #+REVEAL_HTML: </div>
+{{{end_column}}}
+
+{{{begin_column(right,%50)}}}
+- *HPC in UAP use case*:
+  - expensive simulations
+  - ensemble runs
+- *HPDA in UAP use case*:
+  - impute the missing data
+  # - impute the missing data from sensors
+  - reduce models
+  - post-process results
+# - *Usage*: twins for _Györ_ (HG), Stuttgart (DE), Graz (AT), Milwaukee (US)
+{{{end_column}}}
+
+** Social network analysis
+  :PROPERTIES:
+  :reveal_background: ./figs/network.svg
+  :reveal_background: ./figs/globe-network.jpg
+  :reveal_extra_attr: data-background-opacity="0.1"
+  :END:
+
+#+REVEAL_HTML: <div class="alert alert-info">
+# - *Goals*:
+  - analyze the structure of social networks
+  - analyze the stochastic behavior of the message spreading
+  - simulate the spread of messages among users
+  - study the spread of 'Fake News' and develop countermeasures
+# - *Usage*: COVID-19 tweets
+#+REVEAL_HTML: </div>
+
+{{{begin_column(left; position:absolute,%50)}}}
+  #+REVEAL_HTML: <div class="figure" style="position: relative;width: 80%;float:left;">
+  #+ATTR_HTML: :width 100%
+  [[./figs/use_cases/sna-clustering.png]]
+  #+REVEAL_HTML: </div>
+{{{end_column}}}
+
+{{{begin_column(right,%50)}}}
+- *HPC in SNA use case*:
+  - expensive network analytics
+  - ensemble runs
+- *HPDA in SNA use case*:
+  - features extraction
+  - retweet probabilities
+  - post-process results
+{{{end_column}}}
+
+** HiDALGO Approach and Generalized Workflow
+  :PROPERTIES:
+  :reveal_background: ./figs/hidalgo_workflow.svg
+  :reveal_background_size: 900px
+  :reveal_extra_attr: data-background-opacity="0.05"
+  :END:
+
+#+REVEAL_HTML: <div class="alert alert-info">
+*Accurate digital twinning* of GCs {{{to}}} *coupled simulations* + *HPDA*
+#+REVEAL_HTML: <hr/>
+- *models* for diverse /social/ and /physical/ phenomena (often multiscale)
+- *massive* /static/ and /streaming/ *data sets*
+#+REVEAL_HTML: </div>
+
+
+#+ATTR_HTML: :width 80%
+[[./figs/hidalgo_workflow.svg]]
+
+** HiDALGO Tools
+  :PROPERTIES:
+  :reveal_background: ./figs/hidalgo_workflow.svg
+  :reveal_background_size: 900px
+  :reveal_extra_attr: data-background-opacity="0.05"
+  :END:
+
+#+ATTR_HTML: :width 80%
+[[./figs/tools/hidalgo-tools.png]]
+
+# {{{begin_column(left,%100)}}}
+# *Technical Challenges*:
+# #+ATTR_REVEAL: :frag (appear)
+# - involve *external data sources* into the static simulations
+# - couple *across data centers*
+# {{{end_column}}}
+
+# ** High-Level Design
+# #+ATTR_HTML: :width 80%
+# [[./figs/HiDALGO-System-Workflow.svg]]
+
+* Services and portal
+  [[./figs/services/hidalgo-services.png]]
+
+** HiDALGO Services: Consultancy
+  :PROPERTIES:
+  :reveal_background: https://aace.org.uk/wp-content/uploads/2015/09/AACE-Commercial.jpg
+  :reveal_background: http://ssolution.ca/wp-content/uploads/2016/02/Consulting1.jpg
+  :reveal_background_size: 1500px
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+
+- Analyse problems
+- Analyse systems/codes
+- Propose solutions
+- Adapt modules
+- Customize final offering
+
+** HiDALGO Services: Training & Community
+  :PROPERTIES:
+  :reveal_extra_attr: data-background-iframe="https://moodle.hidalgo-project.eu" data-background-opacity="0.2" data-background-interactive
+  :reveal_background: https://www.hlrs.de/fileadmin/_processed_/c/4/csm_SAS_2019_5f57034438.jpg
+  :reveal_background_size: 1500px
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+{{{begin_column(left,%50)}}}
+  # # +REVEAL_HTML: <div class="figure" style="position: relative;width: 40%;float:left;">
+  # #+ATTR_HTML: :width 90%
+  # https://www.hlrs.de/fileadmin/_processed_/c/4/csm_SAS_2019_5f57034438.jpg
+  # # +REVEAL_HTML: </div>
+
+- Organize Workshops
+- [[https://www.hlrs.de/training/][On-Site]] Training Courses
+- [[https://moodle.hidalgo-project.eu][Online Courses]] (MOOCs)
+  - [[https://moodle.hidalgo-project.eu][Moodle]]
+{{{end_column}}}
+
+{{{begin_column(right,%50)}}}
+- Public Discussion Forums
+- Events
+- Yellow Pages
+- Matchmaking Tools
+{{{end_column}}}
+# https://support.hidalgo-project.eu/#ticket/zoom/1288
+ # ([[askbot.hidalgo-project.eu][Askbot]])
+
+** HiDALGO Services: Support
+  :PROPERTIES:
+  :reveal_extra_attr: data-background-iframe="https://support.hidalgo-project.eu/#ticket/zoom/1288" data-background-opacity="0.2" data-background-interactive
+  :reveal_background: ./figs/services/hidalgo-support.png
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.2"
+  :END:
+
+- Expert Support through
+  - ticketing systems: [[https://support.hidalgo-project.eu/][Zammad]]
+  - public forum: [[https://askbot.hidalgo-project.eu/][Askbot]]
+- Online Documentation
+
+** HiDALGO Services: Co-Design
+  :PROPERTIES:
+  :reveal_background: ./figs/use_cases/flee-scaling.png
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+#+REVEAL_HTML: <div style="display: flex;">
+#+REVEAL_HTML: <div style="flex: 1;">
+*Software-Software Co-Design*
+- Adapt the codes based on library capabilities
+- Adopt new features of SW libraries
+#+REVEAL_HTML: </div>
+
+#+REVEAL_HTML: <div style="flex: 1;">
+*Hardware-Software Co-Design*
+- Port codes to benefit from the new machines/architectures
+- Study HPC/HPDA tools on new machines/architectures
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: </div>
+
+** HiDALGO Services: Repositories
+  :PROPERTIES:
+  :reveal_extra_attr: data-background-iframe="https://hidalgo1.man.poznan.pl/dataset" data-background-opacity="0.2" data-background-interactive
+  :END:
+
+- Data for Global Challenges:
+  - massive datasets harvested from various sources ([[https://hidalgo1.man.poznan.pl/][CKAN]])
+- Efficient data transfer between infrastructure
+- Complementary data services:
+  - pre-visualization
+  - conversion
+
+** HiDALGO Services: Portal - Single Enrty Point
+  :PROPERTIES:
+  :reveal_extra_attr: data-background-iframe="https://portal.hidalgo-project.eu" data-background-opacity="0.2" data-background-interactive
+  :reveal_background: ./figs/services/hidalgo-portal.png
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.2"
+  :END:
+
+- *Market Place*
+- *Community Tools*: [[https://moodle.hidalgo-project.eu][Moodle]], Matchmaking, [[https://support.hidalgo-project.eu/][Zammad]], [[https://askbot.hidalgo-project.eu/][Askbot]]
+- *Job Submission Frontend*: [[https://cloudify.hidalgo-project.eu/][Cloudify-based]]
+- *Data Catalogue*: [[https://hidalgo1.man.poznan.pl/][CKAN]]
+- *Post-Processing Services*: [[https://visualization.hidalgo-project.eu/tutorial/overview.html][Visualization]], [[https://notebook.hidalgo-project.eu/][JupyterHub]]
+- *CI/CD Infrastructure*: [[https://hidalgo-jenkins.hlrs.de][Jenkins]]
+
+** Collaborating
+  :PROPERTIES:
+  :reveal_background: ./figs/services/hidalgo-collaboration.png
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.9"
+  :END:
+
+*https://hidalgo-project.eu/stakeholder-survey*
+
+{{{mailto(contact@hidalgo-project.eu,contact@hidalgo-project.eu)}}}
+
+* Thank you for your attention!
+  :PROPERTIES:
+  :reveal_background: ./hidalgo-style/hidalgo-logo.png
+  :reveal_background_size: 1400px
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+https://hidalgo-project.eu/consulting 
+
+{{{mailto(contact@hidalgo-project.eu,contact@hidalgo-project.eu)}}}
+
+{{{facebook(EU.Project.HiDALGO)}}}
+{{{twitter(EU_HiDALGO)}}}
+{{{researchgate(project/HiDALGO-HPC-and-Big-Data-Technologies-for-Global-Challenges)}}}
+
+https://hidalgo-project.eu/stakeholder-survey
+
+January 20
+#+REVEAL_HTML: <small>
+|---------------+---------------------------------+------------------------------------------------------------------------------|
+| 15:30 – 16:00 | *Derek Groen*, BUL, UK          | /Simulating the Spread of Covid-19 in Urban Areas/                           |
+| 16:10 – 16:40 | *Florian Ziemen*, DKRZ, DE      | /Preparing European Weather and Climate Models for Exascale/                 |
+| 16:40 – 17:10 | *Fabian Dembski*, CCGSS-BW, DE  | /Resilient Cities: Following the Path Towards Sustainable Development Goals/ |
+| 17:20 – 17:50 | *Christoph Schweimer*, KNOW, AT | /Route Pruning Algorithm for Location Graph Construction/                    |
+| 17:50 – 18:30 | *Lara López*, ATOS, ES          | *Round table*: /How can we solve Global Challenges through HPC/HPDA/AI?/     |
+|---------------+---------------------------------+------------------------------------------------------------------------------|
+#+REVEAL_HTML: </small>

@@ -1,0 +1,635 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Introduction to the Project HiDALGO and its Services</title>
+<meta name="author" content="Sergiy Gogolenko"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/css/theme/beige.css" id="theme"/>
+
+<link rel="stylesheet" href="./hidalgo-style/extra.css"/>
+
+<!-- If the query includes 'print-pdf', include the PDF print sheet -->
+<script>
+    if( window.location.search.match( /print-pdf/gi ) ) {
+        var link = document.createElement( 'link' );
+        link.rel = 'stylesheet';
+        link.type = 'text/css';
+        link.href = './reveal.js/css/print/pdf.css';
+        document.getElementsByTagName( 'head' )[0].appendChild( link );
+    }
+</script>
+</head>
+<body>
+<div class="header-x"><div class="left"><img src="./hidalgo-style/hidalgo-logo.png"><hr/></div><div class="center"><b>H</b>PC and B<b>i</b>g <b>Da</b>ta Techno<b>l</b>ogies for <b>G</b>l<b>o</b>bal Challenges</div><div class="right"><hr/></div></div> <div class="footer-x"><div class="left">2021-01-20</div><div class="center"><b>Sergiy Gogolenko</b><br><i><small>Introduction to the Project HiDALGO and its Services</small></i></div> <div class="right"><img src="./hidalgo-style/Flag_of_Europe.svg" alt="HiDALGO"><b>EU</b> <small>founded project</small><br><b>&aleph;824115</b><br><sup><sup><sup><sup><sup><sup><sup><b><code>@OITTTIO</code><b></sup></sup></sup></sup></sup></sup></sup></div></div>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide">
+<h1><br><small>Introduction to the Project HiDALGO and its Services<br><sup><sup></sup></sup></small></h1><h2><a href='mailto:<a href="mailto:gogolenko@hlrs.de">gogolenko@hlrs.de</a>'>Sergiy Gogolenko</a></h2><h4>High-Performance Computing Center, Stuttgart, DE</h4><h3>HiDALGO workshop <small><sup>@</sup></small> <b>HiPEAC</b>&compfn;2021-01-20</h3>
+</section>
+
+<section>
+<section id="slide-org98a752b" data-background="https://aer.eu/wp-content/uploads/2019/10/SDGs-Summit-article-cover-.png" data-background-opacity="0.25">
+<h2 id="org98a752b">Introduction</h2>
+</section>
+<section id="slide-org85dda68">
+<h3 id="org85dda68">Global Challenges: Media and Pop Culture</h3>
+<div class="image-stack-overlapped">
+  <a href="https://en.wikipedia.org/wiki/Frozen_Planet">
+    <img class="image1-overlapped" height="600" src="https://fanart.tv/fanart/tv/251418/tvposter/frozen-planet-536514f13374c.jpg">
+  </a>
+    <img class="image2-overlapped" height="600" src="https://upload.wikimedia.org/wikipedia/en/c/c6/Chasing_Ice_poster.jpg">
+  <a href="https://en.wikipedia.org/wiki/Human_Flow">
+    <img class="image1-overlapped" height="600" src="https://image.tmdb.org/t/p/original/qrGah3hibZspmdQmj3yeYwnc0mP.jpg"></a>
+  <a href="https://en.wikipedia.org/wiki/The_Social_Dilemma">
+    <img class="image1-overlapped" height="600" src="https://upload.wikimedia.org/wikipedia/en/2/27/Social_dilemma_xlg.jpg"></a>
+</div>
+
+</section>
+<section id="slide-org55e64d0" data-background-iframe="https://en.wikipedia.org/wiki/Climate_change_art" data-background-opacity="0.2" data-background-interactive>
+<h3 id="org55e64d0">Global Challenges: Art</h3>
+<div class="image-stack-overlapped">
+<a href="https://en.wikipedia.org/wiki/Frozen_Planet">
+<img class="image1-overlapped" height="600" src="https://upload.wikimedia.org/wikipedia/commons/4/45/Gabriele_Evertz_Double_1999-2000_Acrylic_on_Canvas.jpg">
+</a>
+<img class="image2-overlapped" height="600" src="http://images.mid-day.com/images/2017/mar/26James-Balog-1.jpg">
+</div>
+
+</section>
+<section id="slide-org429af99" data-background="./figs/partners.png" data-background-size="1000px" data-background-opacity="0.15">
+<h3 id="org429af99">CoE for Global Challenges</h3>
+<div class="column" style="float:left; width:%50">
+<ul>
+<li><b>Consortium</b>:
+<ul>
+<li><i>13</i> partners</li>
+<li><i>7</i> countries</li>
+
+</ul></li>
+<li>coordination: <i>ATOS</i></li>
+<li>TM: <i>HLRS</i> (DE)</li>
+<li><b>Runtime</b>
+<ul>
+<li>duration: <i>36M</i></li>
+<li>start: <i>Dec 2018</i></li>
+
+</ul></li>
+<li><b>Fund</b>:
+<ul>
+<li>EU Horizon 2020</li>
+<li>&euro;7'991'500.00</li>
+
+</ul></li>
+
+</ul>
+</div>
+
+<div class="column" style="float:right; width:%50">
+<div class="figure" style="position: relative;width: 90%;float:right;">
+
+<div class="figure">
+<p><img src="./figs/partners.png" alt="partners.png" width="100%" />
+</p>
+</div>
+</div>
+</div>
+
+</section>
+<section id="slide-orgdc06593" data-background="https://apolitical.co/wp-content/uploads/2018/12/Screen-Shot-2018-12-04-at-13.55.24.png" data-background-size="900px" data-background-opacity="0.15">
+<h3 id="orgdc06593">HiDALGO Motivation and Main Objectives</h3>
+<div class="alert alert-info">
+<p>
+<b>Goal</b>: evidence based <span class="underline"><i>policy-making</i></span> for current and upcoming situations via accurate <i>GC simulations</i>
+</p>
+</div>
+
+
+<div class="alert alert-info">
+<p>
+<b>High Level Ambition &amp; Project Targets</b>
+</p>
+<hr/>
+<ul>
+<li data-fragment-index="1" class="fragment appear">Benefit from the <i><span class="underline">synergies</span></i> between HPC, HPDA, AI, and GCs
+<ul>
+<li>baseline for HPC, HPDA, and AI in the domain of GCs</li>
+<li>focus on highly accurate models</li>
+
+</ul></li>
+<li data-fragment-index="2" class="fragment appear">Provide a <i><span class="underline">single entry point</span></i> for decision makers (and other entities)
+<ul>
+<li>a multi-domain portal for the GC community</li>
+
+</ul></li>
+<li data-fragment-index="3" class="fragment appear"><i><span class="underline">Connect</span> &amp; <span class="underline">train</span></i> the different communities</li>
+
+</ul>
+
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org67c07f6" data-background="./figs/global-challenges.png" data-background-size="1000px" data-background-opacity="0.25">
+<h2 id="org67c07f6">Use Cases</h2>
+</section>
+<section id="slide-org4ce84d7" data-background="https://flytoy.pl/pol_pl_Homo-Deus-A-Brief-History-of-Tomorrow-ENG-3223_1.jpg" data-background-size="1000px" data-background-opacity="0.25">
+<h3 id="org4ce84d7">What challenges to choose?</h3>
+<small>
+<blockquote>
+<p>
+For the first time in history, more people die today from eating too much than from eating too little;
+more people die from old age than from infectious diseases;
+and more people commit suicide than are killed by soldiers, terrorists and criminals combined.
+</p>
+
+<p>
+&#x2014; <b>Yuval Harari</b> "<a href="https://en.wikipedia.org/wiki/Homo_Deus:_A_Brief_History_of_Tomorrow">Homo Deus: A Brief History of Tomorrow</a>"
+</p>
+</blockquote>
+</small>
+
+<div class="alert alert-info">
+<p>
+Top news of the last months:
+</p>
+<hr/>
+<ul>
+<li data-fragment-index="1" class="fragment appear">pandemic: <a href="https://en.wikipedia.org/wiki/COVID-19_pandemic">COVID-19</a></li>
+<li data-fragment-index="2" class="fragment appear">armed conflict: <a href="https://en.wikipedia.org/wiki/Tigray_War">Ethiopia's Tigray crisis</a></li>
+<li data-fragment-index="3" class="fragment appear">social media: <a href="https://en.wikipedia.org/wiki/2021_storming_of_the_United_States_Capitol">storming of the US Capitol</a></li>
+
+</ul>
+
+</div>
+
+<aside class="notes">
+<p>
+Some claim that famine, plague, and war are essentially problems of the former centuries
+and we need to look in the future.
+</p>
+
+</aside>
+
+</section>
+<section id="slide-orgfe2a6e6" data-background="https://d15l9woddkztht.cloudfront.net/logos/unhcr-united-nations-high-commissioner-for-refugees.svg" data-background-size="1400px" data-background-opacity="0.2">
+<h3 id="orgfe2a6e6">Refugee and human migration simulation</h3>
+<div class="alert alert-info">
+<ul>
+<li>develop realistic models for simulating refugee streams</li>
+<li>complete data collection on refugee movements</li>
+<li>investigate the consequences of a nation closing its borders</li>
+
+</ul>
+</div>
+
+<div class="column" style="float:left; width:%50">
+<ul>
+<li><b>HPC in migration use case</b>:
+<ul>
+<li>expensive simulations</li>
+<li>ensemble runs</li>
+
+</ul></li>
+<li><b>HPDA in migration use case</b>:
+<ul>
+<li>process GIS data</li>
+<li>analyse weather/climate data</li>
+<li>post-process results</li>
+<li>synthetic data</li>
+
+</ul></li>
+<li><b>Usage</b>: Burundi, CAR, <span class="underline">S.Sudan</span>, Mali</li>
+
+</ul>
+</div>
+
+<div class="column" style="float:right; position:absolute; width:%50">
+<div class="figure" style="position: relative;width: 50%;float:right;">
+
+<div class="figure">
+<p><img src="./figs/use_cases/south_sudan_migration.png" alt="south_sudan_migration.png" width="100%" />
+</p>
+</div>
+</div>
+</div>
+
+</section>
+<section id="slide-org6cff07c" data-background="https://upload.wikimedia.org/wikipedia/commons/8/82/SARS-CoV-2_without_background.png" data-background-size="1000px" data-background-opacity="0.2">
+<h3 id="org6cff07c">COVID and Flu spread simulation</h3>
+<div class="alert alert-info">
+<ul>
+<li>simulate epidemics spread across the <i>local</i> area</li>
+<li>determine people infected, ICU occupation, etc.</li>
+<li>investigate the effects of applying certain policies (i.e., curfews)</li>
+
+</ul>
+</div>
+
+<div class="column" style="float:left; position:absolute; width:%50">
+<div class="figure" style="position: relative;width: 80%;float:left;">
+
+<div class="figure">
+<p><img src="./figs/use_cases/facs-relults.png" alt="facs-relults.png" width="100%" />
+</p>
+</div>
+</div>
+</div>
+
+<div class="column" style="float:right; width:%50">
+<ul>
+<li><b>HPC in epidemiology use case</b>:
+<ul>
+<li>expensive simulations</li>
+<li>ensemble runs</li>
+
+</ul></li>
+<li><b>HPDA in epidemiology use case</b>:
+<ul>
+<li>pre-process GIS inputs</li>
+<li>post-process results</li>
+<li>analyse weather/climate data</li>
+<li>synthetic inputs</li>
+
+</ul></li>
+<li><b>Usage</b>: London, Madrid</li>
+
+</ul>
+</div>
+
+</section>
+<section id="slide-orgf61dfaa" data-background="./figs/uap_gyor.png" data-background-size="1500px" data-background-opacity="0.1">
+<h3 id="orgf61dfaa">Urban air pollution simulation</h3>
+<div class="alert alert-info">
+
+<ul>
+<li>simulate pollution in cities based on real-world sensor data</li>
+<li>couple models for traffic, air flow, and weather simulation</li>
+<li>design evidence-based decision models to leverage green growth</li>
+
+</ul>
+</div>
+
+<div class="column" style="float:left; position:absolute; width:%50">
+<div class="figure" style="position: relative;width: 80%;float:left;">
+
+<div class="figure">
+<p><img src="./figs/uap_gyor.png" alt="uap_gyor.png" width="100%" />
+</p>
+</div>
+</div>
+</div>
+
+<div class="column" style="float:right; width:%50">
+<ul>
+<li><b>HPC in UAP use case</b>:
+<ul>
+<li>expensive simulations</li>
+<li>ensemble runs</li>
+
+</ul></li>
+<li><p>
+<b>HPDA in UAP use case</b>:
+</p>
+<ul>
+<li>impute the missing data</li>
+
+</ul>
+
+<ul>
+<li>reduce models</li>
+<li>post-process results</li>
+
+</ul></li>
+
+</ul>
+
+</div>
+
+</section>
+<section id="slide-orgdec27b7" data-background="./figs/globe-network.jpg" data-background-opacity="0.1">
+<h3 id="orgdec27b7">Social network analysis</h3>
+<div class="alert alert-info">
+
+<ul>
+<li>analyze the structure of social networks</li>
+<li>analyze the stochastic behavior of the message spreading</li>
+<li>simulate the spread of messages among users</li>
+<li>study the spread of 'Fake News' and develop countermeasures</li>
+
+</ul>
+
+</div>
+
+<div class="column" style="float:left; position:absolute; width:%50">
+<div class="figure" style="position: relative;width: 80%;float:left;">
+
+<div class="figure">
+<p><img src="./figs/use_cases/sna-clustering.png" alt="sna-clustering.png" width="100%" />
+</p>
+</div>
+</div>
+</div>
+
+<div class="column" style="float:right; width:%50">
+<ul>
+<li><b>HPC in SNA use case</b>:
+<ul>
+<li>expensive network analytics</li>
+<li>ensemble runs</li>
+
+</ul></li>
+<li><b>HPDA in SNA use case</b>:
+<ul>
+<li>features extraction</li>
+<li>retweet probabilities</li>
+<li>post-process results</li>
+
+</ul></li>
+
+</ul>
+</div>
+
+</section>
+<section id="slide-org329d901" data-background="./figs/hidalgo_workflow.svg" data-background-size="900px" data-background-opacity="0.05">
+<h3 id="org329d901">HiDALGO Approach and Generalized Workflow</h3>
+<div class="alert alert-info">
+<p>
+<b>Accurate digital twinning</b> of GCs <font color="#2d5986">&#10562;</font> <b>coupled simulations</b> + <b>HPDA</b>
+</p>
+<hr/>
+<ul>
+<li><b>models</b> for diverse <i>social</i> and <i>physical</i> phenomena (often multiscale)</li>
+<li><b>massive</b> <i>static</i> and <i>streaming</i> <b>data sets</b></li>
+
+</ul>
+</div>
+
+
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figs/hidalgo_workflow.svg" class="org-svg" width="80%">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section id="slide-org5fcd151" data-background="./figs/hidalgo_workflow.svg" data-background-size="900px" data-background-opacity="0.05">
+<h3 id="org5fcd151">HiDALGO Tools</h3>
+
+<div class="figure">
+<p><img src="./figs/tools/hidalgo-tools.png" alt="hidalgo-tools.png" width="80%" />
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org328ca6f">
+<h2 id="org328ca6f">Services and portal</h2>
+
+<div class="figure">
+<p><img src="./figs/services/hidalgo-services.png" alt="hidalgo-services.png" />
+</p>
+</div>
+
+</section>
+<section id="slide-org92c7491" data-background="http://ssolution.ca/wp-content/uploads/2016/02/Consulting1.jpg" data-background-size="1500px" data-background-opacity="0.25">
+<h3 id="org92c7491">HiDALGO Services: Consultancy</h3>
+<ul>
+<li>Analyse problems</li>
+<li>Analyse systems/codes</li>
+<li>Propose solutions</li>
+<li>Adapt modules</li>
+<li>Customize final offering</li>
+
+</ul>
+
+</section>
+<section id="slide-org4bf8508" data-background="https://www.hlrs.de/fileadmin/_processed_/c/4/csm_SAS_2019_5f57034438.jpg" data-background-size="1500px" data-background-opacity="0.25">
+<h3 id="org4bf8508">HiDALGO Services: Training &amp; Community</h3>
+<div class="column" style="float:left; width:%50">
+
+<ul>
+<li>Organize Workshops</li>
+<li><a href="https://www.hlrs.de/training/">On-Site</a> Training Courses</li>
+<li><a href="https://moodle.hidalgo-project.eu">Online Courses</a> (MOOCs)
+<ul>
+<li><a href="https://moodle.hidalgo-project.eu">Moodle</a></li>
+
+</ul></li>
+
+</ul>
+</div>
+
+<div class="column" style="float:right; width:%50">
+<ul>
+<li>Public Discussion Forums</li>
+<li>Events</li>
+<li>Yellow Pages</li>
+<li>Matchmaking Tools</li>
+
+</ul>
+</div>
+
+</section>
+<section id="slide-org1ebeb6b" data-background="./figs/services/hidalgo-support.png" data-background-size="1400px" data-background-opacity="0.2">
+<h3 id="org1ebeb6b">HiDALGO Services: Support</h3>
+<ul>
+<li>Expert Support through
+<ul>
+<li>ticketing systems: <a href="https://support.hidalgo-project.eu/">Zammad</a></li>
+<li>public forum: <a href="https://askbot.hidalgo-project.eu/">Askbot</a></li>
+
+</ul></li>
+<li>Online Documentation</li>
+
+</ul>
+
+</section>
+<section id="slide-org06a8db6" data-background="./figs/use_cases/flee-scaling.png" data-background-size="1400px" data-background-opacity="0.25">
+<h3 id="org06a8db6">HiDALGO Services: Co-Design</h3>
+<div style="display: flex;">
+<div style="flex: 1;">
+<p>
+<b>Software-Software Co-Design</b>
+</p>
+<ul>
+<li>Adapt the codes based on library capabilities</li>
+<li>Adopt new features of SW libraries</li>
+
+</ul>
+</div>
+
+<div style="flex: 1;">
+<p>
+<b>Hardware-Software Co-Design</b>
+</p>
+<ul>
+<li>Port codes to benefit from the new machines/architectures</li>
+<li>Study HPC/HPDA tools on new machines/architectures</li>
+
+</ul>
+</div>
+</div>
+
+</section>
+<section id="slide-org9d5bb1e" data-background-iframe="https://hidalgo1.man.poznan.pl/dataset" data-background-opacity="0.2" data-background-interactive>
+<h3 id="org9d5bb1e">HiDALGO Services: Repositories</h3>
+<ul>
+<li>Data for Global Challenges:
+<ul>
+<li>massive datasets harvested from various sources (<a href="https://hidalgo1.man.poznan.pl/">CKAN</a>)</li>
+
+</ul></li>
+<li>Efficient data transfer between infrastructure</li>
+<li>Complementary data services:
+<ul>
+<li>pre-visualization</li>
+<li>conversion</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org6fd667e" data-background="./figs/services/hidalgo-portal.png" data-background-size="1400px" data-background-opacity="0.2">
+<h3 id="org6fd667e">HiDALGO Services: Portal - Single Enrty Point</h3>
+<ul>
+<li><b>Market Place</b></li>
+<li><b>Community Tools</b>: <a href="https://moodle.hidalgo-project.eu">Moodle</a>, Matchmaking, <a href="https://support.hidalgo-project.eu/">Zammad</a>, <a href="https://askbot.hidalgo-project.eu/">Askbot</a></li>
+<li><b>Job Submission Frontend</b>: <a href="https://cloudify.hidalgo-project.eu/">Cloudify-based</a></li>
+<li><b>Data Catalogue</b>: <a href="https://hidalgo1.man.poznan.pl/">CKAN</a></li>
+<li><b>Post-Processing Services</b>: <a href="https://visualization.hidalgo-project.eu/tutorial/overview.html">Visualization</a>, <a href="https://notebook.hidalgo-project.eu/">JupyterHub</a></li>
+<li><b>CI/CD Infrastructure</b>: <a href="https://hidalgo-jenkins.hlrs.de">Jenkins</a></li>
+
+</ul>
+
+</section>
+<section id="slide-orgb77a53e" data-background="./figs/services/hidalgo-collaboration.png" data-background-size="1400px" data-background-opacity="0.9">
+<h3 id="orgb77a53e">Collaborating</h3>
+<p>
+<b><a href="https://hidalgo-project.eu/stakeholder-survey">https://hidalgo-project.eu/stakeholder-survey</a></b>
+</p>
+
+<p>
+<a href='mailto:contact@hidalgo-project.eu'>contact@hidalgo-project.eu</a>
+</p>
+
+</section>
+</section>
+<section>
+<section id="slide-orgf86354d" data-background="./hidalgo-style/hidalgo-logo.png" data-background-size="1400px" data-background-opacity="0.25">
+<h2 id="orgf86354d">Thank you for your attention!</h2>
+<p>
+<a href="https://hidalgo-project.eu/consulting">https://hidalgo-project.eu/consulting</a> 
+</p>
+
+<p>
+<a href='mailto:contact@hidalgo-project.eu'>contact@hidalgo-project.eu</a>
+</p>
+
+<p>
+<a href='https://www.facebook.com/EU.Project.HiDALGO'><img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" style="height:1.5em; border-radius: 50%;border: 0px solid blue;" /></a>
+<a href='https://twitter.com/EU_HiDALGO'><img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Twitter_Logo.png" style="height:1.5em; border-radius: 50%;border: 0px solid blue;" /></a>
+<a href='https://www.researchgate.net/project/HiDALGO-HPC-and-Big-Data-Technologies-for-Global-Challenges'><img src="https://user-images.githubusercontent.com/511683/28757557-f82cff1a-7585-11e7-9317-072a838dcca3.png" style="height:1.5em; border-radius: 50%;border: 0px solid green;" /></a>
+</p>
+
+<p>
+<a href="https://hidalgo-project.eu/stakeholder-survey">https://hidalgo-project.eu/stakeholder-survey</a>
+</p>
+
+<p>
+January 20
+</p>
+<small>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left">15:30 – 16:00</td>
+<td class="org-left"><b>Derek Groen</b>, BUL, UK</td>
+<td class="org-left"><i>Simulating the Spread of Covid-19 in Urban Areas</i></td>
+</tr>
+
+<tr>
+<td class="org-left">16:10 – 16:40</td>
+<td class="org-left"><b>Florian Ziemen</b>, DKRZ, DE</td>
+<td class="org-left"><i>Preparing European Weather and Climate Models for Exascale</i></td>
+</tr>
+
+<tr>
+<td class="org-left">16:40 – 17:10</td>
+<td class="org-left"><b>Fabian Dembski</b>, CCGSS-BW, DE</td>
+<td class="org-left"><i>Resilient Cities: Following the Path Towards Sustainable Development Goals</i></td>
+</tr>
+
+<tr>
+<td class="org-left">17:20 – 17:50</td>
+<td class="org-left"><b>Christoph Schweimer</b>, KNOW, AT</td>
+<td class="org-left"><i>Route Pruning Algorithm for Location Graph Construction</i></td>
+</tr>
+
+<tr>
+<td class="org-left">17:50 – 18:30</td>
+<td class="org-left"><b>Lara López</b>, ATOS, ES</td>
+<td class="org-left"><b>Round table</b>: <i>How can we solve Global Challenges through HPC/HPDA/AI?</i></td>
+</tr>
+</tbody>
+</table>
+</small>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/lib/js/head.min.js"></script>
+<script src="./reveal.js/js/reveal.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+
+overview: true,
+width: 1400,
+height: 1000,
+
+theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
+transition: Reveal.getQueryHash().transition || 'convex', // see README of reveal.js for options
+transitionSpeed: 'default',
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+ { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
+ { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } },
+ { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }]
+
+});
+</script>
+</body>
+</html>

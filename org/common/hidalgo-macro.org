@@ -11,6 +11,11 @@
 
 #+INCLUDE: ./generic-macro.org
 
+#+MACRO: to @@html:<font color="#2d5986">&#10562;</font>@@
+#+MACRO: to_cyclic @@html:<font color="#2d5986">&#10562;</font>@@
+#+MACRO: cyclic @@html:<font color="#2d5986">&LeftArrowRightArrow;</font>@@
+#+MACRO: acyclic @@html:<font color="#2d5986">&RightTeeArrow;</font>@@
+
 #+MACRO: researchgate @@html:<a href='https://www.researchgate.net/$1'><img src="https://user-images.githubusercontent.com/511683/28757557-f82cff1a-7585-11e7-9317-072a838dcca3.png" style="height:1.5em; border-radius: 50%;border: 0px solid green;" /></a>@@ 
 #+MACRO: facebook @@html:<a href='https://www.facebook.com/$1'><img src="https://upload.wikimedia.org/wikipedia/commons/c/cd/Facebook_logo_%28square%29.png" style="height:1.5em; border-radius: 50%;border: 0px solid blue;" /></a>@@ 
 #+MACRO: twitter @@html:<a href='https://twitter.com/$1'><img src="https://upload.wikimedia.org/wikipedia/commons/c/ce/Twitter_Logo.png" style="height:1.5em; border-radius: 50%;border: 0px solid blue;" /></a>@@ 

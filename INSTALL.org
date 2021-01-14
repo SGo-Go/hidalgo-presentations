@@ -7,7 +7,9 @@
   git clone https://sgo-go@github.com/SGo-Go/hidalgo-presentations.git && cd ./hidalgo-presentations/
   git submodule add https://github.com/hakimel/reveal.js.git
   cd ./reveal.js && git checkout tags/3.9.2 && cd ..
+  git add reveal.js
 #+END_SRC
+- commit to a branch called gh-pages
 
 * Compilation
 #+BEGIN_SRC sh
