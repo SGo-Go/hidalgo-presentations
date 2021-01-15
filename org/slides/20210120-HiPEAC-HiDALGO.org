@@ -4,7 +4,6 @@
 #+TITLE: Introduction to the Project HiDALGO and its Services
 #+AUTHOR: Sergiy Gogolenko 
 #+REVEAL_ACADEMIC_TITLE: High-Performance Computing Center, Stuttgart, DE
-# HiDALGO consortium
 #+EMAIL: gogolenko@hlrs.de
 #+CREATOR: HiDALGO workshop <small><sup>@</sup></small> <b>HiPEAC</b>
 #+DATE: 2021-01-20
@@ -17,6 +16,14 @@
   :reveal_background: https://aer.eu/wp-content/uploads/2019/10/SDGs-Summit-article-cover-.png
   :reveal_extra_attr: data-background-opacity="0.25"
   :END:
+#+BEGIN_NOTES
+Helo everyone.
+Welcome to the HiDALGO workshop.
+In its introductory talk I will briefly introduce you to the HiDALGO project and its services.
+
+Global challenges gain a solid attention from the society.
+They are broadly discussed in the media. 
+#+END_NOTES
 ** Global Challenges: Media and Pop Culture
 
 # <img height="600" src="https://m.media-amazon.com/images/M/MV5BNDVhMGNhYjEtMDkwZi00NmQ5LWFkODktYzhiYjY2NTZmYTNhXkEyXkFqcGdeQXVyMTkxNjUyNQ@@._V1_.jpg">
@@ -33,11 +40,17 @@
 </div>
 #+END_EXPORT
 
-# https://en.wikipedia.org/wiki/The_Social_Dilemma
-# https://en.wikipedia.org/wiki/Chasing_Ice
-# https://en.wikipedia.org/wiki/Citizenfour
-# https://en.wikipedia.org/wiki/Human_Flow
-# https://en.wikipedia.org/wiki/European_migrant_crisis
+#+BEGIN_NOTES
+Almost daily we hear about wars, pandemics, climate change and other troubles 
+from the TV, newspapers, Twitter, FB and so on.
+We even have Netflix documentaries about global challenges -- 
+the Netflix which usually should entertain us.
+- https://en.wikipedia.org/wiki/The_Social_Dilemma
+- https://en.wikipedia.org/wiki/Chasing_Ice
+- https://en.wikipedia.org/wiki/Citizenfour
+- https://en.wikipedia.org/wiki/Human_Flow
+- https://en.wikipedia.org/wiki/European_migrant_crisis
+#+END_NOTES
 
 ** Global Challenges: Art
   :PROPERTIES:
@@ -53,10 +66,14 @@
 </div>
 #+END_EXPORT
 
-# https://phys.org/news/2017-03-captures-world-glacier-decade.html
-# https://i.dailymail.co.uk/1/2017/03/25/06/wire-280249-1490423005-598_634x422.jpg
-# https://scx1.b-cdn.net/csz/news/800/2017/peopleattend.jpg
-# https://scx1.b-cdn.net/csz/news/800/2017/aboytoucheso.jpg
+#+BEGIN_NOTES
+Moreover, we have new directions in conceptual art
+dedicated to global challenges like, for example, climate change art.
+- https://phys.org/news/2017-03-captures-world-glacier-decade.html
+- https://i.dailymail.co.uk/1/2017/03/25/06/wire-280249-1490423005-598_634x422.jpg
+- https://scx1.b-cdn.net/csz/news/800/2017/peopleattend.jpg
+- https://scx1.b-cdn.net/csz/news/800/2017/aboytoucheso.jpg
+#+END_NOTES
 
 ** CoE for Global Challenges
   :PROPERTIES:
@@ -85,7 +102,13 @@
   [[./figs/partners.png]]
   #+REVEAL_HTML: </div>
 {{{end_column}}}
-
+#+BEGIN_NOTES
+HiDALGO project was established in order to address this solid demand in the society
+to know more about global challenges and how to deal with them efficiently.
+We are an EU funded project which brings together GSS and HPC experts
+from 13 partner institutions out of 7 countries.
+The work is coordinated by ATOS Spain and we are in the 3rd year of the project.
+#+END_NOTES
 ** HiDALGO Motivation and Main Objectives
   :PROPERTIES:
   :reveal_background: ./figs/policy-making.png
@@ -97,7 +120,6 @@
 #+REVEAL_HTML: <div class="alert alert-info">
 *Goal*: evidence based _/policy-making/_ for current and upcoming situations via accurate /GC simulations/
 #+REVEAL_HTML: </div>
-
 
 #+REVEAL_HTML: <div class="alert alert-info">
 *High Level Ambition & Project Targets*
@@ -112,21 +134,21 @@
 # - Provide a /single entry point/ for decision makers (& other relevant entities) in the GC ecosystem
 #+REVEAL_HTML: </div>
 
-# *Project Targets*
-# - Establish the baseline for HPC, HPDA and AI oriented computing in the domain of GCs
-#   - Advance state-of-the-art mechanisms for data analytics
-#   - Develop an AI-based integrated simulation workflow
-# - Focus on highly accurate models & significantly improved simulation results
-#   - Build-up coupled simulations for highly complex phenomena
-#   - Integrate real-world data in static simulations
-# - Enhance and advertise a multi-domain portal for the GC community
-
+#+BEGIN_NOTES
+Essentially the goal of the project is to target computer-aided
+evidence based policy-making for current and upcoming situations via accurate simulation of GCs.
+The project focuses on 3 main objectives...
+#+END_NOTES
 * Use Cases
   :PROPERTIES:
-  :reveal_background: ./figs/global-challenges.png
+  :reveal_background: ./figs/use_cases/global-challenges.png
   :reveal_background_size: 1000px
   :reveal_extra_attr: data-background-opacity="0.25"
   :END:
+#+BEGIN_NOTES
+At the moment there are many global challenges in the world.
+Now the question is how to select the right case studies?
+#+END_NOTES
 ** What challenges to choose?
   :PROPERTIES:
   :reveal_background: https://flytoy.pl/pol_pl_Homo-Deus-A-Brief-History-of-Tomorrow-ENG-3223_1.jpg
@@ -145,7 +167,7 @@ and more people commit suicide than are killed by soldiers, terrorists and crimi
 #+REVEAL_HTML: </small>
 
 #+REVEAL_HTML: <div class="alert alert-info">
-Top news of the last months:
+Top news of the last months (dominate in media):
 #+REVEAL_HTML: <hr/>
 #+ATTR_REVEAL: :frag (appear appear appear) :frag_idx (1 2 3)
 - pandemic: [[https://en.wikipedia.org/wiki/COVID-19_pandemic][COVID-19]] 
@@ -155,8 +177,12 @@ Top news of the last months:
 #+REVEAL_HTML: </div>
 
 #+BEGIN_NOTES
-Some claim that famine, plague, and war are essentially problems of the former centuries
-and we need to look in the future.
+Some thinkers tend to reason that famine, plagues, and wars are essentially problems of the former centuries
+and humanity must look on the challenges of the like future happiness, immortality or God-like powers.
+In HiDALGO we have a more conservative view.
+If we take a look on the news that dominate in the media over the last months,
+we will see pandemics and wars, besides other topics.
+So these constitute use cases for our research.
 #+END_NOTES
 
 ** Refugee and human migration simulation
@@ -177,11 +203,12 @@ and we need to look in the future.
   - expensive simulations
   - ensemble runs
 - *HPDA in migration use case*:
-  - process GIS data
+  #+ATTR_REVEAL: :frag (grow none none none) :frag_idx (1 - - -)
+  - pre-process *GIS* data
   - analyse weather/climate data
   - post-process results
   - synthetic data
-- *Usage*: Burundi, CAR, _S.Sudan_, Mali
+- *Usage*: CAR, S.Sudan, Mali, Ethiopia
 {{{end_column}}}
 # - ensemble runs (test policies for many scenarios, VVUQ)
 
@@ -192,6 +219,11 @@ and we need to look in the future.
   #+REVEAL_HTML: </div>
 {{{end_column}}}
 
+#+BEGIN_NOTES
+HPC and HPDA is used for different purposes in this use case.
+In particular, we use HPDA to pre-process geo-spacial information.
+Later on today, we will have a talk of Christoph Schwimmer this this topic.
+#+END_NOTES
 ** COVID and Flu spread simulation
   :PROPERTIES:
   :reveal_background: https://upload.wikimedia.org/wikipedia/commons/8/82/SARS-CoV-2_without_background.png
@@ -223,8 +255,10 @@ and we need to look in the future.
   - synthetic inputs
 - *Usage*: London, Madrid
 {{{end_column}}}
-# - ensemble runs (test policies for many scenarios, VVUQ)
-
+#+BEGIN_NOTES
+There's a lot of hype around infection spread simulation these days and it is one our use cases.
+Derek Groen will present synopsis of our results in this direction right after my talk.
+#+END_NOTES
 ** Urban air pollution simulation
   :PROPERTIES:
   :reveal_background: ./figs/uap_gyor.png
@@ -255,14 +289,14 @@ and we need to look in the future.
   # - impute the missing data from sensors
   - reduce models
   - post-process results
-# - *Usage*: twins for _Györ_ (HG), Stuttgart (DE), Graz (AT), Milwaukee (US)
+- *Usage*: Györ, Graz, Milwaukee
 {{{end_column}}}
 
 ** Social network analysis
   :PROPERTIES:
-  :reveal_background: ./figs/network.svg
-  :reveal_background: ./figs/globe-network.jpg
-  :reveal_extra_attr: data-background-opacity="0.1"
+  :reveal_background: https://blog.eonetwork.org/wp-content/uploads/2018/07/iStock-481683826_resize-1024x915.jpg
+  :reveal_background: ./figs/use_cases/sna-clustering.png
+  :reveal_extra_attr: data-background-opacity="0.25"
   :END:
 
 #+REVEAL_HTML: <div class="alert alert-info">
@@ -289,6 +323,7 @@ and we need to look in the future.
   - features extraction
   - retweet probabilities
   - post-process results
+- *Usage*: COVID-19 Tweets
 {{{end_column}}}
 
 ** HiDALGO Approach and Generalized Workflow
@@ -305,10 +340,19 @@ and we need to look in the future.
 - *massive* /static/ and /streaming/ *data sets*
 #+REVEAL_HTML: </div>
 
-
 #+ATTR_HTML: :width 80%
 [[./figs/hidalgo_workflow.svg]]
 
+#+BEGIN_NOTES
+HiDALGO approaches policy-making via accurate digital twinning of GCs. 
+Accurate digital twins for GCs inevitably
+involve models for diverse social and physical phenomena
+and consume massive sets of static and streaming data.
+The generalized HiDALGO workflow is demonstrated on this slide.
+Such simulation-centric approach gives rise to a number of research topics related to 
+coupling of models and data sources -- including coupling across data centers --
+and to design of HPDA methods.
+#+END_NOTES
 ** HiDALGO Tools
   :PROPERTIES:
   :reveal_background: ./figs/hidalgo_workflow.svg
@@ -319,20 +363,23 @@ and we need to look in the future.
 #+ATTR_HTML: :width 80%
 [[./figs/tools/hidalgo-tools.png]]
 
-# {{{begin_column(left,%100)}}}
-# *Technical Challenges*:
-# #+ATTR_REVEAL: :frag (appear)
-# - involve *external data sources* into the static simulations
-# - couple *across data centers*
-# {{{end_column}}}
-
-# ** High-Level Design
-# #+ATTR_HTML: :width 80%
-# [[./figs/HiDALGO-System-Workflow.svg]]
-
+#+BEGIN_NOTES
+In order to implement this approach, we use, develop, and promote a bunch of software tools.
+You can see some on them listed on this slide.
+In the domain of simulation we use ABMS and CFD frameworks,
+as well as specific linear algebra packages,
+some of which are developed by our researchers.
+In the domain of DA, we primarily rely on the well established frameworks like Dask and Spark.
+For visualization, we use our developments -- Covise and Visualizer --
+capable of tackling massive datasets and providing immersive visualization features.
+Finally, for orchestrating complicated coupled simulation workflows, we use tools like Cloudify and FabSim.
+#+END_NOTES
 * Services and portal
   [[./figs/services/hidalgo-services.png]]
-
+#+BEGIN_NOTES
+HiDALGO provides a bunch of services listed on this slid.
+In the next slides I will quickly go through them.
+#+END_NOTES
 ** HiDALGO Services: Consultancy
   :PROPERTIES:
   :reveal_background: https://aace.org.uk/wp-content/uploads/2015/09/AACE-Commercial.jpg
@@ -341,13 +388,22 @@ and we need to look in the future.
   :reveal_extra_attr: data-background-opacity="0.25"
   :END:
 
-
 - Analyse problems
 - Analyse systems/codes
 - Propose solutions
 - Adapt modules
 - Customize final offering
 
+#+BEGIN_NOTES
+We organize workshops like the one you are present today,
+prepare on-site trainings --
+you can see photo from one of such in the background to this slide.
+Finally, we deployed several on-line courser on our Moodle platform.
+In addition, we support community by 
+yellow pages, matchmaking tools,
+contributing to public discussion forums,
+participating in different events.
+#+END_NOTES
 ** HiDALGO Services: Training & Community
   :PROPERTIES:
   :reveal_extra_attr: data-background-iframe="https://moodle.hidalgo-project.eu" data-background-opacity="0.2" data-background-interactive
@@ -357,10 +413,6 @@ and we need to look in the future.
   :END:
 
 {{{begin_column(left,%50)}}}
-  # # +REVEAL_HTML: <div class="figure" style="position: relative;width: 40%;float:left;">
-  # #+ATTR_HTML: :width 90%
-  # https://www.hlrs.de/fileadmin/_processed_/c/4/csm_SAS_2019_5f57034438.jpg
-  # # +REVEAL_HTML: </div>
 
 - Organize Workshops
 - [[https://www.hlrs.de/training/][On-Site]] Training Courses
@@ -374,9 +426,16 @@ and we need to look in the future.
 - Yellow Pages
 - Matchmaking Tools
 {{{end_column}}}
-# https://support.hidalgo-project.eu/#ticket/zoom/1288
- # ([[askbot.hidalgo-project.eu][Askbot]])
 
+#+BEGIN_NOTES
+We organize workshops like the one you are present today,
+prepare on-site trainings -- you can see photo from one of such in the background to this slide.
+Finally, we deployed several on-line courser on our Moodle platform.
+In addition, we support community by 
+yellow pages, matchmaking tools,
+contributing to public discussion forums,
+participating in different events.
+#+END_NOTES
 ** HiDALGO Services: Support
   :PROPERTIES:
   :reveal_extra_attr: data-background-iframe="https://support.hidalgo-project.eu/#ticket/zoom/1288" data-background-opacity="0.2" data-background-interactive
@@ -390,6 +449,9 @@ and we need to look in the future.
   - public forum: [[https://askbot.hidalgo-project.eu/][Askbot]]
 - Online Documentation
 
+#+BEGIN_NOTES
+Hidalgo provides experts support through Zammad-based ticketing systems and Askbot-based public forum.
+#+END_NOTES
 ** HiDALGO Services: Co-Design
   :PROPERTIES:
   :reveal_background: ./figs/use_cases/flee-scaling.png
@@ -411,19 +473,28 @@ and we need to look in the future.
 #+REVEAL_HTML: </div>
 #+REVEAL_HTML: </div>
 
+#+BEGIN_NOTES
+Co-design plays a special role in our project.
+We work in both directions -- SW/SW and HW/SW co-design.
+#+END_NOTES
 ** HiDALGO Services: Repositories
   :PROPERTIES:
   :reveal_extra_attr: data-background-iframe="https://hidalgo1.man.poznan.pl/dataset" data-background-opacity="0.2" data-background-interactive
   :END:
 
 - Data for Global Challenges:
-  - massive datasets harvested from various sources ([[https://hidalgo1.man.poznan.pl/][CKAN]])
-- Efficient data transfer between infrastructure
+  - /massive datasets/ harvested from various sources ([[https://hidalgo1.man.poznan.pl/][CKAN]])
+- Efficient /data transfer/ between infrastructure
 - Complementary data services:
-  - pre-visualization
-  - conversion
+  - format conversion
+  - visualization
 
-** HiDALGO Services: Portal - Single Enrty Point
+#+BEGIN_NOTES
+Dealing with data-intensive tasks, we also access to
+collections of massive real-world datasets useful for tackling global challenges,
+as well as tools that facilitate access to these data.
+#+END_NOTES
+** HiDALGO Services: Portal - Single Entry Point
   :PROPERTIES:
   :reveal_extra_attr: data-background-iframe="https://portal.hidalgo-project.eu" data-background-opacity="0.2" data-background-interactive
   :reveal_background: ./figs/services/hidalgo-portal.png
@@ -434,10 +505,17 @@ and we need to look in the future.
 - *Market Place*
 - *Community Tools*: [[https://moodle.hidalgo-project.eu][Moodle]], Matchmaking, [[https://support.hidalgo-project.eu/][Zammad]], [[https://askbot.hidalgo-project.eu/][Askbot]]
 - *Job Submission Frontend*: [[https://cloudify.hidalgo-project.eu/][Cloudify-based]]
-- *Data Catalogue*: [[https://hidalgo1.man.poznan.pl/][CKAN]]
+- *Data Catalogue*: [[https://hidalgo1.man.poznan.pl/][CKAN]], [[https://git.ecmwf.int/projects/LEX/repos/polytope-client/browse][WCDA]] integration
 - *Post-Processing Services*: [[https://visualization.hidalgo-project.eu/tutorial/overview.html][Visualization]], [[https://notebook.hidalgo-project.eu/][JupyterHub]]
 - *CI/CD Infrastructure*: [[https://hidalgo-jenkins.hlrs.de][Jenkins]]
 
+#+BEGIN_NOTES
+As I mentioned on one of the previous slides, 
+establishing a single entry point for decision makers and people interested
+in GCs is one of the fundamental objectives of our project.
+Therefore, we are keen on designing a convenient portal for our potential users.
+Currently, we have such portal components as...
+#+END_NOTES
 ** Collaborating
   :PROPERTIES:
   :reveal_background: ./figs/services/hidalgo-collaboration.png
@@ -449,6 +527,14 @@ and we need to look in the future.
 
 {{{mailto(contact@hidalgo-project.eu,contact@hidalgo-project.eu)}}}
 
+#+BEGIN_NOTES
+Last but not least, we are open for collaboration with individuals and organizations
+in all directions you see on this slide.
+If you have global challenges in mind,
+or you have interest in our research and our services,
+or you just want to leave your feedback,
+please feel free to contact us.
+#+END_NOTES
 * Thank you for your attention!
   :PROPERTIES:
   :reveal_background: ./hidalgo-style/hidalgo-logo.png
