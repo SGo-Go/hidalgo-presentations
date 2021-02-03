@@ -1,0 +1,1223 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Introduction to Spack for HiDALGO software developers</title>
+<meta name="author" content="Sergiy Gogolenko"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/beige.css" id="theme"/>
+
+<link rel="stylesheet" href="./hidalgo-style/extra.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/monokai.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="header-x"><div class="left"><img src="./hidalgo-style/hidalgo-logo.png"><hr/></div><div class="center"><b>H</b>PC and B<b>i</b>g <b>Da</b>ta Techno<b>l</b>ogies for <b>G</b>l<b>o</b>bal Challenges</div><div class="right"><hr/></div></div> <div class="footer-x"><div class="left">2021-02-03</div><div class="center"><b>Sergiy Gogolenko</b><br><i><small>Introduction to Spack for HiDALGO software developers</small></i></div> <div class="right"><img src="./hidalgo-style/Flag_of_Europe.svg" alt="HiDALGO"><b>EU</b> <small>founded project</small><br><b>&aleph;824115</b><br><sup><sup><sup><sup><sup><sup><sup><b><code>@OITTTIO</code><b></sup></sup></sup></sup></sup></sup></sup></div></div>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-background="./hidalgo-style/hidalgo-bg-title.jpg" data-background-size="100%" data-background-position="top">
+<h1><br><small>Introduction to Spack for HiDALGO software developers<br><sup><sup>Basics</sup></sup></small></h1><h2><a href='mailto:<a href="mailto:gogolenko@hlrs.de">gogolenko@hlrs.de</a>'>Sergiy Gogolenko</a></h2><h4></h4><h3>HiDALGO call&compfn;2021-02-03</h3>
+</section>
+
+<section>
+<section id="slide-org1283701">
+<h2 id="org1283701">Installation</h2>
+<ul>
+<li><p>
+Clone sources
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" data-line-numbers="6">export SPACK_ROOT=~/dev/spack
+
+mkdir -p $SPACK_ROOT
+rm -rf $SPACK_ROOT ~/.spack
+
+git clone https://github.com/spack/spack $SPACK_ROOT
+</code></pre>
+</div></li>
+<li><p>
+Switch to a required version and patch it (if needed)
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" data-line-numbers="2,3">cd $SPACK_ROOT &amp;&amp;
+    git checkout releases/v0.16
+git apply ../spack-0.16-ml.patch
+</code></pre>
+</div></li>
+<li><p>
+Activate
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >. $SPACK_ROOT/share/spack/setup-env.sh
+</code></pre>
+</div></li>
+<li data-fragment-index="1" class="fragment appear"><p>
+Set up favorite editor
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >export EDITOR=emacsclient  
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org6f0b827">
+<h2 id="org6f0b827">Specs</h2>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack install python@3.9
+spack install python %clang
+spack install python %gcc@6.5.0
+spack install python@3 cppflags=-O3
+spack install python ^/h6i
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgf831380">
+<h3 id="orgf831380">Specs: Simple Installation</h3>
+<ul>
+<li><p>
+check out available packages
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack list
+spack list pyth*
+</code></pre>
+</div></li>
+<li><p>
+installation specification
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack install python
+</code></pre>
+</div>
+<ul>
+<li>installs <code>python2</code> by default</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org6317c10">
+<h3 id="org6317c10">Specs: Version</h3>
+<ul>
+<li>sigil: <code>@</code></li>
+<li><p>
+check out available versions
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack versions python # check for particular versions before requesting them
+</code></pre>
+</div></li>
+<li><p>
+installation specification
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack install python@3
+spack install python@3.9.0
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-orge7091ae">
+<h3 id="orge7091ae">Specs: Compiler</h3>
+<ul>
+<li>sigil: <code>%</code></li>
+<li><p>
+check out available compilers
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack compiler list
+spack compilers
+</code></pre>
+</div></li>
+<li><p>
+installation specification
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack install python@3%gcc
+spack install python@3%clang@8.0.0
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org61d3c48">
+<h4 id="org61d3c48">Specs: Compiler - external (2)</h4>
+<ul>
+<li><p>
+get info about compiler
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack compiler info clang
+</code></pre>
+</div></li>
+<li>register one if absend
+<ul>
+<li><p>
+automatic
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >module load gcc
+spack compiler find gcc
+# ==&gt; Found no new compilers
+# ==&gt; Compilers are defined in the following files:
+#   /home/xyz/.spack/linux/compilers.yaml
+</code></pre>
+</div></li>
+<li data-fragment-index="1" class="fragment appear">edit config (e.g., <code>~/.spack/&lt;os&gt;/compilers.yaml</code>)</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgced41f8">
+<h4 id="orgced41f8">Specs: Compiler - config entries (3)</h4>
+<ul>
+<li><p>
+open config with editor (same effect to <code>$EDITOR ~/.spack/linux/compilers.yaml</code>)
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack config edit compilers
+</code></pre>
+</div></li>
+<li><p>
+example of entry (mix <code>clang@8.0.0</code> with <code>gfortran</code>)
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" data-line-numbers="6-7,9-10">- compiler:
+    spec: clang-gfortran@3.8.0
+    paths:
+      cc: /usr/bin/clang-3.8
+      cxx: /usr/bin/clang++-3.8
+      f77: /usr/bin/gfortran
+      fc: /usr/bin/gfortran
+    operating_system: ubuntu16.04
+    flags:
+      cflags: -O3 -fPIC
+    target: x86_64
+    modules: []
+    environment: {}
+    extra_rpaths: []
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org4097aa5">
+<h4 id="org4097aa5">Specs: Compiler - <code>spack</code>-installed (4)</h4>
+<ul>
+<li><p>
+use external compilers
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >module load gcc
+spack external find gcc # not recommended since registers only package
+spack compiler find gcc # recommended since registers compiler
+
+spack compilers
+spack compiler info clang
+</code></pre>
+</div></li>
+<li><p>
+use <code>spack</code>-installed compilers
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack install clang@8.0.0
+spack compiler add $(spack location -i clang@8.0.0)
+spack compiler remove clang@8.0.0
+
+spack config edit compilers
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org27653ca">
+<h3 id="org27653ca">Specs: Flags</h3>
+<ul>
+<li>markers:
+<ul>
+<li>compilers: <code>cppflags</code>, <code>cflags</code>, <code>cxxflags</code>, and <code>fflags</code></li>
+<li>linkers: <code>ldflags</code>, and <code>ldlibs</code></li>
+
+</ul></li>
+<li><p>
+check out available options
+</p>
+<div class="alert alert-info">
+<p>
+you must rely on package scripts and its variants (but can always modify them)
+</p>
+</div></li>
+<li><p>
+installation specification
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack install python@3 cppflags=-O3
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-orgf4e50cd">
+<h3 id="orgf4e50cd">Specs: Boolean Variants</h3>
+<div class="alert alert-info">
+<p>
+What about other options and flags?
+</p>
+</div>
+
+<ul>
+<li data-fragment-index="1" class="fragment appear">sigils: <code>+</code>, <code>~</code>, <code>-</code></li>
+<li data-fragment-index="1" class="fragment appear"><p>
+check out available variants (with description)
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack info python
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="sh" >Variants:
+  Name [Default]         Allowed values    Description
+  ===================    ==============    ================================================================
+  debug [off]            on, off           debug build with extra checks (this is high overhead)
+  optimizations [off]    on, off           Enable expensive build-time optimizations, if available
+  pic [on]               on, off           Produce position-independent code (for shared libs)
+...
+</code></pre>
+</div></li>
+<li data-fragment-index="1" class="fragment appear"><p>
+installation specification
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack install python@3 +optimizations+pic~debug
+spack install python@3 +optimizations # equivalent to former
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org229b4fd">
+<h3 id="org229b4fd">Specs: Dependencies (1)</h3>
+<ul>
+<li>sigil: <code>^</code>
+<ul>
+<li>also is used for virtual dependencies (depend on abstract interfaces) 
+e.g., on MPI <code>^mpi@3</code>, while the real package can be either MPIv3 distribution</li>
+
+</ul></li>
+<li><p>
+check out feasible dependencies
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack info python
+</code></pre>
+</div></li>
+<li><p>
+installation specification
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack install python@3 ^openssl@1.1
+spack install py-h5py ^hdf5+hl+mpi ^openmpi
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org72af9ea">
+<h3 id="org72af9ea">Specs: Dependencies (2)</h3>
+<ul>
+<li><p>
+try to play :)
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" data-line-numbers="2,5">spack spec py-h5py ^hdf5~mpi ^openmpi
+spack spec py-h5py~mpi ^hdf5 ^openmpi
+spack spec py-h5py~mpi ^hdf5
+spack spec py-h5py~mpi ^hdf5~mpi
+spack spec py-h5py~mpi ^hdf5~mpi ^openmpi
+</code></pre>
+</div></li>
+<li><p>
+check full dependencies tree (with compilers) of installed package
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack find -df python
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-orgac5a86b">
+<h3 id="orgac5a86b">Specs: Hash</h3>
+<div class="alert alert-info">
+<p>
+How to distinguish between 2 installations with the same version but different specs?
+</p>
+</div>
+
+<ul>
+<li data-fragment-index="1" class="fragment appear"><code>spack</code> generates a unique hash for each new spec</li>
+<li data-fragment-index="1" class="fragment appear">sigil: <code>/</code></li>
+<li data-fragment-index="1" class="fragment appear"><p>
+installation specification with package dependency specified by hash
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack find -l openssl
+# ext6i2u openssl@1.0.2g
+# rzymlhl openssl@1.1.1g 
+spack install python@3 ^/rzy
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org91770b4">
+<h3 id="org91770b4">Specs: Summary</h3>
+<ul>
+<li>common sigil and options:
+<ul>
+<li><code>@</code>: version</li>
+<li><code>%</code>: compiler</li>
+<li><code>+</code>, <code>~</code>, <code>-</code>: variants</li>
+<li><code>^</code>: explicitly request dependencies</li>
+<li><code>/</code>: referred to package by its hash</li>
+<li><code>cppflags</code>, <code>cflags</code>, <code>cxxflags</code>, <code>fflags</code>, <code>ldflags</code>, and <code>ldlibs</code> (<font color="red"><b>only if really needed</b></font>, e.g., to force optimizations)</li>
+
+</ul></li>
+<li data-fragment-index="1" class="fragment appear"><p>
+last but not least: <font color="red"><b>check resolved specs and dependencies before installation</b></font>
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack spec python@3.9%clang@3.8+optimizations~debug ^openssl@1.1
+</code></pre>
+</div>
+<ul>
+<li>it is also a way to estimate efforts for installation</li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orgff5b397">
+<h2 id="orgff5b397">Basic commands</h2>
+<div class="outline-text-2" id="text-orgff5b397">
+</div>
+</section>
+<section id="slide-org7bb9e09">
+<h3 id="org7bb9e09">We met already</h3>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack spec python@3.9%clang@3.8+optimizations~debug ^openssl@1.1
+spack install python@3.9%clang@3.8+optimizations~debug ^openssl@1.1
+spack list python
+spack list -d MPI # --search-description (also search the description)
+spack list -v mpi # --virtuals (also include virtual packages like ~mpi~)
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgdfcccbc">
+<h3 id="orgdfcccbc"><code>spec</code> and <code>graph</code></h3>
+<ul>
+<li><p>
+display full spec with dependencies
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack spec -I python@3
+spack --color always spec python@3 | less -R
+</code></pre>
+</div></li>
+<li><p>
+show all dependencies as a graph
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack graph python@3.9
+spack graph --dot python@3.9 | dot 
+</code></pre>
+</div></li>
+
+</ul>
+</section>
+<section id="slide-org6cd44fe">
+<h3 id="org6cd44fe"><code>uninstall</code></h3>
+<p>
+Do not uninstall packages that are not sufficiently specified
+</p>
+<ul>
+<li><code>-f</code> force</li>
+<li><code>-R</code> remove dependents as well</li>
+<li><code>-a</code> multiple packages at once</li>
+
+</ul>
+
+<div class="org-src-container">
+
+<pre><code class="sh" >spack uninstall zlib %gcc@6.5.0
+spack uninstall -R zlib/pdf
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org24b6b6a">
+<h3 id="org24b6b6a"><code>find</code></h3>
+<ul>
+<li><code>-x</code> explicit installs only</li>
+<li><code>-X</code> implicit installs only</li>
+<li><code>-p</code> show the path to which a package was installed</li>
+<li><code>-d</code> show dependency information</li>
+
+</ul>
+
+<div class="org-src-container">
+
+<pre><code class="sh" >spack find ^mpich # every installed package that depends on mpich
+spack find cppflags="-O3" # built with cppflags="-O3"
+spack find -ldf
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org59e4f83">
+<h3 id="org59e4f83">Summary</h3>
+</section>
+</section>
+<section>
+<section id="slide-orgb653261">
+<h2 id="orgb653261">Externals</h2>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack external find python
+spack external list
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orgefd8793">
+<h3 id="orgefd8793">Register detectable externals</h3>
+<ul>
+<li><p>
+check out packages detectable by <code>external</code> (list by repository and name)
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack external list
+</code></pre>
+</div></li>
+<li><p>
+add external packages to <code>packages.yaml</code>
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack external find --not-buildable git
+spack external find --not-buildable automake
+spack external find --not-buildable autoconf
+spack external find python
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org9d11be1">
+<h3 id="org9d11be1">Register external by editing <code>packages.yaml</code></h3>
+<ul>
+<li><p>
+get version, location and installation details of <code>binutils</code>
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >dirname $(dirname $(which ld))
+ld --version
+apt-cache show binutils
+dpkg -l | grep binutils
+dpkg -l | grep binutils
+apt-cache policy binutils
+</code></pre>
+</div></li>
+<li><p>
+put this information to <code>packages.yaml</code>
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >  buildable: False
+  modules:
+    binutils+libiberty~nls: binutils/2.26.1
+  version: [2.26.1]
+
+binutils:
+  externals:
+  - spec: binutils@2.26.1+libiberty~nls
+    prefix: /usr
+  buildable: False
+</code></pre>
+</div></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-orga4a92ef">
+<h2 id="orga4a92ef">Environments</h2>
+<div class="outline-text-2" id="text-orga4a92ef">
+</div>
+</section>
+<section id="slide-org01b509d">
+<h3 id="org01b509d">Initialization</h3>
+<ul>
+<li><p>
+Create environment
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack env create python3
+spack env activate python3
+</code></pre>
+</div></li>
+
+<li><p>
+Tell to use single consistent environment (all of the specs concretized together)
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack cd -e python3
+sed -i '$a \ \ concretization: together' ./spack.yaml
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-orgda346ce">
+<h3 id="orgda346ce">Define further installations</h3>
+<ul>
+<li><p>
+Add installations
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack add python@3.9.0+optimizations
+spack add py-numpy ^python@3+optimizations
+spack add py-scipy ^python@3+optimizations
+spack add py-matplotlib ^python@3+optimizations
+spack add py-scikit-learn ^python@3+optimizations
+</code></pre>
+</div></li>
+
+<li><p>
+Check
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack concretize
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org4ff6f0e">
+<h3 id="org4ff6f0e">Environment config</h3>
+<ul>
+<li><p>
+view env config
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="sh" >spack config get
+</code></pre>
+</div></li>
+<li><p>
+expected output
+</p>
+
+<div class="org-src-container">
+
+<pre><code class="yaml" ># This is a Spack Environment file.
+#
+# It describes a set of packages to be installed, along with
+# configuration settings.
+spack:
+  # add package specs to the `specs` list
+  specs: [python@3.9.0+optimizations, py-numpy ^python@3.9.0+optimizations, py-scipy ^python@3.9.0+optimizations, py-matplotlib ^python@3.9.0+optimizations, py-scikit-learn ^python@3.9.0+optimizations, py-jupyter ^cairo+X+fc+ft ^python@3.9.0+optimizations]
+  view: true
+  concretization: together
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-orgfe2d7da">
+<h3 id="orgfe2d7da">Editing Config: Basic Improvements</h3>
+<ul>
+<li><p>
+open environment config in editor
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack config edit
+</code></pre>
+</div></li>
+<li><p>
+1st iteration of improvements: matrices
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" data-line-numbers="5-7"># Spack Environment file for Python3 ML stack
+spack:
+  specs:
+  - python@3.9.0+optimizations
+  - matrix:
+    - [py-numpy, py-scipy, py-matplotlib, py-scikit-learn, py-jupyter ^cairo+X+fc+ft]
+    - [^python@3.9.0+optimizations]
+  concretization: together
+  view: true
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org8687b79">
+<h4 id="org8687b79">Editing Config: Further Improvements</h4>
+<ul>
+<li><p>
+2nd iteration of improvements: definitions
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" data-line-numbers="3,4,13,16-20"># Spack Environment file for Python3 ML stack
+spack:
+  definitions:
+  - packages:
+    - py-pip
+    - py-virtualenv
+    - py-numpy
+    - py-scipy
+    - py-matplotlib
+    - py-scikit-learn
+    - py-jupyter ^cairo+X+fc+ft
+    - py-keras
+  - pythons: [python@3.9.0+optimizations]
+  # - compilers: [gcc@8.1.0]
+  specs:
+  - $pythons
+  - matrix:
+    - [$packages]
+    - [$^pythons]
+    # - [$%compilers]
+  concretization: together
+  view: true
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org14438e5">
+<h3 id="org14438e5">Installation</h3>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack install
+</code></pre>
+</div>
+
+</section>
+<section id="slide-orga5e154d">
+<h3 id="orga5e154d">Combining with Python venv</h3>
+<ul>
+<li><p>
+create virtual environment and install required packages 
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >virtualenv --system-site-packages ~/dev/python/envs/plmr
+. ~/dev/spack/share/spack/setup-env.sh &amp;&amp; spack env activate python3 &amp;&amp; . ~/dev/python/envs/plmr/bin/activate
+pip install altair
+pip install ipykernel --upgrade
+</code></pre>
+</div></li>
+
+<li><p>
+install kernel for the given virtual environment
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >python -m ipykernel install --user --name=hidalgo
+</code></pre>
+</div></li>
+
+<li><p>
+deactivate environments
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >deactivate &amp;&amp; despacktivate
+</code></pre>
+</div></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org835ca62">
+<h2 id="org835ca62">Package Creation</h2>
+<ul>
+<li><ul>
+<li>where to find and how to retrieve the software</li>
+<li>its dependencies</li>
+<li>options for building the software from source</li>
+<li>build commands</li>
+
+</ul></li>
+<li><code>spack</code>-installation scripts \(\equiv\) Python recipes including this info</li>
+
+</ul>
+
+</section>
+<section id="slide-org5c940be">
+<h3 id="org5c940be">Preparing environment for the experiments</h3>
+<ul>
+<li><p>
+create environment
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack env create hidalgo_lge
+spack env activate hidalgo_lge
+</code></pre>
+</div></li>
+<li><p>
+tell to use single consistent environment (all of the specs concretized together)
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack cd -e hidalgo_lge
+sed -i '$a \ \ concretization: together' ./spack.yaml
+</code></pre>
+</div></li>
+<li><p>
+create repo
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >export MY_SPACK_REPO=$(dirname $SPACK_ROOT)/my-spack-repo
+spack repo create $MY_SPACK_REPO/
+spack repo add $MY_SPACK_REPO/
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org621f316">
+<h3 id="org621f316">Creating the Package File</h3>
+<ul>
+<li><p>
+fetch the code and create a package skeleton
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack create --force https://github.com/osmcode/libosmium/archive/v2.16.0.tar.gz
+spack create --force https://github.com/Project-OSRM/osrm-backend/archive/v5.24.0.tar.gz
+</code></pre>
+</div></li>
+<li><p>
+rename package if default name is not satisfactory
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >mv $MY_SPACK_REPO/packages/osrm-backend $MY_SPACK_REPO/packages/libosrm
+</code></pre>
+</div></li>
+<li><p>
+edit the skeleton
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack edit libosrm &amp;  
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org8a0acc1">
+<h3 id="org8a0acc1">Editing the Package Skeleton</h3>
+<ul>
+<li>where to find and how to retrieve the software</li>
+<li>its dependencies</li>
+<li>options for building the software from source</li>
+<li>build commands</li>
+
+</ul>
+
+</section>
+<section id="slide-org31ea672">
+<h4 id="org31ea672">Package Skeleton: Where to Find and How to Retrieve SW</h4>
+<div class="org-src-container">
+
+<pre><code class="python" data-line-numbers="1,5,7,9-11">class Libosrm(CMakePackage): # name must correspond to package name
+    """libOSRM is a high performance routing library written in C++14
+    designed to run on OpenStreetMap data."""
+
+    homepage = "http://project-osrm.org/"
+    url      = "https://github.com/Project-OSRM/osrm-backend/archive/v5.24.0.tar.gz"
+
+    maintainers = ['sgo-go']
+
+    version('master', branch='master') #
+    version('5.24.0',                   sha256='a66b20e7ffe83e5e5fe12324980320e12a6ec2b05f2befd157de5c60c665613c')
+    # version('5.23.0',                   sha256='8527ce7d799123a9e9e99551936821cc0025baae6f2120dbf2fbc6332c709915')
+    # version('5.22.0-customsnapping.3',  sha256='414922ec383f9cbfcb10f2ced80688359f1ee5e87b920b0d00b3d6eda9b5925b')
+</code></pre>
+</div>
+
+<ul>
+<li><b>naming</b> (module \(\mapsto\) class): <code>foo-bar</code>  \(\mapsto\) <code>FooBar</code>, <code>3proxy</code>  \(\mapsto\) <code>_3proxy</code></li>
+<li><b><a href="https://spack.readthedocs.io/en/latest/packaging_guide.html#versions-and-fetching">versions</a></b>: besides <i>branches</i>, they can also be <i>tags</i> &amp; <i>commits</i></li>
+
+</ul>
+
+</section>
+<section id="slide-orgc42ab1b">
+<h4 id="orgc42ab1b">Package Skeleton: Options for Building from Source</h4>
+<div class="org-src-container">
+
+<pre><code class="python" data-line-numbers="1,3,7">variant('build_type', default='Release',
+	description='The build type to build',
+	values=('Debug', 'Release'))
+
+# ---- See about library OSRM at:
+# https://github.com/Project-OSRM/osrm-backend/blob/master/docs/libosrm.md
+variant('lib_only', default=True,
+	description='Install OSRM in a library only mode')
+</code></pre>
+</div>
+
+<ul>
+<li><b><a href="https://spack.readthedocs.io/en/latest/packaging_guide.html#variants">variants</a></b>: can be <i>boolean</i> or <i>multi-valued</i> with <i>validation logic</i></li>
+
+</ul>
+
+</section>
+<section id="slide-orgb7bc2c4">
+<h4 id="orgb7bc2c4">Package Skeleton: Dependencies and Conflicts</h4>
+<div class="org-src-container">
+
+<pre><code class="python" data-line-numbers="4,10,11,12,14-15">depends_on('bzip2')
+depends_on('libxml2')
+depends_on('libzip')
+depends_on('boost@1.69.0:')
+depends_on('lua@5.3.0:')
+depends_on('intel-tbb')
+
+# Build-time dependencies:
+depends_on('pkg-config', type='build')
+depends_on('cmake@3.1:', type='build', when='@5.21:')
+depends_on('git', type='build', when='@master')
+depends_on('libosmium', when='+osmium')
+
+conflicts('%gcc', when='@:5', msg='libOSRM needs C++14 support (GCC &gt;= 5)')
+conflicts('@:5.23', when='target=aarch64:') # incompatibility with ARM64
+</code></pre>
+</div>
+
+<ul>
+<li><b><a href="https://spack.readthedocs.io/en/latest/packaging_guide.html#dependencies">dependencies</a></b>: supports
+<ul>
+<li>virtual &amp; real dependencies</li>
+<li>dependency patching &amp; intervention to dependents build process</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org62352f9">
+<h4 id="org62352f9">Package Skeleton: Commands</h4>
+<ul>
+<li><p>
+example configuration
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" data-line-numbers="2-4">CXX=$CXX CC=$CC cmake .. -DCMAKE_INSTALL_PREFIX=$OSRM_INSTALL \
+   -DLUA_INCLUDE_DIR=$LUA_INCLUDE_DIR \
+   -DBoost_USE_STATIC_LIBS=ON \
+   -DCMAKE_BUILD_TYPE=Release
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="python" data-line-numbers="2,5,6">def cmake_args(self):
+    variant_bool = lambda feature: str(feature in self.spec)
+    cmake_args = []
+
+    cmake_args.append('-DLUA_INCLUDE_DIR=%s' % self.spec['lua'].headers.directories[0])
+    cmake_args.append('-DBUILD_SHARED_LIBS:BOOL=%s' % variant_bool('+shared'))
+    cmake_args.append('-DBoost_USE_STATIC_LIBS=ON') # %s' % variant_bool('+shared')
+
+    return cmake_args
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org6e85d95">
+<h4 id="org6e85d95">Package Skeleton: Where to dig?</h4>
+<ul>
+<li><p>
+official documentation: <a href="https://spack.readthedocs.io/en/latest/packaging_guide.html">packaging guide</a>, <a href="https://spack.readthedocs.io/en/latest/spack.build_systems.html">build systems API</a>
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack info libosrm
+</code></pre>
+</div>
+<pre>
+Installation Phases:
+  cmake    build    install
+</pre></li>
+<li><p>
+check examples in the default repo
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >grep -r $SPACK_ROOT/var/spack/repos/builtin -e "CMakePackage" *
+spack edit cgal
+</code></pre>
+</div>
+<ul>
+<li><code>CMakePackage</code> (<code>cgal</code>)</li>
+<li><code>AutotoolsPackage</code> (<code>gcc</code>, <code>gdal</code>, <code>hdf5</code>, <code>mvapich2</code>),</li>
+<li><code>Package</code> (<code>python</code>, <code>lua</code>, <code>julia</code>)
+<ul>
+<li><a href="https://spack.readthedocs.io/en/latest/packaging_guide.html#extensions">extensions</a> (e.g., Python packages like <code>py-numpy</code>)</li>
+
+</ul></li>
+<li>&#x2026;</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org077492e">
+<h3 id="org077492e">Installation of Dependencies</h3>
+<ul>
+<li><p>
+check and install dependencies
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack spec -I libosrm
+spack add libosrm
+spack install --only=dependencies libosrm
+</code></pre>
+</div>
+
+<div class="org-src-container">
+
+<pre><code class="sh" >   46    /home/hpcgogol/dev/spack/lib/spack/env/gcc/gcc -std=gnu99 -fPIC -o luac  -L/home/hpcgogol/dev/spack/opt/spack/linux-ubuntu16.04-broad
+	 well/gcc-5.4.0/readline-8.0-feqfow6hrrf5blkasduwuwnuap6s5h7n/lib -L/usr/lib luac.o liblua.a -lm -Wl,-E -ldl -lreadline -lncursesw -lt
+	 infow
+&gt;&gt; 47    /usr/bin/ld: cannot find -ltinfow
+&gt;&gt; 48    collect2: error: ld returned 1 exit status
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org2276536">
+<h4 id="org2276536">Installation of Dependencies: Fix</h4>
+<ul>
+<li><p>
+<code>libtinfow</code> is a part of <code>ncurses</code>
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >ncurses:
+  externals:
+  - spec: ncurses@6.0.20160213+symlinks+termlib
+    prefix: /usr
+  buildable: false
+</code></pre>
+</div></li>
+<li><p>
+comment it out and use the spec <code>libosrm^ncurses+termlib</code>
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack add libosrm^ncurses+termlib
+spack install --only=dependencies libosrm^ncurses+termlib
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org54fd3ed">
+<h3 id="org54fd3ed">Typical Package Workflow</h3>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack edit libosrm
+spack install --fail-fast libosrm
+# ... build breaks! ...
+spack clean libosrm
+spack edit libosrm
+spack install --fail-fast libosrm
+# ...
+spack uninstall -ay libosrm
+spack repo remove my_spack_repo
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org0871a22">
+<h4 id="org0871a22">Typical Package Workflow: Useful Tricks</h4>
+<ul>
+<li><p>
+extract build environment
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack build-env libosrm
+</code></pre>
+</div></li>
+<li><p>
+enter to build environment for experiments
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack build-env libosrm bash
+</code></pre>
+</div></li>
+<li><p>
+explore folders
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack cd -e hidalgo_lge
+spack cd -p libosrm
+echo $(spack location --build-dir libosrm)
+spack cd --install-dir libosrm
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org60c0db0">
+<h2 id="org60c0db0">Further information</h2>
+<ul>
+<li>Videos
+<ul>
+<li><a href="https://youtu.be/edpgwyOD79E"> <code>Spack</code> tutorial</a> by Todd Gamblin</li>
+<li><a href="https://youtu.be/z7ZdnCkaPCY">Managing with <code>Spack</code> </a>by Gregory Blum Becker</li>
+
+</ul></li>
+<li>Documentation: <a href="https://spack.readthedocs.io/en/latest/chain.html">manual</a>, <a href="https://spack-tutorial.readthedocs.io/en/latest/">tutorial</a>, <a href="https://spack.readthedocs.io/en/latest/getting_started.html#system-packages">quick start</a></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+
+overview: true,
+width: 1400,
+height: 1000,
+
+transition: 'convex',
+transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>

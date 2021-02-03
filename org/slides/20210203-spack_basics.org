@@ -1,0 +1,709 @@
+# -*- mode: org -*-
+#+INCLUDE: ./org/common/hidalgo-style.org
+
+#+TITLE: Introduction to Spack for HiDALGO software developers
+#+SUBTITLE: Basics
+#+AUTHOR: Sergiy Gogolenko 
+# +REVEAL_ACADEMIC_TITLE: High-Performance Computing Center, Stuttgart, DE
+#+EMAIL: gogolenko@hlrs.de
+#+CREATOR: HiDALGO call
+#+DATE: 2021-02-03
+#+OPTIONS: author:t date:t num:nil toc:nil created:nill email:t tex:t
+#+REVEAL_TALK_URL: http://sgo-go.github.io/hidalgo-presentations/spack-slides.html
+#+TIME: 25min
+
+* Installation
+
+#+ATTR_REVEAL: :frag (none none none appear) :frag_idx (- - - 1)
+- Clone sources
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="6"
+  #+BEGIN_SRC sh
+    export SPACK_ROOT=~/dev/spack
+
+    mkdir -p $SPACK_ROOT
+    rm -rf $SPACK_ROOT ~/.spack
+    
+    git clone https://github.com/spack/spack $SPACK_ROOT
+  #+END_SRC
+- Switch to a required version and patch it (if needed)
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="2,3"
+  #+BEGIN_SRC sh
+    cd $SPACK_ROOT &&
+	git checkout releases/v0.16
+    git apply ../spack-0.16-ml.patch
+  #+END_SRC
+- Activate
+  #+BEGIN_SRC sh
+    . $SPACK_ROOT/share/spack/setup-env.sh
+  #+END_SRC
+- Set up favorite editor
+  #+BEGIN_SRC sh
+    export EDITOR=emacsclient  
+  #+END_SRC
+
+* Specs
+
+#+BEGIN_SRC sh
+  spack install python@3.9
+  spack install python %clang
+  spack install python %gcc@6.5.0
+  spack install python@3 cppflags=-O3
+  spack install python ^/h6i
+#+END_SRC
+
+** Specs: Simple Installation
+
+- check out available packages
+  #+BEGIN_SRC sh
+    spack list
+    spack list pyth*
+  #+END_SRC
+- installation specification
+  #+BEGIN_SRC sh
+    spack install python
+  #+END_SRC
+  - installs ~python2~ by default
+
+** Specs: Version
+
+- sigil: ~@~
+- check out available versions
+  #+BEGIN_SRC sh
+    spack versions python # check for particular versions before requesting them
+  #+END_SRC
+- installation specification
+  #+BEGIN_SRC sh
+    spack install python@3
+    spack install python@3.9.0
+  #+END_SRC
+
+** Specs: Compiler
+
+- sigil: ~%~
+- check out available compilers
+  #+BEGIN_SRC sh
+    spack compiler list
+    spack compilers
+  #+END_SRC
+- installation specification
+  #+BEGIN_SRC sh
+    spack install python@3%gcc
+    spack install python@3%clang@8.0.0
+  #+END_SRC
+
+*** Specs: Compiler - external (2)
+
+- get info about compiler
+  #+BEGIN_SRC sh
+    spack compiler info clang
+  #+END_SRC
+- register one if absend
+  #+ATTR_REVEAL: :frag (none appear) :frag_idx (- 1)
+  - automatic
+    #+BEGIN_SRC sh
+      module load gcc
+      spack compiler find gcc
+      # ==> Found no new compilers
+      # ==> Compilers are defined in the following files:
+      #   /home/xyz/.spack/linux/compilers.yaml
+    #+END_SRC
+  - edit config (e.g., =~/.spack/<os>/compilers.yaml=)
+
+*** Specs: Compiler - config entries (3)
+
+- open config with editor (same effect to ~$EDITOR ~/.spack/linux/compilers.yaml~)
+  #+BEGIN_SRC sh
+    spack config edit compilers
+  #+END_SRC
+- example of entry (mix =clang@8.0.0= with =gfortran=)
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="6-7,9-10"
+  #+BEGIN_SRC yaml
+    - compiler:
+	spec: clang-gfortran@3.8.0
+	paths:
+	  cc: /usr/bin/clang-3.8
+	  cxx: /usr/bin/clang++-3.8
+          f77: /usr/bin/gfortran
+          fc: /usr/bin/gfortran
+	operating_system: ubuntu16.04
+	flags:
+	  cflags: -O3 -fPIC
+	target: x86_64
+        modules: []
+        environment: {}
+        extra_rpaths: []
+  #+END_SRC
+
+*** Specs: Compiler - =spack=-installed (4)
+
+- use external compilers
+  #+BEGIN_SRC sh
+    module load gcc
+    spack external find gcc # not recommended since registers only package
+    spack compiler find gcc # recommended since registers compiler
+
+    spack compilers
+    spack compiler info clang
+  #+END_SRC
+- use =spack=-installed compilers
+  #+BEGIN_SRC sh
+    spack install clang@8.0.0
+    spack compiler add $(spack location -i clang@8.0.0)
+    spack compiler remove clang@8.0.0
+
+    spack config edit compilers
+  #+END_SRC
+
+** Specs: Flags
+
+- markers:
+  - compilers: ~cppflags~, ~cflags~, ~cxxflags~, and ~fflags~
+  - linkers: ~ldflags~, and ~ldlibs~
+- check out available options
+  {{{beg_block}}}
+  you must rely on package scripts and its variants (but can always modify them)
+  {{{end_block}}}
+- installation specification
+  #+BEGIN_SRC sh
+    spack install python@3 cppflags=-O3
+  #+END_SRC
+
+** Specs: Boolean Variants
+
+{{{beg_block}}}
+What about other options and flags?
+{{{end_block}}}
+
+#+ATTR_REVEAL: :frag (appear appear appear) :frag_idx (1 1 1)
+- sigils: =+=, =~=, =-=
+- check out available variants (with description)
+  #+BEGIN_SRC sh
+    spack info python
+  #+END_SRC
+  #+BEGIN_SRC sh
+    Variants:
+      Name [Default]         Allowed values    Description
+      ===================    ==============    ================================================================
+      debug [off]            on, off           debug build with extra checks (this is high overhead)
+      optimizations [off]    on, off           Enable expensive build-time optimizations, if available
+      pic [on]               on, off           Produce position-independent code (for shared libs)
+    ...
+  #+END_SRC
+- installation specification
+  #+BEGIN_SRC sh
+    spack install python@3 +optimizations+pic~debug
+    spack install python@3 +optimizations # equivalent to former
+  #+END_SRC
+
+** Specs: Dependencies (1)
+
+- sigil: ~^~
+  - also is used for virtual dependencies (depend on abstract interfaces) 
+    e.g., on MPI ~^mpi@3~, while the real package can be either MPIv3 distribution
+- check out feasible dependencies
+  #+BEGIN_SRC sh
+    spack info python
+  #+END_SRC
+- installation specification
+  #+BEGIN_SRC sh
+    spack install python@3 ^openssl@1.1
+    spack install py-h5py ^hdf5+hl+mpi ^openmpi
+  #+END_SRC
+
+** Specs: Dependencies (2)
+
+- try to play :)
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="2,5"
+  #+BEGIN_SRC sh
+    spack spec py-h5py ^hdf5~mpi ^openmpi
+    spack spec py-h5py~mpi ^hdf5 ^openmpi
+    spack spec py-h5py~mpi ^hdf5
+    spack spec py-h5py~mpi ^hdf5~mpi
+    spack spec py-h5py~mpi ^hdf5~mpi ^openmpi
+  #+END_SRC
+- check full dependencies tree (with compilers) of installed package
+  #+BEGIN_SRC sh
+    spack find -df python
+  #+END_SRC
+
+** Specs: Hash
+
+{{{beg_block}}}
+How to distinguish between 2 installations with the same version but different specs?
+{{{end_block}}}
+
+#+ATTR_REVEAL: :frag (appear appear appear) :frag_idx (1 1 1)
+- =spack= generates a unique hash for each new spec
+- sigil: ~/~
+- installation specification with package dependency specified by hash
+  #+BEGIN_SRC sh
+    spack find -l openssl
+    # ext6i2u openssl@1.0.2g
+    # rzymlhl openssl@1.1.1g 
+    spack install python@3 ^/rzy
+  #+END_SRC
+
+** Specs: Summary
+
+#+ATTR_REVEAL: :frag (none appear) :frag_idx (- 1)
+- common sigil and options:
+  - ~@~: version
+  - ~%~: compiler
+  - =+=, =~=, =-=: variants
+  - ~^~: explicitly request dependencies
+  - ~/~: referred to package by its hash
+  - ~cppflags~, ~cflags~, ~cxxflags~, ~fflags~, ~ldflags~, and ~ldlibs~ ({{{alert(only if really needed)}}}, e.g., to force optimizations)
+- last but not least: {{{alert(check resolved specs and dependencies before installation)}}}
+  #+BEGIN_SRC sh
+    spack spec python@3.9%clang@3.8+optimizations~debug ^openssl@1.1
+  #+END_SRC
+  - it is also a way to estimate efforts for installation
+* Basic commands
+** We met already
+
+#+BEGIN_SRC sh
+  spack spec python@3.9%clang@3.8+optimizations~debug ^openssl@1.1
+  spack install python@3.9%clang@3.8+optimizations~debug ^openssl@1.1
+  spack list python
+  spack list -d MPI # --search-description (also search the description)
+  spack list -v mpi # --virtuals (also include virtual packages like ~mpi~)
+#+END_SRC
+
+** ~spec~ and ~graph~
+
+- display full spec with dependencies
+  #+BEGIN_SRC sh
+    spack spec -I python@3
+    spack --color always spec python@3 | less -R
+  #+END_SRC
+- show all dependencies as a graph
+  #+BEGIN_SRC sh
+    spack graph python@3.9
+    spack graph --dot python@3.9 | dot 
+  #+END_SRC
+** ~uninstall~
+
+Do not uninstall packages that are not sufficiently specified
+- ~-f~ force
+- ~-R~ remove dependents as well
+- ~-a~ multiple packages at once
+
+#+BEGIN_SRC sh
+  spack uninstall zlib %gcc@6.5.0
+  spack uninstall -R zlib/pdf
+#+END_SRC
+
+** ~find~
+- ~-x~ explicit installs only
+- ~-X~ implicit installs only
+- ~-p~ show the path to which a package was installed
+- ~-d~ show dependency information
+
+#+BEGIN_SRC sh
+  spack find ^mpich # every installed package that depends on mpich
+  spack find cppflags="-O3" # built with cppflags="-O3"
+  spack find -ldf
+#+END_SRC
+
+** Summary
+* Externals
+
+#+BEGIN_SRC sh
+  spack external find python
+  spack external list
+#+END_SRC
+
+** Register detectable externals
+
+- check out packages detectable by ~external~ (list by repository and name)
+  #+BEGIN_SRC sh :results output
+    spack external list
+  #+END_SRC
+- add external packages to =packages.yaml=
+  #+BEGIN_SRC sh
+    spack external find --not-buildable git
+    spack external find --not-buildable automake
+    spack external find --not-buildable autoconf
+    spack external find python
+  #+END_SRC
+
+** Register external by editing =packages.yaml=
+- get version, location and installation details of =binutils=
+  #+BEGIN_SRC sh
+    dirname $(dirname $(which ld))
+    ld --version
+    apt-cache show binutils
+    dpkg -l | grep binutils
+    dpkg -l | grep binutils
+    apt-cache policy binutils
+  #+END_SRC
+- put this information to =packages.yaml=
+  #+BEGIN_SRC yaml
+      buildable: False
+      modules:
+	binutils+libiberty~nls: binutils/2.26.1
+      version: [2.26.1]
+
+    binutils:
+      externals:
+      - spec: binutils@2.26.1+libiberty~nls
+	prefix: /usr
+      buildable: False
+  #+END_SRC
+* Environments
+
+** Initialization
+- Create environment
+  #+BEGIN_SRC sh
+    spack env create python3
+    spack env activate python3
+  #+END_SRC
+
+- Tell to use single consistent environment (all of the specs concretized together)
+  #+BEGIN_SRC sh
+    spack cd -e python3
+    sed -i '$a \ \ concretization: together' ./spack.yaml
+  #+END_SRC
+
+** Define further installations
+
+- Add installations
+  #+BEGIN_SRC sh
+    spack add python@3.9.0+optimizations
+    spack add py-numpy ^python@3+optimizations
+    spack add py-scipy ^python@3+optimizations
+    spack add py-matplotlib ^python@3+optimizations
+    spack add py-scikit-learn ^python@3+optimizations
+  #+END_SRC
+
+- Check
+  #+BEGIN_SRC sh
+  spack concretize
+  #+END_SRC
+
+** Environment config
+
+- view env config
+
+  #+BEGIN_SRC sh
+    spack config get
+  #+END_SRC
+- expected output
+
+  #+BEGIN_SRC yaml
+    # This is a Spack Environment file.
+    #
+    # It describes a set of packages to be installed, along with
+    # configuration settings.
+    spack:
+      # add package specs to the `specs` list
+      specs: [python@3.9.0+optimizations, py-numpy ^python@3.9.0+optimizations, py-scipy ^python@3.9.0+optimizations, py-matplotlib ^python@3.9.0+optimizations, py-scikit-learn ^python@3.9.0+optimizations, py-jupyter ^cairo+X+fc+ft ^python@3.9.0+optimizations]
+      view: true
+      concretization: together
+  #+END_SRC
+
+** Editing Config: Basic Improvements
+
+- open environment config in editor
+  #+BEGIN_SRC sh
+    spack config edit
+  #+END_SRC
+- 1st iteration of improvements: matrices
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="5-7"
+  #+BEGIN_SRC yaml
+    # Spack Environment file for Python3 ML stack
+    spack:
+      specs:
+      - python@3.9.0+optimizations
+      - matrix:
+	- [py-numpy, py-scipy, py-matplotlib, py-scikit-learn, py-jupyter ^cairo+X+fc+ft]
+	- [^python@3.9.0+optimizations]
+      concretization: together
+      view: true
+  #+END_SRC
+
+*** Editing Config: Further Improvements
+
+- 2nd iteration of improvements: definitions
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="3,4,13,16-20"
+  #+BEGIN_SRC yaml
+  # Spack Environment file for Python3 ML stack
+  spack:
+    definitions:
+    - packages:
+      - py-pip
+      - py-virtualenv
+      - py-numpy
+      - py-scipy
+      - py-matplotlib
+      - py-scikit-learn
+      - py-jupyter ^cairo+X+fc+ft
+      - py-keras
+    - pythons: [python@3.9.0+optimizations]
+    # - compilers: [gcc@8.1.0]
+    specs:
+    - $pythons
+    - matrix:
+      - [$packages]
+      - [$^pythons]
+      # - [$%compilers]
+    concretization: together
+    view: true
+  #+END_SRC
+
+** Installation
+
+#+BEGIN_SRC sh
+  spack install
+#+END_SRC
+
+** Combining with Python venv
+
+- create virtual environment and install required packages 
+  #+BEGIN_SRC sh
+    virtualenv --system-site-packages ~/dev/python/envs/plmr
+    . ~/dev/spack/share/spack/setup-env.sh && spack env activate python3 && . ~/dev/python/envs/plmr/bin/activate
+    pip install altair
+    pip install ipykernel --upgrade
+  #+END_SRC
+
+- install kernel for the given virtual environment
+  #+BEGIN_SRC sh
+  python -m ipykernel install --user --name=hidalgo
+  #+END_SRC
+
+- deactivate environments
+  #+BEGIN_SRC sh
+  deactivate && despacktivate
+  #+END_SRC
+* Package Creation
+
+- 
+  - where to find and how to retrieve the software
+  - its dependencies
+  - options for building the software from source
+  - build commands
+- =spack=-installation scripts \(\equiv\) Python recipes including this info
+
+** Preparing environment for the experiments
+
+- create environment
+  #+BEGIN_SRC sh
+    spack env create hidalgo_lge
+    spack env activate hidalgo_lge
+  #+END_SRC
+- tell to use single consistent environment (all of the specs concretized together)
+  #+BEGIN_SRC sh
+    spack cd -e hidalgo_lge
+    sed -i '$a \ \ concretization: together' ./spack.yaml
+  #+END_SRC
+- create repo
+  #+BEGIN_SRC sh
+    export MY_SPACK_REPO=$(dirname $SPACK_ROOT)/my-spack-repo
+    spack repo create $MY_SPACK_REPO/
+    spack repo add $MY_SPACK_REPO/
+  #+END_SRC
+
+** Creating the Package File
+
+- fetch the code and create a package skeleton
+  #+BEGIN_SRC sh
+    spack create --force https://github.com/osmcode/libosmium/archive/v2.16.0.tar.gz
+    spack create --force https://github.com/Project-OSRM/osrm-backend/archive/v5.24.0.tar.gz
+  #+END_SRC
+- rename package if default name is not satisfactory
+  #+BEGIN_SRC sh
+    mv $MY_SPACK_REPO/packages/osrm-backend $MY_SPACK_REPO/packages/libosrm
+  #+END_SRC
+-  edit the skeleton
+  #+BEGIN_SRC sh
+    spack edit libosrm &  
+  #+END_SRC
+
+** Editing the Package Skeleton
+
+  - where to find and how to retrieve the software
+  - its dependencies
+  - options for building the software from source
+  - build commands
+
+*** Package Skeleton: Where to Find and How to Retrieve SW
+
+#+ATTR_REVEAL: :code_attribs data-line-numbers="1,5,7,9-11"
+#+BEGIN_SRC python
+  class Libosrm(CMakePackage): # name must correspond to package name
+      """libOSRM is a high performance routing library written in C++14
+      designed to run on OpenStreetMap data."""
+
+      homepage = "http://project-osrm.org/"
+      url      = "https://github.com/Project-OSRM/osrm-backend/archive/v5.24.0.tar.gz"
+
+      maintainers = ['sgo-go']
+
+      version('master', branch='master') #
+      version('5.24.0',                   sha256='a66b20e7ffe83e5e5fe12324980320e12a6ec2b05f2befd157de5c60c665613c')
+      # version('5.23.0',                   sha256='8527ce7d799123a9e9e99551936821cc0025baae6f2120dbf2fbc6332c709915')
+      # version('5.22.0-customsnapping.3',  sha256='414922ec383f9cbfcb10f2ced80688359f1ee5e87b920b0d00b3d6eda9b5925b')
+#+END_SRC
+
+- *naming* (module \(\mapsto\) class): =foo-bar=  \(\mapsto\) ~FooBar~, =3proxy=  \(\mapsto\) ~_3proxy~
+- *[[https://spack.readthedocs.io/en/latest/packaging_guide.html#versions-and-fetching][versions]]*: besides /branches/, they can also be /tags/ & /commits/
+
+*** Package Skeleton: Options for Building from Source
+
+#+ATTR_REVEAL: :code_attribs data-line-numbers="1,3,7"
+#+BEGIN_SRC python
+      variant('build_type', default='Release',
+	      description='The build type to build',
+	      values=('Debug', 'Release'))
+
+      # ---- See about library OSRM at:
+      # https://github.com/Project-OSRM/osrm-backend/blob/master/docs/libosrm.md
+      variant('lib_only', default=True,
+	      description='Install OSRM in a library only mode')
+#+END_SRC
+
+- *[[https://spack.readthedocs.io/en/latest/packaging_guide.html#variants][variants]]*: can be /boolean/ or /multi-valued/ with /validation logic/
+
+*** Package Skeleton: Dependencies and Conflicts
+
+#+ATTR_REVEAL: :code_attribs data-line-numbers="4,10,11,12,14-15"
+#+BEGIN_SRC python
+      depends_on('bzip2')
+      depends_on('libxml2')
+      depends_on('libzip')
+      depends_on('boost@1.69.0:')
+      depends_on('lua@5.3.0:')
+      depends_on('intel-tbb')
+
+      # Build-time dependencies:
+      depends_on('pkg-config', type='build')
+      depends_on('cmake@3.1:', type='build', when='@5.21:')
+      depends_on('git', type='build', when='@master')
+      depends_on('libosmium', when='+osmium')
+
+      conflicts('%gcc', when='@:5', msg='libOSRM needs C++14 support (GCC >= 5)')
+      conflicts('@:5.23', when='target=aarch64:') # incompatibility with ARM64
+#+END_SRC
+
+- *[[https://spack.readthedocs.io/en/latest/packaging_guide.html#dependencies][dependencies]]*: supports
+  - virtual & real dependencies
+  - dependency patching & intervention to dependents build process
+
+*** Package Skeleton: Commands
+
+- example configuration
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="2-4"
+  #+BEGIN_SRC sh
+    CXX=$CXX CC=$CC cmake .. -DCMAKE_INSTALL_PREFIX=$OSRM_INSTALL \
+       -DLUA_INCLUDE_DIR=$LUA_INCLUDE_DIR \
+       -DBoost_USE_STATIC_LIBS=ON \
+       -DCMAKE_BUILD_TYPE=Release
+  #+END_SRC
+
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="2,5,6"
+  #+BEGIN_SRC python
+	def cmake_args(self):
+	    variant_bool = lambda feature: str(feature in self.spec)
+	    cmake_args = []
+
+	    cmake_args.append('-DLUA_INCLUDE_DIR=%s' % self.spec['lua'].headers.directories[0])
+	    cmake_args.append('-DBUILD_SHARED_LIBS:BOOL=%s' % variant_bool('+shared'))
+	    cmake_args.append('-DBoost_USE_STATIC_LIBS=ON') # %s' % variant_bool('+shared')
+
+	    return cmake_args
+  #+END_SRC
+
+*** Package Skeleton: Where to dig?
+- official documentation: [[https://spack.readthedocs.io/en/latest/packaging_guide.html][packaging guide]], [[https://spack.readthedocs.io/en/latest/spack.build_systems.html][build systems API]]
+  #+BEGIN_SRC sh
+    spack info libosrm
+  #+END_SRC
+  #+BEGIN_SRC 
+    Installation Phases:
+      cmake    build    install
+  #+END_SRC
+- check examples in the default repo
+  #+BEGIN_SRC sh
+    grep -r $SPACK_ROOT/var/spack/repos/builtin -e "CMakePackage" *
+    spack edit cgal
+  #+END_SRC
+  - ~CMakePackage~ (=cgal=)
+  - ~AutotoolsPackage~ (=gcc=, =gdal=, =hdf5=, =mvapich2=),
+  - ~Package~ (=python=, =lua=, =julia=)
+    - [[https://spack.readthedocs.io/en/latest/packaging_guide.html#extensions][extensions]] (e.g., Python packages like =py-numpy=)
+  - ...
+
+** Installation of Dependencies
+
+- check and install dependencies
+  #+BEGIN_SRC sh
+    spack spec -I libosrm
+    spack add libosrm
+    spack install --only=dependencies libosrm
+  #+END_SRC
+
+  #+BEGIN_SRC sh
+       46    /home/hpcgogol/dev/spack/lib/spack/env/gcc/gcc -std=gnu99 -fPIC -o luac  -L/home/hpcgogol/dev/spack/opt/spack/linux-ubuntu16.04-broad
+	     well/gcc-5.4.0/readline-8.0-feqfow6hrrf5blkasduwuwnuap6s5h7n/lib -L/usr/lib luac.o liblua.a -lm -Wl,-E -ldl -lreadline -lncursesw -lt
+	     infow
+    >> 47    /usr/bin/ld: cannot find -ltinfow
+    >> 48    collect2: error: ld returned 1 exit status
+  #+END_SRC
+
+*** Installation of Dependencies: Fix
+
+- =libtinfow= is a part of =ncurses=
+  #+BEGIN_SRC yaml
+      ncurses:
+	externals:
+	- spec: ncurses@6.0.20160213+symlinks+termlib
+	  prefix: /usr
+	buildable: false
+  #+END_SRC
+- comment it out and use the spec =libosrm^ncurses+termlib=
+  #+BEGIN_SRC sh
+    spack add libosrm^ncurses+termlib
+    spack install --only=dependencies libosrm^ncurses+termlib
+  #+END_SRC
+
+** Typical Package Workflow
+
+#+BEGIN_SRC sh
+  spack edit libosrm
+  spack install --fail-fast libosrm
+  # ... build breaks! ...
+  spack clean libosrm
+  spack edit libosrm
+  spack install --fail-fast libosrm
+  # ...
+  spack uninstall -ay libosrm
+  spack repo remove my_spack_repo
+#+END_SRC
+
+*** Typical Package Workflow: Useful Tricks
+
+- extract build environment
+  #+BEGIN_SRC sh
+    spack build-env libosrm
+  #+END_SRC
+- enter to build environment for experiments
+  #+BEGIN_SRC sh
+    spack build-env libosrm bash
+  #+END_SRC
+- explore folders
+  #+BEGIN_SRC sh
+    spack cd -e hidalgo_lge
+    spack cd -p libosrm
+    echo $(spack location --build-dir libosrm)
+    spack cd --install-dir libosrm
+  #+END_SRC
+
+* Further information
+
+- Videos
+  - [[https://youtu.be/edpgwyOD79E][ ~Spack~ tutorial]] by Todd Gamblin
+  - [[https://youtu.be/z7ZdnCkaPCY][Managing with ~Spack~ ]]by Gregory Blum Becker
+- Documentation: [[https://spack.readthedocs.io/en/latest/chain.html][manual]], [[https://spack-tutorial.readthedocs.io/en/latest/][tutorial]], [[https://spack.readthedocs.io/en/latest/getting_started.html#system-packages][quick start]]
+
+

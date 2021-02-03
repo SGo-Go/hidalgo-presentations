@@ -205,8 +205,11 @@ img.title-logo {
   border-top-color: #2d5986;
 }
 
-blockquote {
-  background-color: #d0e0f0;
-  border-color: #2d5986;
-  color: #2d5986;
+.reveal blockquote {
+    font-size: 0.75em;
+    background-color: #d0e0f0;
+    border-color: #2d5986;
+    color: #2d5986;
+    border-radius: .5em;
+    width: 90%;
 }

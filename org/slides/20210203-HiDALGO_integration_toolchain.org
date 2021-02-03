@@ -1,0 +1,128 @@
+# -*- mode: org -*-
+#+INCLUDE: ./org/common/hidalgo-style.org
+
+#+TITLE: HiDALGO integration toolchain 
+#+SUBTITLE: Discussion
+#+AUTHOR: Sergiy Gogolenko 
+# +REVEAL_ACADEMIC_TITLE: High-Performance Computing Center, Stuttgart, DE
+#+EMAIL: gogolenko@hlrs.de
+#+CREATOR: HiDALGO call
+#+DATE: 2021-02-03
+#+OPTIONS: author:t date:t num:nil toc:nil created:nill email:t tex:t
+#+REVEAL_TALK_URL: http://sgo-go.github.io/hidalgo-presentations/20210203-HiDALGO_integration_toolchain.html
+#+TIME: 10min
+
+* GitLab vs GitHub
+
+** General Comparison
+
+# - https://codegiant.io/home
+# - https://bitbucket.org/
+
+|                           | GitHub                            | GitLab                     |
+|---------------------------+-----------------------------------+----------------------------|
+| *Purpose*                 | _Social Media_                    | _DevEnv_                   |
+| *Self-hosted environment* | {{{pending}}} _commercial_        | {{{done}}} _open-source_   |
+| *CI/CD*                   | +[[https://travis-ci.com][Travis CI]]+ {{{ongoing}}} [[https://github.com/features/actions][Actions]] | {{{done}}} built-in (A+)   |
+| Collaboration tools       | A+                                | A                          |
+| Community                 | \(\le\) 50M devs                  | \(\le\) 100K organizations |
+| Max storage per repo      | \(\le\) 500MB                     | \(\le\) 10GB               |
+| Customization             | easy (e.g., r/w access)           | customizable (e.g., roles) |
+| Free private repos        | teams +\(\le\) 3 users+           | unlimited                  |
+| Pricing Plans             | [[https://github.com/pricing][GitHub]]                            | [[https://miro.medium.com/max/2400/1*LaoGXALa6PU0P22tDqRaPA.png][GitLab]]                     |
+
+# | Access                       | read/write                          | roles         |
+# | Import/Export                | easy                                | customizable  |
+# | Code/secret scanning         | {{{done}}} Advanced Security system | {{{pending}}} |
+# | interface and infrastructure | super-simple                        |               |
+
+** Pricing
+
+#+BEGIN_QUOTE
+GitHub Free gives teams private repositories with unlimited collaborators at no cost...
+
+--- [[https://github.blog/changelog/2020-04-14-private-repositories-with-unlimited-collaborators-available-to-all-github-accounts-and-changes-to-github-paid-plans/][Private repositories with unlimited collaborators]] / GitHub Blog, April 14, 2020
+#+END_QUOTE
+
+- https://gitlab.kitware.com
+- https://gitlab.spack.io
+- https://gitlab.bsc.es
+
+# - https://gitlab.kitware.com/scott.wittenburg
+# - https://gitlab.spack.io/scott/sc2019-tutorial-pipeline
+
+** Legal aspects & Ownership
+
+# - GitLab
+  #+BEGIN_QUOTE
+  We do not claim any ownership rights to the information that you submit to the GitLab application itself, _your code is yours_.
+
+  --- [[https://about.gitlab.com/terms/signature_all.html][GitLab.com Terms]]
+  #+END_QUOTE
+
+# - GitHub
+  #+BEGIN_QUOTE
+  _You retain ownership of_ and responsibility for Your Content...
+
+  Because you retain ownership of and responsibility for Your Content,
+  we need you to grant us -- and other GitHub Users --
+  _certain legal permissions_, listed in Sections D.4 -- D.7.
+
+  --- [[https://docs.github.com/en/free-pro-team@latest/github/site-policy/github-terms-of-service#3-ownership-of-content-right-to-post-and-license-grants][GitHub Terms of Service]]
+  #+END_QUOTE
+
+** 
+
+#+BEGIN_QUOTE
+... one of the most popular CI/CD frameworks today. GitLab has everything that GitHub has,
+and giving teams increased control over their repositories.
+
+... was initially designed with a built-in CI/CD tool, which makes it
+
+--- [[https://blog.codegiant.io/gitlab-vs-github-which-one-is-better-2020-d8ec7fb9542c][GitLab vs GitHub -- What Are The Key Differences And Which One Is Better?]]
+#+END_QUOTE
+
+- Key question:
+  - do we need environment to _promote or develop_?
+- Other aspects to keep in mind:
+  - do we need _self-hosted environment_?
+  - do we need _FOSS CI/CD_ platform with advanced [[https://www.tutorialspoint.com/sdlc/sdlc_overview.htm][SDLC]]?
+    - benefit for [[https://spack.readthedocs.io/en/latest/pipelines.html][Spack]]
+
+# GitHub:
+# - [[https://docs.github.com/en/free-pro-team@latest/github/managing-large-files/distributing-large-binaries][Distributing large binaries]]
+# - [[https://github.blog/changelog/2020-04-14-private-repositories-with-unlimited-collaborators-available-to-all-github-accounts-and-changes-to-github-paid-plans/][Private repositories with unlimited collaborators]]
+
+* [[https://en.wikipedia.org/wiki/Continuous_integration][Continuous integration]]
+
+# CodeShip
+# - [*TravisCI*]: [[https://docs.travis-ci.com/user/for-beginners/][QuickStart]], [[https://docs.travis-ci.com/user/tutorial/][tutorial]]
+#   - [[https://docs.travis-ci.com/user/gl-oauth-scopes/][GitLab permissions used by TravisCI]]
+# https://about.gitlab.com/images/devops-tools/comparisons/travis-ci-vs-gitlab.jpg
+# https://stackshare.io/stackups/gitlab-ci-vs-jenkins-vs-travis-ci#pros
+- comparisons:
+  - [[https://stackshare.io/stackups/gitlab-ci-vs-jenkins-vs-travis-ci][GitLab CI vs. Jenkins vs. Travis CI]]
+  - [[https://about.gitlab.com/devops-tools/travis-ci-vs-gitlab/][*GitLab CI* vs. *TravisCI*]]
+- self-hosted solutions: +[[https://de.wikipedia.org/wiki/Jenkins_(Software)][Jenkins]]+ or +[[https://circleci.com/][CircleCI]]+
+
+# [[./figs/hidalgo_integration/gitlab_vs_github.png]]
+# https://miro.medium.com/max/2400/1*ZpleHY30qD2CeiiOwmq1dw.png
+* Automated deployment
+
+- Deployment on clusters
+  - _*[[https://en.wikipedia.org/wiki/Package_manager][Package manager]]*_:
+    - *[[https://spack.readthedocs.io/][=Spack=]]* \(\leadsto\) YAML \(\implies\) +[[https://lmod.readthedocs.io/][lmod]]+ \(\overset{\text{ModEnv}}{\leadsto}\) +{Tcl|Lua}+
+    -alternatives
+      - [[https://github.com/microsoft/vcpkg][vcpkg]] -> VStudio
+      - conan -> hard to maintain several alternated installations
+      - easypack
+  - _*[[https://en.wikipedia.org/wiki/Software_configuration_management][SCM]]*_: *[[https://en.wikipedia.org/wiki/Ansible_(software)][=Ansible=]]* \(\leadsto\) YAML, +~Puppet~+, +[[https://github.com/melezhik/sparrow][~sparrow~]]+
+  # - *[[https://en.wikipedia.org/wiki/Software_configuration_management][SCM]]*: [[https://en.wikipedia.org/wiki/Ansible_(software)][~Ansible~]] vs +~[[https://en.wikipedia.org/wiki/Puppet_(company)][Puppet]]~+ vs +[[https://github.com/melezhik/sparrow][~sparrow~]]+
+  # - A quick: https://habr.com/ru/post/305400/
+  # - AvsP: https://habr.com/ru/company/ua-hosting/blog/490502/
+  # - extensions: https://habr.com/ru/post/320220/
+  - _*[[https://en.wikipedia.org/wiki/OS-level_virtualization][Containers]]*_: *[[https://sylabs.io/guides/3.7/user-guide/definition_files.html][~Singularity~]]* or [[https://docs.docker.com/develop/develop-images/dockerfile_best-practices/][~Docker~]] \(\leadsto\) shell+
+    - can be automated by =Spack=
+- {{{to_clarify}}} ~FabSim~-based solution
+
+

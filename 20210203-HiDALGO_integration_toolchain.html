@@ -1,0 +1,292 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>HiDALGO integration toolchain</title>
+<meta name="author" content="Sergiy Gogolenko"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/beige.css" id="theme"/>
+
+<link rel="stylesheet" href="./hidalgo-style/extra.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/monokai.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="header-x"><div class="left"><img src="./hidalgo-style/hidalgo-logo.png"><hr/></div><div class="center"><b>H</b>PC and B<b>i</b>g <b>Da</b>ta Techno<b>l</b>ogies for <b>G</b>l<b>o</b>bal Challenges</div><div class="right"><hr/></div></div> <div class="footer-x"><div class="left">2021-02-03</div><div class="center"><b>Sergiy Gogolenko</b><br><i><small>HiDALGO integration toolchain</small></i></div> <div class="right"><img src="./hidalgo-style/Flag_of_Europe.svg" alt="HiDALGO"><b>EU</b> <small>founded project</small><br><b>&aleph;824115</b><br><sup><sup><sup><sup><sup><sup><sup><b><code>@OITTTIO</code><b></sup></sup></sup></sup></sup></sup></sup></div></div>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-background="./hidalgo-style/hidalgo-bg-title.jpg" data-background-size="100%" data-background-position="top">
+<h1><br><small>HiDALGO integration toolchain<br><sup><sup>Discussion</sup></sup></small></h1><h2><a href='mailto:<a href="mailto:gogolenko@hlrs.de">gogolenko@hlrs.de</a>'>Sergiy Gogolenko</a></h2><h4></h4><h3>HiDALGO call&compfn;2021-02-03</h3>
+</section>
+
+<section>
+<section id="slide-orgbc15bbe">
+<h2 id="orgbc15bbe">GitLab vs GitHub</h2>
+<div class="outline-text-2" id="text-orgbc15bbe">
+</div>
+</section>
+<section id="slide-orgf28fe7b">
+<h3 id="orgf28fe7b">General Comparison</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">GitHub</th>
+<th scope="col" class="org-left">GitLab</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><b>Purpose</b></td>
+<td class="org-left"><span class="underline">Social Media</span></td>
+<td class="org-left"><span class="underline">DevEnv</span></td>
+</tr>
+
+<tr>
+<td class="org-left"><b>Self-hosted environment</b></td>
+<td class="org-left"><font color="red">&Cross;</font>  <span class="underline">commercial</span></td>
+<td class="org-left"><font color="green">&check;</font>  <span class="underline">open-source</span></td>
+</tr>
+
+<tr>
+<td class="org-left"><b>CI/CD</b></td>
+<td class="org-left"><del><a href="https://travis-ci.com">Travis CI</a></del> <font color="gold">&circlearrowleft;</font>  <a href="https://github.com/features/actions">Actions</a></td>
+<td class="org-left"><font color="green">&check;</font>  built-in (A+)</td>
+</tr>
+
+<tr>
+<td class="org-left">Collaboration tools</td>
+<td class="org-left">A+</td>
+<td class="org-left">A</td>
+</tr>
+
+<tr>
+<td class="org-left">Community</td>
+<td class="org-left">\(\le\) 50M devs</td>
+<td class="org-left">\(\le\) 100K organizations</td>
+</tr>
+
+<tr>
+<td class="org-left">Max storage per repo</td>
+<td class="org-left">\(\le\) 500MB</td>
+<td class="org-left">\(\le\) 10GB</td>
+</tr>
+
+<tr>
+<td class="org-left">Customization</td>
+<td class="org-left">easy (e.g., r/w access)</td>
+<td class="org-left">customizable (e.g., roles)</td>
+</tr>
+
+<tr>
+<td class="org-left">Free private repos</td>
+<td class="org-left">teams <del>\(\le\) 3 users</del></td>
+<td class="org-left">unlimited</td>
+</tr>
+
+<tr>
+<td class="org-left">Pricing Plans</td>
+<td class="org-left"><a href="https://github.com/pricing">GitHub</a></td>
+<td class="org-left"><a href="https://miro.medium.com/max/2400/1*LaoGXALa6PU0P22tDqRaPA.png">GitLab</a></td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org4c124db">
+<h3 id="org4c124db">Pricing</h3>
+<blockquote>
+<p>
+GitHub Free gives teams private repositories with unlimited collaborators at no cost&#x2026;
+</p>
+
+<p>
+&#x2014; <a href="https://github.blog/changelog/2020-04-14-private-repositories-with-unlimited-collaborators-available-to-all-github-accounts-and-changes-to-github-paid-plans/">Private repositories with unlimited collaborators</a> / GitHub Blog, April 14, 2020
+</p>
+</blockquote>
+
+<ul>
+<li><a href="https://gitlab.kitware.com">https://gitlab.kitware.com</a></li>
+<li><a href="https://gitlab.spack.io">https://gitlab.spack.io</a></li>
+<li><a href="https://gitlab.bsc.es">https://gitlab.bsc.es</a></li>
+
+</ul>
+
+</section>
+<section id="slide-org8d12671">
+<h3 id="org8d12671">Legal aspects &amp; Ownership</h3>
+<blockquote>
+<p>
+We do not claim any ownership rights to the information that you submit to the GitLab application itself, <span class="underline">your code is yours</span>.
+</p>
+
+<p>
+&#x2014; <a href="https://about.gitlab.com/terms/signature_all.html">GitLab.com Terms</a>
+</p>
+</blockquote>
+
+<blockquote>
+<p>
+<span class="underline">You retain ownership of</span> and responsibility for Your Content&#x2026;
+</p>
+
+<p>
+Because you retain ownership of and responsibility for Your Content,
+we need you to grant us &#x2013; and other GitHub Users &#x2013;
+<span class="underline">certain legal permissions</span>, listed in Sections D.4 &#x2013; D.7.
+</p>
+
+<p>
+&#x2014; <a href="https://docs.github.com/en/free-pro-team@latest/github/site-policy/github-terms-of-service#3-ownership-of-content-right-to-post-and-license-grants">GitHub Terms of Service</a>
+</p>
+</blockquote>
+
+</section>
+<section id="slide-org3c5b8f3">
+<h3 id="org3c5b8f3"></h3>
+<blockquote>
+<p>
+&#x2026; one of the most popular CI/CD frameworks today. GitLab has everything that GitHub has,
+and giving teams increased control over their repositories.
+</p>
+
+<p>
+&#x2026; was initially designed with a built-in CI/CD tool, which makes it
+</p>
+
+<p>
+&#x2014; <a href="https://blog.codegiant.io/gitlab-vs-github-which-one-is-better-2020-d8ec7fb9542c">GitLab vs GitHub &#x2013; What Are The Key Differences And Which One Is Better?</a>
+</p>
+</blockquote>
+
+<ul>
+<li>Key question:
+<ul>
+<li>do we need environment to <span class="underline">promote or develop</span>?</li>
+
+</ul></li>
+<li>Other aspects to keep in mind:
+<ul>
+<li>do we need <span class="underline">self-hosted environment</span>?</li>
+<li>do we need <span class="underline">FOSS CI/CD</span> platform with advanced <a href="https://www.tutorialspoint.com/sdlc/sdlc_overview.htm">SDLC</a>?
+<ul>
+<li>benefit for <a href="https://spack.readthedocs.io/en/latest/pipelines.html">Spack</a></li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org7f28e8b">
+<h2 id="org7f28e8b"><a href="https://en.wikipedia.org/wiki/Continuous_integration">Continuous integration</a></h2>
+<ul>
+<li>comparisons:
+<ul>
+<li><a href="https://stackshare.io/stackups/gitlab-ci-vs-jenkins-vs-travis-ci">GitLab CI vs. Jenkins vs. Travis CI</a></li>
+<li><a href="https://about.gitlab.com/devops-tools/travis-ci-vs-gitlab/"><b>GitLab CI</b> vs. <b>TravisCI</b></a></li>
+
+</ul></li>
+<li>self-hosted solutions: <del><a href="https://de.wikipedia.org/wiki/Jenkins_(Software)">Jenkins</a></del> or <del><a href="https://circleci.com/">CircleCI</a></del></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org9ad5472">
+<h2 id="org9ad5472">Automated deployment</h2>
+<ul>
+<li><p>
+Deployment on clusters
+</p>
+<ul>
+<li><p>
+<span class="underline"><b><a href="https://en.wikipedia.org/wiki/Package_manager">Package manager</a></b></span>:
+</p>
+<ul>
+<li><b><a href="https://spack.readthedocs.io/"><code>Spack</code></a></b> \(\leadsto\) YAML \(\implies\) <del><a href="https://lmod.readthedocs.io/">lmod</a></del> \(\overset{\text{ModEnv}}{\leadsto}\) <del>{Tcl|Lua}</del></li>
+
+</ul>
+<p>
+-alternatives
+</p>
+<ul>
+<li><a href="https://github.com/microsoft/vcpkg">vcpkg</a> -&gt; VStudio</li>
+<li>conan -&gt; hard to maintain several alternated installations</li>
+<li>easypack</li>
+
+</ul></li>
+<li><span class="underline"><b><a href="https://en.wikipedia.org/wiki/Software_configuration_management">SCM</a></b></span>: <b><a href="https://en.wikipedia.org/wiki/Ansible_(software)"><code>Ansible</code></a></b> \(\leadsto\) YAML, <del><code>Puppet</code></del>, <del><a href="https://github.com/melezhik/sparrow"><code>sparrow</code></a></del></li>
+
+</ul>
+
+<ul>
+<li><span class="underline"><b><a href="https://en.wikipedia.org/wiki/OS-level_virtualization">Containers</a></b></span>: <b><a href="https://sylabs.io/guides/3.7/user-guide/definition_files.html"><code>Singularity</code></a></b> or <a href="https://docs.docker.com/develop/develop-images/dockerfile_best-practices/"><code>Docker</code></a> \(\leadsto\) shell+
+<ul>
+<li>can be automated by <code>Spack</code></li>
+
+</ul></li>
+
+</ul></li>
+<li><font color="red">&#x2753;&#x2757;</font>  <code>FabSim</code>-based solution</li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+
+overview: true,
+width: 1400,
+height: 1000,
+
+transition: 'convex',
+transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>

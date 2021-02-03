@@ -25,8 +25,12 @@
 #+MACRO: end_column #+REVEAL_HTML: </div>
 
 #+MACRO: beg_columns #+REVEAL_HTML: <div style="display: flex;">
-#+MACRO: beg_column #+REVEAL_HTML: <div style="flex-basis: $1">
-#+MACRO: end_column #+REVEAL_HTML: </div>
+#+MACRO: beg_column  #+REVEAL_HTML: <div style="flex-basis: $1">
+#+MACRO: end_column  #+REVEAL_HTML: </div>
 #+MACRO: end_columns #+REVEAL_HTML: </div>
+
+#+MACRO: beg_block #+REVEAL_HTML: <div class="alert alert-info">
+#+MACRO: end_block #+REVEAL_HTML: </div>
+#+MACRO: hr #+ATTR_HTML: <hr/>
 
 #+MACRO: mailto @@html:<a href='mailto:$1'>$2</a>@@
