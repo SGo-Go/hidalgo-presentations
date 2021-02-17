@@ -1,0 +1,830 @@
+# -*- mode: org -*-
+#+INCLUDE: ./org/common/hidalgo-style.org
+
+#+TITLE: Introduction to Spack for HiDALGO software developers
+#+SUBTITLE: Use with HiDALGO HPC infrastructure
+#+AUTHOR: Sergiy Gogolenko 
+# +REVEAL_ACADEMIC_TITLE: High-Performance Computing Center, Stuttgart, DE
+#+EMAIL: gogolenko@hlrs.de
+#+CREATOR: HiDALGO call
+#+DATE: 2021-02-17
+#+OPTIONS: author:t date:t num:nil toc:nil created:nill email:t tex:t
+#+REVEAL_TALK_URL: http://sgo-go.github.io/hidalgo-presentations/spack-slides.html
+#+TIME: 25min
+
+* Why to use it at the 1st place?
+  :PROPERTIES:
+  :reveal_extra_attr: data-background-iframe="https://github.com/spack/spack" data-background-opacity="0.2" data-background-interactive
+  :END:
+
+ - [ALL ] make it possible to install _off-line on bare metal_ with a full control on the installation process
+ - [ALL ] consistent _build customization_ for each platform
+ - [ALL ] reproducible software _environments_ for all use cases over all platforms
+   - [T5.4] way to reproducible science with /lock-files/
+   - [T5.4] /installation matrices/ for benchmarks and performance studies
+     - effect of compilers & different configurations
+ - [T6.4] provides almost _for granted_ such features as:
+   - [WP5,T6.4] /[[https://spack.readthedocs.io/en/latest/containers.html][containerization]]/ of environments (both Docker & Singularity) and
+   - [WP5,T6.4] GitLabCI-/[[https://spack.readthedocs.io/en/latest/pipelines.html][pipelines]]/
+   - [T6.4] /documentation/ for the installation process
+
+** Why more than =PyPI= and =conda=?
+
+- advantages over =PyPI=:
+  - full support packages with _non-Python dependencies_
+    - compile /non-Python dependencies/
+    - can build /cythonized/ versions of a package 
+    - can link to an /optimized libraries/ (e.g., MKL in case of BLAS/LAPACK)
+- advantage over =conda=:
+  - ability to choose a _specific compiler_
+  - can link to an /specific libraries/ (BLAS/LAPACK, MPI,...)
+  - better platform support for supercomputers (builds optimized binaries for /specific microarchitectures/)
+- disadvantages of =Spack=:
+  - =PyPI=: incredible amount of packages that are not yet in =Spack=
+  - =conda=: Windows support far better than in =Spack=
+* How it works
+
+*_Key mechanisms of =Spack=_*:
+- store dependencies in [[https://spack.readthedocs.io/en/latest/packaging_guide.html#handling-rpaths][RPATH]] ([[https://en.wikipedia.org/wiki/Rpath][wiki]])
+
+*_Key parts of =Spack=_*:
+- *Specs*: expressions for describing builds of software, and
+- *Packages*: Python codes describing how to build software according to a spec.
+
+* Making specs more specific
+** Anatomy of specs
+
+  # #+BEGIN_SRC sh
+  #   spack spec python@3.9%clang@3.8+optimizations~debug ^openssl@1.1
+  # #+END_SRC
+
+- package name
+  #+BEGIN_SRC sh
+    spack list pyth*
+  #+END_SRC
+- version
+  #+BEGIN_SRC sh
+    spack versions python # check for particular versions before requesting them
+  #+END_SRC
+- compiler
+  #+BEGIN_SRC sh
+    spack compilers # or spack compiler list
+    spack compiler info clang # to know better what is it
+  #+END_SRC
+- flags (for compilers & linkers)
+  # - compilers: ~cppflags~, ~cflags~, ~cxxflags~, and ~fflags~
+  # - linkers: ~ldflags~, and ~ldlibs~
+- boolean variants and dependencies
+  #+BEGIN_SRC sh
+    spack info python
+  #+END_SRC
+- hash (~concretize~ or ~find -l~)
+
+** [[https://spack.readthedocs.io/en/latest/command_index.html#spack-arch][Specify platform]]
+
+- list platforms defined in spack
+  #+BEGIN_SRC sh
+    spack arch --known-targets
+  #+END_SRC
+- check current platform
+  #+BEGIN_SRC sh
+    spack arch -f # frontend
+    spack arch -b # backend
+  #+END_SRC
+- check current platform: parts of specification
+  #+BEGIN_SRC sh
+    spack arch -b -t # only the target
+    spack arch -b -p # only platform
+    spack arch -b -o # only the operating system  
+  #+END_SRC
+
+***  [[https://spack.readthedocs.io/en/latest/command_index.html#spack-arch][Specify platform]]: Use your knowledge
+
+- check core michroarchitecture from HiDALGO table
+
+#+REVEAL_HTML: <small>
+|              | Hawk            | Vulcan                 | Eagle              |
+|--------------+-----------------+------------------------+--------------------|
+| Nodes        | 5632            | 96                     | 1087               |
+| CPU model    | EPYC 7742       | Xeon 6248              | E5-2697V3          |
+| *Cores*      | 2 x 64 x *[[https://en.wikipedia.org/wiki/Epyc][zen2]]* | 2 x 20 x *[[https://de.wikipedia.org/wiki/Intel_Xeon_(Cascade_Lake)][cascadelake]]* | 2 x 14 x *[[https://en.wikipedia.org/wiki/Haswell_(microarchitecture)][haswell]]* |
+| RAM per node | 256GB           | 384GB                  | 256 GB             |
+| Interconnect | IB HDR200       | IB HDR                 | IB FDR56           |
+|--------------+-----------------+------------------------+--------------------|
+| *OS*         | CentOS 8.2      | CentOS 7.9             | CentOS 7.6         |
+| MPI backend  | MPT 2.23        | OpenMPI 4.0.5          | OpenMPI 4.0.1      |
+| Interpreter  | Python 3.8.3    | Python 3.6.6           | Python 3.6.6       |
+#+REVEAL_HTML: </small>
+
+* Going off-line
+** Deploying =spack= 
+
+#+ATTR_REVEAL: :frag (none appear appear) :frag_idx (- 1 2)
+- download your favorite release or clone =spack= and patch (if necessary)
+  #+BEGIN_SRC sh
+    curl https://github.com/spack/spack/releases/download/v0.16.0/spack-0.16.0.tar.gz |
+        ssh hawk 'cat > ~/spack.tar.gz'
+    wget https://github.com/spack/spack/releases/download/v0.16.0/spack-0.16.0.tar.gz &&
+        scp ./spack-0.16.0.tar.gz hawk:~/spack.tar.gz && rm -rf ./spack-0.16.0.tar.gz
+  #+END_SRC
+  # $(ssh hawk '/opt/hlrs/non-spack/system/ws/1.3.1/bin/ws_find spack')
+- allocate disk space for your experiments at remote system and unpack there
+  #+BEGIN_SRC sh
+    ws_allocate -d 30 spack2
+    export SPACK_ROOT=$(ws_find spack2)/spack-0.16
+    tar xvf ~/spack.tar.gz -C $(dirname $SPACK_ROOT) && rm ~/spack.tar.gz
+  #+END_SRC
+- activate
+  #+BEGIN_SRC sh
+    . $SPACK_ROOT/share/spack/setup-env.sh
+  #+END_SRC
+
+** [[https://spack.readthedocs.io/en/latest/mirrors.html][Mirrors]]
+*** [[https://spack.readthedocs.io/en/latest/mirrors.html][Mirrors]]: Analyse environment
+- find deps
+  #+BEGIN_SRC sh
+    spack concretize -f
+
+    spack find -c --no-groups | grep @ # may miss external packages
+    spack find -c -d --no-groups | grep @ | tr -d " " | sort | uniq
+  #+END_SRC
+
+*** [[https://spack.readthedocs.io/en/latest/mirrors.html][Mirrors]]: Create mirror at local workstation
+- [[https://spack.readthedocs.io/en/latest/command_index.html#spack-mirror-create][create]] mirror for a subset of specs at your local PC
+  #+BEGIN_SRC sh
+    spack mirror create # mirror everything
+    spack mirror create -f specs.txt # mirror specs from file
+    spack mirror create -n10 -d ~/hidalgo_boost boost # get 10 safe versions of boost (including develop)
+  #+END_SRC
+  - *note*: downloads safe versions only
+  - minimalistic mirror for the active environment
+    #+BEGIN_SRC sh
+      spack mirror create -n 1 -D -d ~/hidalgo_mirror-$(date +%Y%m%d) \
+        $(spack find -c -d --no-groups | grep @ | tr -d " " | sort | uniq)
+    #+END_SRC
+    #+BEGIN_SRC sh
+      ==> Skipping cmake@3.5.1%gcc@5.4.0~doc+ncurses+openssl+ownlibs~qt \
+       arch=linux-ubuntu16.04-broadwell/begrqoj as it is an external spec.
+    #+END_SRC
+    - dirty workaround
+      - add this line to environment config
+      #+BEGIN_SRC yaml
+        packages:: {}
+      #+END_SRC
+      - don't forget to call ~spack concretize -f~
+
+*** [[https://spack.readthedocs.io/en/latest/mirrors.html][Mirrors]]: Effect of ~packages:: {}~
+
+# SVG: fill="white" -> fill="none"
+
+#+BEGIN_SRC sh
+  spack graph -d libosrm | dot -Tpdf | zathura - 
+  spack graph -d libosrm | dot -Tsvg -o/tmp/spack.stdin.svg && eog /tmp/spack.stdin.svg
+  spack graph -i -d | dot -Tsvg -o./full_installation.svg # all installed (not only in env)
+#+END_SRC
+
+#+REVEAL_HTML: <div style="display: flex;">
+#+REVEAL_HTML: <div style="flex: 1;">
+#+ATTR_HTML: :width 75%
+[[./figs/spack/spack_libosrm_default.svg]]
+
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div style="flex: 1;">
+#+ATTR_HTML: :width 75%
+[[./figs/spack/spack_libosrm_full.svg]]
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: </div>
+
+*** [[https://spack.readthedocs.io/en/latest/mirrors.html][Mirrors]]: Copy and register mirror
+
+- copy mirror to the remote system
+  #+BEGIN_SRC sh
+    scp -r $HOME/hidalgo_mirror-$(date +%Y%m%d) \
+        hawk:$(ssh hawk '/opt/hlrs/non-spack/system/ws/1.3.1/bin/ws_find spack')/hidalgo_mirror
+  #+END_SRC
+- register mirror
+  #+BEGIN_SRC sh
+    spack mirror add hidalgo_mirror file://$(ws_find spack)/hidalgo_mirror-$(date +%Y%m%d)
+  #+END_SRC
+- check environment config
+  #+BEGIN_SRC sh
+    spack config get
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    mirrors:
+      hidalgo_mirror: file:///lustre/cray/ws9/2/ws/username-spack/hidalgo_mirror-20210211
+  #+END_SRC
+
+*** [[https://spack.readthedocs.io/en/latest/mirrors.html][Mirrors]]: Removing ineligible mirrors
+#+ATTR_REVEAL: :frag (none appear appear) :frag_idx (- 1 3)
+- list existing mirrors
+  #+BEGIN_SRC sh
+    spack mirror list
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    hidalgo_mirror    file:///lustre/cray/ws9/2/ws/username-spack/hidalgo_mirror-20210211
+    spack-public      https://spack-llnl-mirror.s3-us-west-2.amazonaws.com/
+  #+END_SRC
+- *hard remove* of undesirable/ineligible mirrors
+  #+BEGIN_SRC sh
+    spack mirror remove spack-public
+  #+END_SRC
+  #+BEGIN_SRC 
+    ==> Error: No mirror with name spack-public
+  #+END_SRC
+  #+ATTR_REVEAL: :frag (appear) :frag_idx (2)
+  - [[https://github.com/spack/spack/issues/17554][workaround]]: define scope
+    #+BEGIN_SRC sh
+      less $SPACK_ROOT/etc/spack/defaults/mirrors.yaml
+      spack mirror remove --scope defaults spack-public
+    #+END_SRC
+- safer to fix environment config
+  #+BEGIN_SRC yaml
+    mirrors::
+      hidalgo_mirror: file:///lustre/cray/ws9/2/ws/username-spack/hidalgo_mirror-20210211  
+  #+END_SRC
+
+** Repos
+
+- copy your specific repos to the remote host
+  #+BEGIN_SRC sh
+    scp -r $HOME/dev/hidalgo-spack-repo hawk:~/hidalgo-spack-repo
+  #+END_SRC
+- register with =Spack=
+
+** Summary
+
+- create mirror for the environment with the software versions of choice and externals turned off
+- copy mirror and register (within environment or scope of choice)
+- copy and register repos with packages if necessary
+
+- there are other more hacky ways too use packages off-line
+  - [[https://doku.lrz.de/display/PUBLIC/Building+software+in+user+space+with+spack#Buildingsoftwareinuserspacewithspack-Providingsourcefiles][providing source files]] via cache
+* Reuse of installed packages
+** [[https://spack.readthedocs.io/en/latest/chain.html][Upstreams]]
+
+- default location of =spack= installations at Hawk
+  #+BEGIN_SRC sh
+    ll /opt/hlrs/spack/current
+    # lrwxrwxrwx 1 hpcoft28 hpc43203 18 Jul  3  2020 /opt/hlrs/spack/current -> rev-004_2020-06-17
+  #+END_SRC
+- more installations
+  #+BEGIN_SRC sh
+    ll /opt/hlrs/spack/rev*
+    # rev-008_2020-10-03
+  #+END_SRC
+- register it as an upstream
+  #+BEGIN_SRC yaml
+    upstreams:
+      spack-hawk-new:
+        install_tree:
+          /opt/hlrs/spack/rev-008_2020-10-03
+      spack-hawk-default:
+        install_tree:
+          /opt/hlrs/spack/current
+  #+END_SRC
+- check packages compiled for the given microarchitecture
+  #+BEGIN_SRC sh
+    spack find target=zen2
+  #+END_SRC
+** Externals
+
+#+BEGIN_SRC sh
+  spack external find --not-buildable 
+#+END_SRC
+- limited to finding a **small subset of _build-only_ dependencies** (e.g., =Python/Lua=, etc are not there)
+  #+BEGIN_SRC sh
+    spack external list
+  #+END_SRC
+- =spack= does not 
+  - collects and examines /beyond executable files/
+  - search through /module files/
+  - /overwrite existing entries/ in the package configuration
+
+*** Externals: steal configs
+
+- tempting solution: on Hawk, reuse =compilers.yaml= and =packages.yaml= from upstreamed =spack=
+  #+BEGIN_SRC yaml
+    include:
+    - /opt/hlrs/non-spack/misc/spack/spack-hlrs/spack-config/compilers.yaml
+    - /opt/hlrs/non-spack/misc/spack/spack-hlrs/spack-config/packages.yaml
+  #+END_SRC
+- issue
+  #+BEGIN_SRC sh
+    ==> Warning: detected deprecated properties in $HOME/hidalgo_configs/packages.yaml
+    Activate the debug flag to have more information on the deprecated parts or run:
+
+            $ spack config update packages
+
+    to update the file to the new format
+  #+END_SRC
+- try to fix =packages.yaml= automatically
+  #+BEGIN_SRC sh
+    spack config update packages
+  #+END_SRC
+  #+BEGIN_SRC sh
+    ==> Warning: included configuration files *should be updated manually* \
+     [files=$HOME/hidalgo_configs/compilers.yaml, $HOME/hidalgo_configs/packages.yaml]
+  #+END_SRC
+
+*** Externals: fix configs manually?
+- deprecated syntax from =/opt/hlrs/non-spack/misc/spack/spack-hlrs/spack-config/packages.yaml=
+  #+BEGIN_SRC yaml
+    openmpi:
+      buildable: False
+      modules:
+        openmpi@4.0.5: openmpi/4.0.5
+        openmpi@4.0.4: openmpi/4.0.4
+  #+END_SRC
+- correct syntax
+  #+BEGIN_SRC sh
+    spack config blame packages
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    ~/hidalgo_configs/packages.yaml:34      openmpi:
+    ~/hidalgo_configs/packages.yaml:35        buildable: False
+    ~/hidalgo_configs/packages.yaml:35        externals:
+    ~/hidalgo_configs/packages.yaml:35        - spec: openmpi@4.0.5
+    ~/hidalgo_configs/packages.yaml:35          modules:
+    ~/hidalgo_configs/packages.yaml:35          - openmpi/4.0.5
+    ~/hidalgo_configs/packages.yaml:35        - spec: openmpi@4.0.4
+    ~/hidalgo_configs/packages.yaml:35          modules:
+    ~/hidalgo_configs/packages.yaml:35          - openmpi/4.0.4
+  #+END_SRC
+
+*** Externals: fix configs manually?
+
+- one-liner
+  #+BEGIN_SRC python
+    spack config blame config | python -c \
+        "from sys import stdin, stdout; i=stdin.readline().rfind(' '); map(lambda _: stdout.write(_[i:]), stdin)"
+  #+END_SRC
+- more careful script with filtering configs for the given file
+  #+BEGIN_SRC python
+    import re,sys
+    from fileinput import FileInput
+    re_spack_blame=re.compile(r'(?P<fileneme>.+):(?P<lineno>[0-9]+)\w+')
+    with FileInput() as input:
+        i=stdin.readline().rfind(' ')
+        for line in input:
+            m=re_spack_blame.match(line[:i])
+            if m and m.group('filename') == sys.argv[1]:
+                print(line[i:])
+  #+END_SRC
+
+*** Externals: fix configs manually!
+- better to make MPI non-buildable at all!
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="1-2,4"
+  #+BEGIN_SRC yaml
+    mpi:
+      buildable: False
+    openmpi:
+      # buildable: False
+      externals:
+      - spec: openmpi@4.0.5
+        modules: [openmpi/4.0.5]
+      - spec: openmpi@4.0.4
+        modules: [openmpi/4.0.4]
+  #+END_SRC
+- alternative short format which is also fine
+  #+BEGIN_SRC yaml
+    mpi:
+      buildable: False
+        openmpi@4.0.5: /path/to/openmpi/4.0.5
+        openmpi@4.0.4: /path/to/openmpi/4.0.4  
+  #+END_SRC
+
+*** Externals: be more concrete
+
+- define in specs as mush as possible
+  #+BEGIN_SRC yaml
+      - spec: openmpi@4.0.5%gcc@10.2.0 arch=linux-centos8-zen2
+        modules: [openmpi/4.0.5]
+      - spec: openmpi@4.0.4%gcc@9.2.0 arch=linux-centos8-zen2
+        modules: [openmpi/4.0.4]   
+  #+END_SRC
+- not always easy or feasible with modulefiles
+  #+BEGIN_SRC sh
+    module avail openmpi
+  #+END_SRC
+  #+BEGIN_SRC sh
+    ---------------- Compiler-dependent modules -----------------
+       openmpi/4.0.4    openmpi/4.0.5 (D)
+  #+END_SRC
+  #+BEGIN_SRC sh
+    ls /opt/hlrs/non-spack/mpi/openmpi
+  #+END_SRC
+  #+BEGIN_SRC sh
+    4.0.4-gcc-9.2.0     4.0.5-aocc-2.2.0  4.0.5-gcc-9.2.0     4.0.5-intel-19.1.2
+    4.0.4-intel-19.1.0  4.0.5-gcc-10.2.0  4.0.5-intel-19.1.0  4.0.5-intel-19.1.3
+    4.1.0-aocc-2.2.0  4.1.0-intel-19.1.3  4.1.0-gcc-10.2.0    hcoll
+  #+END_SRC
+- sometimes we have better control (on expence of extra-work) with =prefix=
+
+*** Externals: make package [[https://spack.readthedocs.io/en/latest/packaging_guide.html#making-a-package-discoverable-with-spack-external-find][discoverable]]
+
+- define ~executables~ and implement ~determine_version~ method
+  #+BEGIN_SRC python
+    executables = [...]
+    @classmethod
+    def determine_version(cls, exe): ...
+  #+END_SRC
+- optionally add
+  - detection of variants and custom attributes
+  - extra logic to filtered the executables (e.g., architecture-specific logic)
+    # if regex are insufficient 
+  - spec validation logic
+    #+BEGIN_SRC python
+      @classmethod
+      def determine_variants(cls, exes, version_str): ...
+      @classmethod
+      def filter_detected_exes(cls, prefix, exes_in_prefix): ...
+      @classmethod
+      def validate_detected_spec(cls, spec, extra_attributes): ...
+    #+END_SRC
+- *OR* (last resort) completely redefine the detection logic for a package
+  #+BEGIN_SRC python
+    @classmethod
+    def determine_spec_details(cls, prefix, exes_in_prefix): ...
+  #+END_SRC
+
+** Summary: Step-Wise Instructions
+
+- upstream =spack=-installed packages
+- reuse configs carefully
+- use modules for non-=spack= installations
+- use =external find=
+- use manual specification of externals via prefix for the rest
+* Build customization
+
+- configuration _scopes_ 
+  - /common/ (lower-precedence scopes first):
+    #+REVEAL_HTML: <small>
+    | Scope        | Specification                                     | Description                       |
+    |--------------+---------------------------------------------------+-----------------------------------|
+    | *=defaults=* | =$SPACK_ROOT/etc/spack/defaults=                  | "factory" settings                |
+    | *=system=*   | =/etc/spack=                                      | settings for this machine         |
+    | *=site=*     | =$SPACK_ROOT/etc/spack=                           | settings for =Spack= instance     |
+    | *=user=*     | =~/.spack=                                        | all instances of =Spack= for user |
+    | *custom*     | options ~--config-scope~ or ~-C </path/to/scope>~ | custom location                   |
+    #+REVEAL_HTML: </small>
+  - /platform-specific/: =<base-scope>/<platform>)= (~darwin~, ~linux~,...)
+
+** Build customization: Sections
+
+- configuration _sections_
+  #+BEGIN_SRC sh
+    spack config list
+  #+END_SRC
+  #+BEGIN_SRC sh
+    compilers mirrors repos packages modules config upstreams
+  #+END_SRC
+
+#+REVEAL_HTML: <small>
+| Section   | Description                                      |
+|-----------+--------------------------------------------------|
+| [[https://spack.readthedocs.io/en/latest/config_yaml.html][config]]    | basic configuration options                      |
+| [[https://spack.readthedocs.io/en/latest/build_settings.html][packages]]  | build customization                              |
+| compilers | compiler definitions                             |
+|-----------+--------------------------------------------------|
+| mirrors   | list of local and remote mirrors                 |
+| repos     | list of repos with build instructions            |
+| upstreams | installation trees of external =Spack= instances |
+|-----------+--------------------------------------------------|
+| modules   | set up for mudulefile generation                 |
+#+REVEAL_HTML: </small>
+
+#+BEGIN_SRC ah
+  spack -C /path/to/hawk/scope config edit packages
+  spack -C /path/to/hawk/scope config get upstreams
+  spack --insecure -C /path/to/hawk/scope -C /path/to/hidalgo/scope config blame config
+#+END_SRC
+
+** More on [[https://spack.readthedocs.io/en/latest/build_settings.html][=packages=]] section
+
+- permissions
+  #+BEGIN_SRC yaml
+    all:
+      permissions:
+        read: world # read-world is default, can remove
+        write: group
+        group: spack
+    uap_simulator:
+      permissions:
+        read: group
+        group: hid_uap
+  #+END_SRC
+- concretization preferences
+  #+BEGIN_SRC yaml
+    packages:
+      python:
+        compiler: [gcc@10.2.0]
+        variants: +optimization
+        version: [3.6, 3.9.0, 3.7]
+      all:
+        compiler: [gcc@10.2.0, 'clang@10:', 'gcc', intel]
+        target: [zen2]
+        providers:
+          mpi: [mpe, openmpi]
+  #+END_SRC
+  all providers can be found in the [[https://github.com/spack/spack/blob/develop/etc/spack/defaults/packages.yaml][defaults]] scope
+
+** Once again on =compilers=
+
+- excerpt from =/opt/hlrs/non-spack/misc/spack/spack-hlrs/spack-config/compilers.yaml=
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="10,11"
+  #+BEGIN_SRC yaml
+    - compiler:
+        spec: clang@10.0.0
+        paths:
+          cc: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-clang
+          cxx: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-clang++
+          f77: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-flang
+          fc: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-flang
+        flags: {}
+        operating_system: centos8
+        target: x86_64
+        modules: [aocc/2.2.0]
+        environment: {}
+        extra_rpaths: []
+  #+END_SRC
+
+** Ideally sites must provide their configs
+
+- official examples: https://github.com/spack/spack-configs
+* More on Environments
+** Reproducing Environments
+#+ATTR_REVEAL: :frag (none appear) :frag_idx (- 2)
+- create environment from
+  #+ATTR_REVEAL: :frag (none appear) :frag_idx (- 1)
+  - a set of abstract specs
+    #+BEGIN_SRC sh
+      spack env create abstract spack.yaml
+    #+END_SRC
+  - a set of all fully concretized specs
+    #+BEGIN_SRC sh
+      spack env create concrete spack.lock
+    #+END_SRC
+- concretize
+  #+BEGIN_SRC sh
+    spack concretize -f
+  #+END_SRC
+
+** Build Environments: Pitfalls on Hawk (externals)
+
+- sometimes fail to concretize with the "stolen" =packages.yaml=
+  #+ATTR_REVEAL: :frag (none appear appear appear) :frag_idx (- 1 1 1)
+  - e.g., in my case, =Lua= could not resolve =ncurses= dependency
+    #+BEGIN_SRC yaml
+      ncurses:
+        buildable: False
+        paths:
+          ncurses@6.1.20180224: /usr
+        # providers: {}
+        version: [6.1.20180224]  
+    #+END_SRC
+  - *What's wrong*: (1) old format, (2) non-buildable
+    # - *What's wrong*: (1) format of external definition, (2) non-buildable (lack of variant =+term= for =Lua=)
+  - *Solution* for me: remove =ncurses= record or make buildable
+  - *Conclusion*:
+     - a good reason to keep /only build dependencies external/ by default
+     - =packages.yaml= should be prepared with a good care
+       - {{{to_clarify}}} be /precise in defining specs/ if feasible
+       - know what to make non-buildable
+
+** Build Environments: Pitfalls on Hawk (folders)
+
+#+ATTR_REVEAL: :frag (none appear appear) :frag_idx (- 1 2)
+- try to install
+  #+BEGIN_SRC sh
+    spack install
+    spack install -v
+    spack -d install
+    spack -d install --no-cache --overwrite --yes-to-all
+  #+END_SRC
+- issue originates in [[https://github.com/spack/spack/blob/develop/etc/spack/defaults/config.yaml][=config.yaml=]] from [[https://github.com/spack/spack/tree/develop/etc/spack/defaults][=defaults=]] scope
+  #+BEGIN_SRC sh
+    spack config blame config
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    $SPACK_ROOT/etc/spack/defaults/config.yaml:69     build_stage:
+    $SPACK_ROOT/etc/spack/defaults/config.yaml:69     - $spack/var/spack/stage
+    $SPACK_ROOT/etc/spack/defaults/config.yaml:69     - ~/.spack/stage
+    $SPACK_ROOT/etc/spack/defaults/config.yaml:69     # - $spack/var/spack/stage
+  #+END_SRC
+- *Solution*: move stage and other folders to another places
+  #+BEGIN_SRC sh
+    spack config --scope defaults edit config
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    build_stage: [$spack/var/spack/stage]
+  #+END_SRC
+  
+** Build Environments: Speedup build
+
+- [[https://spack.readthedocs.io/en/latest/packaging_guide.html#parallel-builds][parallel builds]] 
+  #+ATTR_REVEAL: :frag (none appear) :frag_idx (- 1)
+  - [[https://spack.readthedocs.io/en/latest/packaging_guide.html#package-level-build-parallelism][package-level]] parallelism
+    #+BEGIN_SRC sh
+      spack install -j 32
+    #+END_SRC
+    #+BEGIN_SRC yaml
+      config:
+        build_jobs: 32
+    #+END_SRC
+  - [[https://spack.readthedocs.io/en/latest/packaging_guide.html#install-level-build-parallelism][install-level]] parallelism
+    - several installation processes (can be cross-node)
+    - only one process being allowed to install a given package at a time
+    #+BEGIN_SRC sh
+      qsub -l select=2:node_type=rome:mpiprocs=4,walltime=00:20:00 -V -I
+      mpirun -np 8 spack install -j 32
+    #+END_SRC
+
+** Build Environments: [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_developer_workflows.html][~dev-build~]] as a Last Resort
+
+- build with verbose output
+  #+BEGIN_SRC sh
+    spack dev-build libosrm  
+  #+END_SRC
+
+- configure once and iteratively change/re-build sources
+  #+BEGIN_SRC sh
+    spack dev-build -u
+  #+END_SRC
+  - dropping in
+    #+BEGIN_SRC 
+      spack build-env hwloc@master -- bash
+    #+END_SRC
+
+** [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_stacks.html][Stacks]]
+
+#+BEGIN_QUOTE
+Allow to define "a set of packages we want to install across a wide range of compilers".
+#+END_QUOTE
+
+- constraints resolution for matrices:
+  - dependencies and variants can be used regardless of whether they apply to every package
+
+- instruments
+  - keywords for environment definitions
+    - ~matrix~: cartesian product for lists of spec parts
+    - ~exclude~: excludes specific combinations from ~matrix~
+  - [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_stacks.html#conditional-definitions][conditional definitions]] (e.g., ~when: arch.satisfies('x86_64:')~)
+  - [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_stacks.html#view-descriptors][view descriptors]]
+
+** Environment vs. [[https://spack.readthedocs.io/en/latest/build_systems/bundlepackage.html][BundlePackage]]
+
+- basic bundle packages: =opencl-headers=, =fastmath=
+- advanced bundles: =Xsdk=
+- =PythonPackage= bundles: =py-exodus-bundler=, =py-jupyter=
+
+#+BEGIN_SRC python
+  class Fastmath(BundlePackage):
+      homepage = "https://fastmath-scidac.org/"
+      version('latest')
+
+      depends_on('amrex')  # default is 3 dimensions
+      depends_on('chombo@3.2')
+      depends_on('hypre~internal-superlu')
+      depends_on('mpi')
+      depends_on('arpack-ng')
+      depends_on('petsc')
+      depends_on('phasta')
+      depends_on('pumi')
+      depends_on('sundials')
+      depends_on('superlu-dist')
+      depends_on('trilinos')
+      depends_on('zoltan')
+#+END_SRC
+
+- bundle packages in the context of HiDALGO:
+  - definition of benchmark suites and sets of miniapps (e.g., =Ceed=)
+
+** Summary
+
+- use the same =Spack= versions on local PC and remote system (if feasible)
+- reproduce environment with either =spack.yaml= (abstract) or =spack.lock= (concrete) depending on your needs
+- prepare scope files (e.g., =packages.yaml=, =config.yaml=) with a good care
+  - aim to be precise in defining specs for externals
+  - think twice before marking package as non-buildable
+  - redefine paths =config.yaml= if have acces permission troubles (e.g., size restrictions for =/tmp= and =$HOIME=)
+- speed up installation by parallel builds if necessary
+- use stacks for installation matrices, e.g., in profound benchmarks
+- think of =BundlePackage='s if you are certain in frequent reuse and/or installation logis is non-trivial
+* Other topics
+** =Spack= as a tool for documenting installation process
+
+- [[https://spack.readthedocs.io/en/latest/package_list.html#py-numpy][on-line]] documentation for builtin packages
+- ~package.py~ is the best possible documentation
+  - easily readable
+  - absolut complete
+- ~spack info~ makes summary of ~package.py~ readable for everyone
+  #+BEGIN_SRC sh
+    spack info libosrm
+  #+END_SRC
+  #+BEGIN_SRC sh
+    CMakePackage:   libosrm
+
+    Description:
+	libOSRM is a high performance routing library written in C++14 designed
+	to run on OpenStreetMap data.
+
+    Homepage: http://project-osrm.org/
+
+    Tags: 
+	None
+
+    Preferred version:  
+	5.24.0    https://github.com/Project-OSRM/osrm-backend/archive/v5.24.0.tar.gz
+
+    Safe versions:  
+	5.24.0    https://github.com/Project-OSRM/osrm-backend/archive/v5.24.0.tar.gz
+
+    Variants:
+	Name [Default]          Allowed values    Description
+	====================    ==============    =====================================
+
+	build_type [Release]    Debug, Release    The build type to build
+	ipo [off]               on, off           CMake interprocedural optimization
+	lib_only [on]           on, off           Install OSRM in a library only mode
+	osmium [off]            on, off           Install with libosmium
+	shared [off]            on, off           Enables the build of shared libraries
+
+    Installation Phases:
+	cmake    build    install
+
+    Build Dependencies:
+	boost  bzip2  cmake  git  intel-tbb  libosmium  libxml2  libzip  lua  pkg-config
+
+    Link Dependencies:
+	boost  bzip2  intel-tbb  libosmium  libxml2  libzip  lua
+
+    Run Dependencies:
+	None
+
+    Virtual Packages: 
+
+  #+END_SRC
+** Making [[https://spack.readthedocs.io/en/latest/containers.html][containers]] from environments
+
+- as simple as this
+#+BEGIN_SRC sh
+  spack cd -e hidalgo && spack containerize > hidalgo.def
+#+END_SRC
+- base images: supports both
+  - [[https://hub.docker.com/u/spack][official images with Spack preinstalled]] and
+  - custom images
+  #+BEGIN_SRC yaml
+    container:
+      images:
+        os: centos/7
+        spack: 0.16
+  #+END_SRC
+- default format is Docker but one can put ~format: singularity~
+  #+BEGIN_SRC yaml
+    container:
+      format: singularity
+  #+END_SRC
+- all configuration options can be found [[https://spack.readthedocs.io/en/latest/containers.html#configuration-reference][here]]
+- *caution*: avoid double-installing CUDA by using externals
+- *alternative*: [[https://spack.readthedocs.io/en/latest/binary_caches.html][build caches]]
+
+** GitLab-CI
+   TBA
+** [[https://spack.readthedocs.io/en/latest/module_file_support.html][Modules]]
+
+- modules vs ~spack load~
+  #+REVEAL_HTML: <small>
+  | ~spack load --only package libosrm~ | ~module load libosrm~   |
+  | ~spack unload libosrm~              | ~module unload libosrm~ |
+  | ~spack find --loaded~               | ~module av~             |
+  | ~spack find -lp libosrm~            | ~module show libosrm~   |
+  | ~spack load --sh libosrm~           | -//-                    |
+  | ~spack load -r libosrm~             | -//-                    |
+  | ~spack info libosrm~                | ~module whatis libosrm~ |
+  #+REVEAL_HTML: </small>
+- =Spack= suports [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_modules.html][generation of modulefiles]] for =tcl= and =lmod= (see [[https://spack.readthedocs.io/en/latest/module_file_support.html][manual]])
+  - default notion for module names: =package-version-compiler-version-hash=
+    #+BEGIN_SRC 
+      spack module tcl refresh libosrm
+    #+END_SRC
+
+** Extending =spack=
+
+- local use
+  - [[https://spack.readthedocs.io/en/latest/repositories.html#repo-namespaces-and-python][extentions for builtin packages]] (clean way to do it with inheritance)
+  - [[https://spack.readthedocs.io/en/latest/extensions.html][custom extensions]] (new commands): [[https://github.com/alalazo/spack-scripting][examples]]
+- open for [[https://spack.readthedocs.io/en/latest/contribution_guide.html][community contributions]] in both ways:
+  - new [[https://spack.readthedocs.io/en/latest/packaging_guide.html][packages]]
+  - core [[https://spack.readthedocs.io/en/latest/developer_guide.html][functionality]]
+
+* Further information
+
+- Videos
+  - [[https://youtu.be/edpgwyOD79E][ ~Spack~ tutorial]] by Todd Gamblin
+  - [[https://youtu.be/z7ZdnCkaPCY][Managing with ~Spack~ ]]by Gregory Blum Becker
+- Documentation: [[https://spack.readthedocs.io/en/latest/chain.html][manual]], [[https://spack-tutorial.readthedocs.io/en/latest/][tutorial]], [[https://spack.readthedocs.io/en/latest/getting_started.html#system-packages][quick start]]
+- [[https://spack.readthedocs.io/en/latest/contribution_guide.html][Contribution guide]]
+
+
+

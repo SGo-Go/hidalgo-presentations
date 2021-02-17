@@ -1,0 +1,1664 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Introduction to Spack for HiDALGO software developers</title>
+<meta name="author" content="Sergiy Gogolenko"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/beige.css" id="theme"/>
+
+<link rel="stylesheet" href="./hidalgo-style/extra.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/monokai.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+</head>
+<body>
+<div class="header-x"><div class="left"><img src="./hidalgo-style/hidalgo-logo.png"><hr/></div><div class="center"><b>H</b>PC and B<b>i</b>g <b>Da</b>ta Techno<b>l</b>ogies for <b>G</b>l<b>o</b>bal Challenges</div><div class="right"><hr/></div></div> <div class="footer-x"><div class="left">2021-02-17</div><div class="center"><b>Sergiy Gogolenko</b><br><i><small>Introduction to Spack for HiDALGO software developers</small></i></div> <div class="right"><img src="./hidalgo-style/Flag_of_Europe.svg" alt="HiDALGO"><b>EU</b> <small>founded project</small><br><b>&aleph;824115</b><br><sup><sup><sup><sup><sup><sup><sup><b><code>@OITTTIO</code><b></sup></sup></sup></sup></sup></sup></sup></div></div>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-background="./hidalgo-style/hidalgo-bg-title.jpg" data-background-size="100%" data-background-position="top">
+<h1><br><small>Introduction to Spack for HiDALGO software developers<br><sup><sup>Use with HiDALGO HPC infrastructure</sup></sup></small></h1><h2><a href='mailto:<a href="mailto:gogolenko@hlrs.de">gogolenko@hlrs.de</a>'>Sergiy Gogolenko</a></h2><h4></h4><h3>HiDALGO call&compfn;2021-02-17</h3>
+</section>
+
+<section>
+<section id="slide-orgb9ce726" data-background-iframe="https://github.com/spack/spack" data-background-opacity="0.2" data-background-interactive>
+<h2 id="orgb9ce726">Why to use it at the 1st place?</h2>
+<ul>
+<li>[ALL ] make it possible to install <span class="underline">off-line on bare metal</span> with a full control on the installation process</li>
+<li>[ALL ] consistent <span class="underline">build customization</span> for each platform</li>
+<li>[ALL ] reproducible software <span class="underline">environments</span> for all use cases over all platforms
+<ul>
+<li>[T5.4] way to reproducible science with <i>lock-files</i></li>
+<li>[T5.4] <i>installation matrices</i> for benchmarks and performance studies
+<ul>
+<li>effect of compilers &amp; different configurations</li>
+
+</ul></li>
+
+</ul></li>
+<li>[T6.4] provides almost <span class="underline">for granted</span> such features as:
+<ul>
+<li>[WP5,T6.4] <i><a href="https://spack.readthedocs.io/en/latest/containers.html">containerization</a></i> of environments (both Docker &amp; Singularity) and</li>
+<li>[WP5,T6.4] GitLabCI-<i><a href="https://spack.readthedocs.io/en/latest/pipelines.html">pipelines</a></i></li>
+<li>[T6.4] <i>documentation</i> for the installation process</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgbeb9c96">
+<h3 id="orgbeb9c96">Why more than <code>PyPI</code> and <code>conda</code>?</h3>
+<ul>
+<li>advantages over <code>PyPI</code>:
+<ul>
+<li>full support packages with <span class="underline">non-Python dependencies</span>
+<ul>
+<li>compile <i>non-Python dependencies</i></li>
+<li>can build <i>cythonized</i> versions of a package</li>
+<li>can link to an <i>optimized libraries</i> (e.g., MKL in case of BLAS/LAPACK)</li>
+
+</ul></li>
+
+</ul></li>
+<li>advantage over <code>conda</code>:
+<ul>
+<li>ability to choose a <span class="underline">specific compiler</span></li>
+<li>can link to an <i>specific libraries</i> (BLAS/LAPACK, MPI,&#x2026;)</li>
+<li>better platform support for supercomputers (builds optimized binaries for <i>specific microarchitectures</i>)</li>
+
+</ul></li>
+<li>disadvantages of <code>Spack</code>:
+<ul>
+<li><code>PyPI</code>: incredible amount of packages that are not yet in <code>Spack</code></li>
+<li><code>conda</code>: Windows support far better than in <code>Spack</code></li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org6871b77">
+<h2 id="org6871b77">How it works</h2>
+<p>
+<b><span class="underline">Key mechanisms of <code>Spack</code></span></b>:
+</p>
+<ul>
+<li>store dependencies in <a href="https://spack.readthedocs.io/en/latest/packaging_guide.html#handling-rpaths">RPATH</a> (<a href="https://en.wikipedia.org/wiki/Rpath">wiki</a>)</li>
+
+</ul>
+
+<p>
+<b><span class="underline">Key parts of <code>Spack</code></span></b>:
+</p>
+<ul>
+<li><b>Specs</b>: expressions for describing builds of software, and</li>
+<li><b>Packages</b>: Python codes describing how to build software according to a spec.</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org219abeb">
+<h2 id="org219abeb">Making specs more specific</h2>
+<div class="outline-text-2" id="text-org219abeb">
+</div>
+</section>
+<section id="slide-orgbd19f1e">
+<h3 id="orgbd19f1e">Anatomy of specs</h3>
+<ul>
+<li><p>
+package name
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack list pyth*
+</code></pre>
+</div></li>
+<li><p>
+version
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack versions python # check for particular versions before requesting them
+</code></pre>
+</div></li>
+<li><p>
+compiler
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack compilers # or spack compiler list
+spack compiler info clang # to know better what is it
+</code></pre>
+</div></li>
+<li>flags (for compilers &amp; linkers)</li>
+<li><p>
+boolean variants and dependencies
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack info python
+</code></pre>
+</div></li>
+<li>hash (<code>concretize</code> or <code>find -l</code>)</li>
+
+</ul>
+
+</section>
+<section id="slide-orgef54a1a">
+<h3 id="orgef54a1a"><a href="https://spack.readthedocs.io/en/latest/command_index.html#spack-arch">Specify platform</a></h3>
+<ul>
+<li><p>
+list platforms defined in spack
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack arch --known-targets
+</code></pre>
+</div></li>
+<li><p>
+check current platform
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack arch -f # frontend
+spack arch -b # backend
+</code></pre>
+</div></li>
+<li><p>
+check current platform: parts of specification
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack arch -b -t # only the target
+spack arch -b -p # only platform
+spack arch -b -o # only the operating system  
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org1a53c2b">
+<h4 id="org1a53c2b"><a href="https://spack.readthedocs.io/en/latest/command_index.html#spack-arch">Specify platform</a>: Use your knowledge</h4>
+<ul>
+<li>check core michroarchitecture from HiDALGO table</li>
+
+</ul>
+
+<small>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">Hawk</th>
+<th scope="col" class="org-left">Vulcan</th>
+<th scope="col" class="org-left">Eagle</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Nodes</td>
+<td class="org-left">5632</td>
+<td class="org-left">96</td>
+<td class="org-left">1087</td>
+</tr>
+
+<tr>
+<td class="org-left">CPU model</td>
+<td class="org-left">EPYC 7742</td>
+<td class="org-left">Xeon 6248</td>
+<td class="org-left">E5-2697V3</td>
+</tr>
+
+<tr>
+<td class="org-left"><b>Cores</b></td>
+<td class="org-left">2 x 64 x <b><a href="https://en.wikipedia.org/wiki/Epyc">zen2</a></b></td>
+<td class="org-left">2 x 20 x <b><a href="https://de.wikipedia.org/wiki/Intel_Xeon_(Cascade_Lake)">cascadelake</a></b></td>
+<td class="org-left">2 x 14 x <b><a href="https://en.wikipedia.org/wiki/Haswell_(microarchitecture)">haswell</a></b></td>
+</tr>
+
+<tr>
+<td class="org-left">RAM per node</td>
+<td class="org-left">256GB</td>
+<td class="org-left">384GB</td>
+<td class="org-left">256 GB</td>
+</tr>
+
+<tr>
+<td class="org-left">Interconnect</td>
+<td class="org-left">IB HDR200</td>
+<td class="org-left">IB HDR</td>
+<td class="org-left">IB FDR56</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left"><b>OS</b></td>
+<td class="org-left">CentOS 8.2</td>
+<td class="org-left">CentOS 7.9</td>
+<td class="org-left">CentOS 7.6</td>
+</tr>
+
+<tr>
+<td class="org-left">MPI backend</td>
+<td class="org-left">MPT 2.23</td>
+<td class="org-left">OpenMPI 4.0.5</td>
+<td class="org-left">OpenMPI 4.0.1</td>
+</tr>
+
+<tr>
+<td class="org-left">Interpreter</td>
+<td class="org-left">Python 3.8.3</td>
+<td class="org-left">Python 3.6.6</td>
+<td class="org-left">Python 3.6.6</td>
+</tr>
+</tbody>
+</table>
+</small>
+
+</section>
+</section>
+<section>
+<section id="slide-org36088c9">
+<h2 id="org36088c9">Going off-line</h2>
+<div class="outline-text-2" id="text-org36088c9">
+</div>
+</section>
+<section id="slide-org3032de6">
+<h3 id="org3032de6">Deploying <code>spack</code></h3>
+<ul>
+<li><p>
+download your favorite release or clone <code>spack</code> and patch (if necessary)
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >curl https://github.com/spack/spack/releases/download/v0.16.0/spack-0.16.0.tar.gz |
+    ssh hawk 'cat &gt; ~/spack.tar.gz'
+wget https://github.com/spack/spack/releases/download/v0.16.0/spack-0.16.0.tar.gz &amp;&amp;
+    scp ./spack-0.16.0.tar.gz hawk:~/spack.tar.gz &amp;&amp; rm -rf ./spack-0.16.0.tar.gz
+</code></pre>
+</div></li>
+<li data-fragment-index="1" class="fragment appear"><p>
+allocate disk space for your experiments at remote system and unpack there
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >ws_allocate -d 30 spack2
+export SPACK_ROOT=$(ws_find spack2)/spack-0.16
+tar xvf ~/spack.tar.gz -C $(dirname $SPACK_ROOT) &amp;&amp; rm ~/spack.tar.gz
+</code></pre>
+</div></li>
+<li data-fragment-index="2" class="fragment appear"><p>
+activate
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >. $SPACK_ROOT/share/spack/setup-env.sh
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org1170999">
+<h3 id="org1170999"><a href="https://spack.readthedocs.io/en/latest/mirrors.html">Mirrors</a></h3>
+<div class="outline-text-3" id="text-org1170999">
+</div>
+</section>
+<section id="slide-orgeb3030a">
+<h4 id="orgeb3030a"><a href="https://spack.readthedocs.io/en/latest/mirrors.html">Mirrors</a>: Analyse environment</h4>
+<ul>
+<li><p>
+find deps
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack concretize -f
+
+spack find -c --no-groups | grep @ # may miss external packages
+spack find -c -d --no-groups | grep @ | tr -d " " | sort | uniq
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org8a7ea26">
+<h4 id="org8a7ea26"><a href="https://spack.readthedocs.io/en/latest/mirrors.html">Mirrors</a>: Create mirror at local workstation</h4>
+<ul>
+<li><p>
+<a href="https://spack.readthedocs.io/en/latest/command_index.html#spack-mirror-create">create</a> mirror for a subset of specs at your local PC
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack mirror create # mirror everything
+spack mirror create -f specs.txt # mirror specs from file
+spack mirror create -n10 -d ~/hidalgo_boost boost # get 10 safe versions of boost (including develop)
+</code></pre>
+</div>
+<ul>
+<li><b>note</b>: downloads safe versions only</li>
+<li><p>
+minimalistic mirror for the active environment
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack mirror create -n 1 -D -d ~/hidalgo_mirror-$(date +%Y%m%d) \
+  $(spack find -c -d --no-groups | grep @ | tr -d " " | sort | uniq)
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="sh" >==&gt; Skipping cmake@3.5.1%gcc@5.4.0~doc+ncurses+openssl+ownlibs~qt \
+ arch=linux-ubuntu16.04-broadwell/begrqoj as it is an external spec.
+</code></pre>
+</div>
+<ul>
+<li><p>
+dirty workaround
+</p>
+<ul>
+<li>add this line to environment config</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre><code class="yaml" >packages:: {}
+</code></pre>
+</div>
+<ul>
+<li>don't forget to call <code>spack concretize -f</code></li>
+
+</ul></li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org25dbc8f">
+<h4 id="org25dbc8f"><a href="https://spack.readthedocs.io/en/latest/mirrors.html">Mirrors</a>: Effect of <code>packages:: {}</code></h4>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack graph -d libosrm | dot -Tpdf | zathura - 
+spack graph -d libosrm | dot -Tsvg -o/tmp/spack.stdin.svg &amp;&amp; eog /tmp/spack.stdin.svg
+spack graph -i -d | dot -Tsvg -o./full_installation.svg # all installed (not only in env)
+</code></pre>
+</div>
+
+<div style="display: flex;">
+<div style="flex: 1;">
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figs/spack/spack_libosrm_default.svg" class="org-svg" width="75%">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</div>
+<div style="flex: 1;">
+
+<div class="figure">
+<p><object type="image/svg+xml" data="./figs/spack/spack_libosrm_full.svg" class="org-svg" width="75%">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+
+</section>
+<section id="slide-orgba3856a">
+<h4 id="orgba3856a"><a href="https://spack.readthedocs.io/en/latest/mirrors.html">Mirrors</a>: Copy and register mirror</h4>
+<ul>
+<li><p>
+copy mirror to the remote system
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >scp -r $HOME/hidalgo_mirror-$(date +%Y%m%d) \
+    hawk:$(ssh hawk '/opt/hlrs/non-spack/system/ws/1.3.1/bin/ws_find spack')/hidalgo_mirror
+</code></pre>
+</div></li>
+<li><p>
+register mirror
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack mirror add hidalgo_mirror file://$(ws_find spack)/hidalgo_mirror-$(date +%Y%m%d)
+</code></pre>
+</div></li>
+<li><p>
+check environment config
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack config get
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="yaml" >mirrors:
+  hidalgo_mirror: file:///lustre/cray/ws9/2/ws/username-spack/hidalgo_mirror-20210211
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-orgc3faec8">
+<h4 id="orgc3faec8"><a href="https://spack.readthedocs.io/en/latest/mirrors.html">Mirrors</a>: Removing ineligible mirrors</h4>
+<ul>
+<li><p>
+list existing mirrors
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack mirror list
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="yaml" >hidalgo_mirror    file:///lustre/cray/ws9/2/ws/username-spack/hidalgo_mirror-20210211
+spack-public      https://spack-llnl-mirror.s3-us-west-2.amazonaws.com/
+</code></pre>
+</div></li>
+<li data-fragment-index="1" class="fragment appear"><p>
+<b>hard remove</b> of undesirable/ineligible mirrors
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack mirror remove spack-public
+</code></pre>
+</div>
+<pre>
+==&gt; Error: No mirror with name spack-public
+</pre>
+<ul>
+<li data-fragment-index="2" class="fragment appear"><p>
+<a href="https://github.com/spack/spack/issues/17554">workaround</a>: define scope
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >less $SPACK_ROOT/etc/spack/defaults/mirrors.yaml
+spack mirror remove --scope defaults spack-public
+</code></pre>
+</div></li>
+
+</ul></li>
+<li data-fragment-index="3" class="fragment appear"><p>
+safer to fix environment config
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >mirrors::
+  hidalgo_mirror: file:///lustre/cray/ws9/2/ws/username-spack/hidalgo_mirror-20210211  
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-orge7d8d6e">
+<h3 id="orge7d8d6e">Repos</h3>
+<ul>
+<li><p>
+copy your specific repos to the remote host
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >scp -r $HOME/dev/hidalgo-spack-repo hawk:~/hidalgo-spack-repo
+</code></pre>
+</div></li>
+<li>register with <code>Spack</code></li>
+
+</ul>
+
+</section>
+<section id="slide-org63a567e">
+<h3 id="org63a567e">Summary</h3>
+<ul>
+<li>create mirror for the environment with the software versions of choice and externals turned off</li>
+<li>copy mirror and register (within environment or scope of choice)</li>
+<li>copy and register repos with packages if necessary</li>
+
+<li>there are other more hacky ways too use packages off-line
+<ul>
+<li><a href="https://doku.lrz.de/display/PUBLIC/Building+software+in+user+space+with+spack#Buildingsoftwareinuserspacewithspack-Providingsourcefiles">providing source files</a> via cache</li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org27bcb31">
+<h2 id="org27bcb31">Reuse of installed packages</h2>
+<div class="outline-text-2" id="text-org27bcb31">
+</div>
+</section>
+<section id="slide-org7e09fe0">
+<h3 id="org7e09fe0"><a href="https://spack.readthedocs.io/en/latest/chain.html">Upstreams</a></h3>
+<ul>
+<li><p>
+default location of <code>spack</code> installations at Hawk
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >ll /opt/hlrs/spack/current
+# lrwxrwxrwx 1 hpcoft28 hpc43203 18 Jul  3  2020 /opt/hlrs/spack/current -&gt; rev-004_2020-06-17
+</code></pre>
+</div></li>
+<li><p>
+more installations
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >ll /opt/hlrs/spack/rev*
+# rev-008_2020-10-03
+</code></pre>
+</div></li>
+<li><p>
+register it as an upstream
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >upstreams:
+  spack-hawk-new:
+    install_tree:
+      /opt/hlrs/spack/rev-008_2020-10-03
+  spack-hawk-default:
+    install_tree:
+      /opt/hlrs/spack/current
+</code></pre>
+</div></li>
+<li><p>
+check packages compiled for the given microarchitecture
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack find target=zen2
+</code></pre>
+</div></li>
+
+</ul>
+</section>
+<section id="slide-orgd322131">
+<h3 id="orgd322131">Externals</h3>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack external find --not-buildable 
+</code></pre>
+</div>
+<ul>
+<li><p>
+limited to finding a <b><b>small subset of <span class="underline">build-only</span> dependencies</b></b> (e.g., <code>Python/Lua</code>, etc are not there)
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack external list
+</code></pre>
+</div></li>
+<li><code>spack</code> does not 
+<ul>
+<li>collects and examines <i>beyond executable files</i></li>
+<li>search through <i>module files</i></li>
+<li><i>overwrite existing entries</i> in the package configuration</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org9184166">
+<h4 id="org9184166">Externals: steal configs</h4>
+<ul>
+<li><p>
+tempting solution: on Hawk, reuse <code>compilers.yaml</code> and <code>packages.yaml</code> from upstreamed <code>spack</code>
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >include:
+- /opt/hlrs/non-spack/misc/spack/spack-hlrs/spack-config/compilers.yaml
+- /opt/hlrs/non-spack/misc/spack/spack-hlrs/spack-config/packages.yaml
+</code></pre>
+</div></li>
+<li><p>
+issue
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >==&gt; Warning: detected deprecated properties in $HOME/hidalgo_configs/packages.yaml
+Activate the debug flag to have more information on the deprecated parts or run:
+
+	$ spack config update packages
+
+to update the file to the new format
+</code></pre>
+</div></li>
+<li><p>
+try to fix <code>packages.yaml</code> automatically
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack config update packages
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="sh" >==&gt; Warning: included configuration files *should be updated manually* \
+ [files=$HOME/hidalgo_configs/compilers.yaml, $HOME/hidalgo_configs/packages.yaml]
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org55c3cdb">
+<h4 id="org55c3cdb">Externals: fix configs manually?</h4>
+<ul>
+<li><p>
+deprecated syntax from <code>/opt/hlrs/non-spack/misc/spack/spack-hlrs/spack-config/packages.yaml</code>
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >openmpi:
+  buildable: False
+  modules:
+    openmpi@4.0.5: openmpi/4.0.5
+    openmpi@4.0.4: openmpi/4.0.4
+</code></pre>
+</div></li>
+<li><p>
+correct syntax
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack config blame packages
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="yaml" >~/hidalgo_configs/packages.yaml:34      openmpi:
+~/hidalgo_configs/packages.yaml:35        buildable: False
+~/hidalgo_configs/packages.yaml:35        externals:
+~/hidalgo_configs/packages.yaml:35        - spec: openmpi@4.0.5
+~/hidalgo_configs/packages.yaml:35          modules:
+~/hidalgo_configs/packages.yaml:35          - openmpi/4.0.5
+~/hidalgo_configs/packages.yaml:35        - spec: openmpi@4.0.4
+~/hidalgo_configs/packages.yaml:35          modules:
+~/hidalgo_configs/packages.yaml:35          - openmpi/4.0.4
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-orgf16c018">
+<h4 id="orgf16c018">Externals: fix configs manually?</h4>
+<ul>
+<li><p>
+one-liner
+</p>
+<div class="org-src-container">
+
+<pre><code class="python" >spack config blame config | python -c \
+    "from sys import stdin, stdout; i=stdin.readline().rfind(' '); map(lambda _: stdout.write(_[i:]), stdin)"
+</code></pre>
+</div></li>
+<li><p>
+more careful script with filtering configs for the given file
+</p>
+<div class="org-src-container">
+
+<pre><code class="python" >import re,sys
+from fileinput import FileInput
+re_spack_blame=re.compile(r'(?P&lt;fileneme&gt;.+):(?P&lt;lineno&gt;[0-9]+)\w+')
+with FileInput() as input:
+    i=stdin.readline().rfind(' ')
+    for line in input:
+	m=re_spack_blame.match(line[:i])
+	if m and m.group('filename') == sys.argv[1]:
+	    print(line[i:])
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org717b43d">
+<h4 id="org717b43d">Externals: fix configs manually!</h4>
+<ul>
+<li><p>
+better to make MPI non-buildable at all!
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" data-line-numbers="1-2,4">mpi:
+  buildable: False
+openmpi:
+  # buildable: False
+  externals:
+  - spec: openmpi@4.0.5
+    modules: [openmpi/4.0.5]
+  - spec: openmpi@4.0.4
+    modules: [openmpi/4.0.4]
+</code></pre>
+</div></li>
+<li><p>
+alternative short format which is also fine
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >mpi:
+  buildable: False
+    openmpi@4.0.5: /path/to/openmpi/4.0.5
+    openmpi@4.0.4: /path/to/openmpi/4.0.4  
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org41297da">
+<h4 id="org41297da">Externals: be more concrete</h4>
+<ul>
+<li><p>
+define in specs as mush as possible
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >- spec: openmpi@4.0.5%gcc@10.2.0 arch=linux-centos8-zen2
+  modules: [openmpi/4.0.5]
+- spec: openmpi@4.0.4%gcc@9.2.0 arch=linux-centos8-zen2
+  modules: [openmpi/4.0.4]   
+</code></pre>
+</div></li>
+<li><p>
+not always easy or feasible with modulefiles
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >module avail openmpi
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="sh" >---------------- Compiler-dependent modules -----------------
+   openmpi/4.0.4    openmpi/4.0.5 (D)
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="sh" >ls /opt/hlrs/non-spack/mpi/openmpi
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="sh" >4.0.4-gcc-9.2.0     4.0.5-aocc-2.2.0  4.0.5-gcc-9.2.0     4.0.5-intel-19.1.2
+4.0.4-intel-19.1.0  4.0.5-gcc-10.2.0  4.0.5-intel-19.1.0  4.0.5-intel-19.1.3
+4.1.0-aocc-2.2.0  4.1.0-intel-19.1.3  4.1.0-gcc-10.2.0    hcoll
+</code></pre>
+</div></li>
+<li>sometimes we have better control (on expence of extra-work) with <code>prefix</code></li>
+
+</ul>
+
+</section>
+<section id="slide-org43515ad">
+<h4 id="org43515ad">Externals: make package <a href="https://spack.readthedocs.io/en/latest/packaging_guide.html#making-a-package-discoverable-with-spack-external-find">discoverable</a></h4>
+<ul>
+<li><p>
+define <code>executables</code> and implement <code>determine_version</code> method
+</p>
+<div class="org-src-container">
+
+<pre><code class="python" >executables = [...]
+@classmethod
+def determine_version(cls, exe): ...
+</code></pre>
+</div></li>
+<li>optionally add
+<ul>
+<li>detection of variants and custom attributes</li>
+<li>extra logic to filtered the executables (e.g., architecture-specific logic)</li>
+<li><p>
+spec validation logic
+</p>
+<div class="org-src-container">
+
+<pre><code class="python" >@classmethod
+def determine_variants(cls, exes, version_str): ...
+@classmethod
+def filter_detected_exes(cls, prefix, exes_in_prefix): ...
+@classmethod
+def validate_detected_spec(cls, spec, extra_attributes): ...
+</code></pre>
+</div></li>
+
+</ul></li>
+<li><p>
+<b>OR</b> (last resort) completely redefine the detection logic for a package
+</p>
+<div class="org-src-container">
+
+<pre><code class="python" >@classmethod
+def determine_spec_details(cls, prefix, exes_in_prefix): ...
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-orga8ea137">
+<h3 id="orga8ea137">Summary: Step-Wise Instructions</h3>
+<ul>
+<li>upstream <code>spack</code>-installed packages</li>
+<li>reuse configs carefully</li>
+<li>use modules for non-<code>spack</code> installations</li>
+<li>use <code>external find</code></li>
+<li>use manual specification of externals via prefix for the rest</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org4173a71">
+<h2 id="org4173a71">Build customization</h2>
+<ul>
+<li>configuration <span class="underline">scopes</span> 
+<ul>
+<li><p>
+<i>common</i> (lower-precedence scopes first):
+</p>
+<small>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Scope</th>
+<th scope="col" class="org-left">Specification</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><b><code>defaults</code></b></td>
+<td class="org-left"><code>$SPACK_ROOT/etc/spack/defaults</code></td>
+<td class="org-left">"factory" settings</td>
+</tr>
+
+<tr>
+<td class="org-left"><b><code>system</code></b></td>
+<td class="org-left"><code>/etc/spack</code></td>
+<td class="org-left">settings for this machine</td>
+</tr>
+
+<tr>
+<td class="org-left"><b><code>site</code></b></td>
+<td class="org-left"><code>$SPACK_ROOT/etc/spack</code></td>
+<td class="org-left">settings for <code>Spack</code> instance</td>
+</tr>
+
+<tr>
+<td class="org-left"><b><code>user</code></b></td>
+<td class="org-left"><code>~/.spack</code></td>
+<td class="org-left">all instances of <code>Spack</code> for user</td>
+</tr>
+
+<tr>
+<td class="org-left"><b>custom</b></td>
+<td class="org-left">options <code>--config-scope</code> or <code>-C &lt;/path/to/scope&gt;</code></td>
+<td class="org-left">custom location</td>
+</tr>
+</tbody>
+</table>
+</small></li>
+<li><i>platform-specific</i>: <code>&lt;base-scope&gt;/&lt;platform&gt;)</code> (<code>darwin</code>, <code>linux</code>,&#x2026;)</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org58c0819">
+<h3 id="org58c0819">Build customization: Sections</h3>
+<ul>
+<li><p>
+configuration <span class="underline">sections</span>
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack config list
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="sh" >compilers mirrors repos packages modules config upstreams
+</code></pre>
+</div></li>
+
+</ul>
+
+<small>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Section</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><a href="https://spack.readthedocs.io/en/latest/config_yaml.html">config</a></td>
+<td class="org-left">basic configuration options</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://spack.readthedocs.io/en/latest/build_settings.html">packages</a></td>
+<td class="org-left">build customization</td>
+</tr>
+
+<tr>
+<td class="org-left">compilers</td>
+<td class="org-left">compiler definitions</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">mirrors</td>
+<td class="org-left">list of local and remote mirrors</td>
+</tr>
+
+<tr>
+<td class="org-left">repos</td>
+<td class="org-left">list of repos with build instructions</td>
+</tr>
+
+<tr>
+<td class="org-left">upstreams</td>
+<td class="org-left">installation trees of external <code>Spack</code> instances</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">modules</td>
+<td class="org-left">set up for mudulefile generation</td>
+</tr>
+</tbody>
+</table>
+</small>
+
+<div class="org-src-container">
+
+<pre><code class="ah" >spack -C /path/to/hawk/scope config edit packages
+spack -C /path/to/hawk/scope config get upstreams
+spack --insecure -C /path/to/hawk/scope -C /path/to/hidalgo/scope config blame config
+</code></pre>
+</div>
+
+</section>
+<section id="slide-org7a7803b">
+<h3 id="org7a7803b">More on <a href="https://spack.readthedocs.io/en/latest/build_settings.html"><code>packages</code></a> section</h3>
+<ul>
+<li><p>
+permissions
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >all:
+  permissions:
+    read: world # read-world is default, can remove
+    write: group
+    group: spack
+uap_simulator:
+  permissions:
+    read: group
+    group: hid_uap
+</code></pre>
+</div></li>
+<li><p>
+concretization preferences
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >packages:
+  python:
+    compiler: [gcc@10.2.0]
+    variants: +optimization
+    version: [3.6, 3.9.0, 3.7]
+  all:
+    compiler: [gcc@10.2.0, 'clang@10:', 'gcc', intel]
+    target: [zen2]
+    providers:
+      mpi: [mpe, openmpi]
+</code></pre>
+</div>
+<p>
+all providers can be found in the <a href="https://github.com/spack/spack/blob/develop/etc/spack/defaults/packages.yaml">defaults</a> scope
+</p></li>
+
+</ul>
+
+</section>
+<section id="slide-orge42e688">
+<h3 id="orge42e688">Once again on <code>compilers</code></h3>
+<ul>
+<li><p>
+excerpt from <code>/opt/hlrs/non-spack/misc/spack/spack-hlrs/spack-config/compilers.yaml</code>
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" data-line-numbers="10,11">- compiler:
+    spec: clang@10.0.0
+    paths:
+      cc: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-clang
+      cxx: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-clang++
+      f77: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-flang
+      fc: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-flang
+    flags: {}
+    operating_system: centos8
+    target: x86_64
+    modules: [aocc/2.2.0]
+    environment: {}
+    extra_rpaths: []
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org0964a3d">
+<h3 id="org0964a3d">Ideally sites must provide their configs</h3>
+<ul>
+<li>official examples: <a href="https://github.com/spack/spack-configs">https://github.com/spack/spack-configs</a></li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org4141af4">
+<h2 id="org4141af4">More on Environments</h2>
+<div class="outline-text-2" id="text-org4141af4">
+</div>
+</section>
+<section id="slide-orgcd2aebb">
+<h3 id="orgcd2aebb">Reproducing Environments</h3>
+<ul>
+<li>create environment from
+<ul>
+<li><p>
+a set of abstract specs
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack env create abstract spack.yaml
+</code></pre>
+</div></li>
+<li data-fragment-index="1" class="fragment appear"><p>
+a set of all fully concretized specs
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack env create concrete spack.lock
+</code></pre>
+</div></li>
+
+</ul></li>
+<li data-fragment-index="2" class="fragment appear"><p>
+concretize
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack concretize -f
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org54840d8">
+<h3 id="org54840d8">Build Environments: Pitfalls on Hawk (externals)</h3>
+<ul>
+<li>sometimes fail to concretize with the "stolen" <code>packages.yaml</code>
+<ul>
+<li><p>
+e.g., in my case, <code>Lua</code> could not resolve <code>ncurses</code> dependency
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >ncurses:
+  buildable: False
+  paths:
+    ncurses@6.1.20180224: /usr
+  # providers: {}
+  version: [6.1.20180224]  
+</code></pre>
+</div></li>
+<li data-fragment-index="1" class="fragment appear"><b>What's wrong</b>: (1) old format, (2) non-buildable</li>
+<li data-fragment-index="1" class="fragment appear"><b>Solution</b> for me: remove <code>ncurses</code> record or make buildable</li>
+<li data-fragment-index="1" class="fragment appear"><b>Conclusion</b>:
+<ul>
+<li>a good reason to keep <i>only build dependencies external</i> by default</li>
+<li><code>packages.yaml</code> should be prepared with a good care
+<ul>
+<li><font color="red">&#x2753;&#x2757;</font>  be <i>precise in defining specs</i> if feasible</li>
+<li>know what to make non-buildable</li>
+
+</ul></li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org80ed3ef">
+<h3 id="org80ed3ef">Build Environments: Pitfalls on Hawk (folders)</h3>
+<ul>
+<li><p>
+try to install
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack install
+spack install -v
+spack -d install
+spack -d install --no-cache --overwrite --yes-to-all
+</code></pre>
+</div></li>
+<li data-fragment-index="1" class="fragment appear"><p>
+issue originates in <a href="https://github.com/spack/spack/blob/develop/etc/spack/defaults/config.yaml"><code>config.yaml</code></a> from <a href="https://github.com/spack/spack/tree/develop/etc/spack/defaults"><code>defaults</code></a> scope
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack config blame config
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="yaml" >$SPACK_ROOT/etc/spack/defaults/config.yaml:69     build_stage:
+$SPACK_ROOT/etc/spack/defaults/config.yaml:69     - $spack/var/spack/stage
+$SPACK_ROOT/etc/spack/defaults/config.yaml:69     - ~/.spack/stage
+$SPACK_ROOT/etc/spack/defaults/config.yaml:69     # - $spack/var/spack/stage
+</code></pre>
+</div></li>
+<li data-fragment-index="2" class="fragment appear"><p>
+<b>Solution</b>: move stage and other folders to another places
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack config --scope defaults edit config
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="yaml" >build_stage: [$spack/var/spack/stage]
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org5465b13">
+<h3 id="org5465b13">Build Environments: Speedup build</h3>
+<ul>
+<li><a href="https://spack.readthedocs.io/en/latest/packaging_guide.html#parallel-builds">parallel builds</a> 
+<ul>
+<li><p>
+<a href="https://spack.readthedocs.io/en/latest/packaging_guide.html#package-level-build-parallelism">package-level</a> parallelism
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack install -j 32
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="yaml" >config:
+  build_jobs: 32
+</code></pre>
+</div></li>
+<li data-fragment-index="1" class="fragment appear"><p>
+<a href="https://spack.readthedocs.io/en/latest/packaging_guide.html#install-level-build-parallelism">install-level</a> parallelism
+</p>
+<ul>
+<li>several installation processes (can be cross-node)</li>
+<li>only one process being allowed to install a given package at a time</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre><code class="sh" >qsub -l select=2:node_type=rome:mpiprocs=4,walltime=00:20:00 -V -I
+mpirun -np 8 spack install -j 32
+</code></pre>
+</div></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org67cae20">
+<h3 id="org67cae20">Build Environments: <a href="https://spack-tutorial.readthedocs.io/en/latest/tutorial_developer_workflows.html"><code>dev-build</code></a> as a Last Resort</h3>
+<ul>
+<li><p>
+build with verbose output
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack dev-build libosrm  
+</code></pre>
+</div></li>
+
+<li><p>
+configure once and iteratively change/re-build sources
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack dev-build -u
+</code></pre>
+</div>
+<ul>
+<li><p>
+dropping in
+</p>
+<pre>
+spack build-env hwloc@master -- bash
+</pre></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgc08acc3">
+<h3 id="orgc08acc3"><a href="https://spack-tutorial.readthedocs.io/en/latest/tutorial_stacks.html">Stacks</a></h3>
+<blockquote>
+<p>
+Allow to define "a set of packages we want to install across a wide range of compilers".
+</p>
+</blockquote>
+
+<ul>
+<li>constraints resolution for matrices:
+<ul>
+<li>dependencies and variants can be used regardless of whether they apply to every package</li>
+
+</ul></li>
+
+<li>instruments
+<ul>
+<li>keywords for environment definitions
+<ul>
+<li><code>matrix</code>: cartesian product for lists of spec parts</li>
+<li><code>exclude</code>: excludes specific combinations from <code>matrix</code></li>
+
+</ul></li>
+<li><a href="https://spack-tutorial.readthedocs.io/en/latest/tutorial_stacks.html#conditional-definitions">conditional definitions</a> (e.g., <code>when: arch.satisfies('x86_64:')</code>)</li>
+<li><a href="https://spack-tutorial.readthedocs.io/en/latest/tutorial_stacks.html#view-descriptors">view descriptors</a></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org5dbc261">
+<h3 id="org5dbc261">Environment vs. <a href="https://spack.readthedocs.io/en/latest/build_systems/bundlepackage.html">BundlePackage</a></h3>
+<ul>
+<li>basic bundle packages: <code>opencl-headers</code>, <code>fastmath</code></li>
+<li>advanced bundles: <code>Xsdk</code></li>
+<li><code>PythonPackage</code> bundles: <code>py-exodus-bundler</code>, <code>py-jupyter</code></li>
+
+</ul>
+
+<div class="org-src-container">
+
+<pre><code class="python" >class Fastmath(BundlePackage):
+    homepage = "https://fastmath-scidac.org/"
+    version('latest')
+
+    depends_on('amrex')  # default is 3 dimensions
+    depends_on('chombo@3.2')
+    depends_on('hypre~internal-superlu')
+    depends_on('mpi')
+    depends_on('arpack-ng')
+    depends_on('petsc')
+    depends_on('phasta')
+    depends_on('pumi')
+    depends_on('sundials')
+    depends_on('superlu-dist')
+    depends_on('trilinos')
+    depends_on('zoltan')
+</code></pre>
+</div>
+
+<ul>
+<li>bundle packages in the context of HiDALGO:
+<ul>
+<li>definition of benchmark suites and sets of miniapps (e.g., <code>Ceed</code>)</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgd608e31">
+<h3 id="orgd608e31">Summary</h3>
+<ul>
+<li>use the same <code>Spack</code> versions on local PC and remote system (if feasible)</li>
+<li>reproduce environment with either <code>spack.yaml</code> (abstract) or <code>spack.lock</code> (concrete) depending on your needs</li>
+<li>prepare scope files (e.g., <code>packages.yaml</code>, <code>config.yaml</code>) with a good care
+<ul>
+<li>aim to be precise in defining specs for externals</li>
+<li>think twice before marking package as non-buildable</li>
+<li>redefine paths <code>config.yaml</code> if have acces permission troubles (e.g., size restrictions for <code>/tmp</code> and <code>$HOIME</code>)</li>
+
+</ul></li>
+<li>speed up installation by parallel builds if necessary</li>
+<li>use stacks for installation matrices, e.g., in profound benchmarks</li>
+<li>think of <code>BundlePackage</code>'s if you are certain in frequent reuse and/or installation logis is non-trivial</li>
+
+</ul>
+</section>
+</section>
+<section>
+<section id="slide-org292a20a">
+<h2 id="org292a20a">Other topics</h2>
+<div class="outline-text-2" id="text-org292a20a">
+</div>
+</section>
+<section id="slide-org8c73c8a">
+<h3 id="org8c73c8a"><code>Spack</code> as a tool for documenting installation process</h3>
+<ul>
+<li><a href="https://spack.readthedocs.io/en/latest/package_list.html#py-numpy">on-line</a> documentation for builtin packages</li>
+<li><code>package.py</code> is the best possible documentation
+<ul>
+<li>easily readable</li>
+<li>absolut complete</li>
+
+</ul></li>
+<li><p>
+<code>spack info</code> makes summary of <code>package.py</code> readable for everyone
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack info libosrm
+</code></pre>
+</div>
+<div class="org-src-container">
+
+<pre><code class="sh" >CMakePackage:   libosrm
+
+Description:
+    libOSRM is a high performance routing library written in C++14 designed
+    to run on OpenStreetMap data.
+
+Homepage: http://project-osrm.org/
+
+Tags: 
+    None
+
+Preferred version:  
+    5.24.0    https://github.com/Project-OSRM/osrm-backend/archive/v5.24.0.tar.gz
+
+Safe versions:  
+    5.24.0    https://github.com/Project-OSRM/osrm-backend/archive/v5.24.0.tar.gz
+
+Variants:
+    Name [Default]          Allowed values    Description
+    ====================    ==============    =====================================
+
+    build_type [Release]    Debug, Release    The build type to build
+    ipo [off]               on, off           CMake interprocedural optimization
+    lib_only [on]           on, off           Install OSRM in a library only mode
+    osmium [off]            on, off           Install with libosmium
+    shared [off]            on, off           Enables the build of shared libraries
+
+Installation Phases:
+    cmake    build    install
+
+Build Dependencies:
+    boost  bzip2  cmake  git  intel-tbb  libosmium  libxml2  libzip  lua  pkg-config
+
+Link Dependencies:
+    boost  bzip2  intel-tbb  libosmium  libxml2  libzip  lua
+
+Run Dependencies:
+    None
+
+Virtual Packages: 
+
+</code></pre>
+</div></li>
+
+</ul>
+</section>
+<section id="slide-orga47c86c">
+<h3 id="orga47c86c">Making <a href="https://spack.readthedocs.io/en/latest/containers.html">containers</a> from environments</h3>
+<ul>
+<li>as simple as this</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre><code class="sh" >spack cd -e hidalgo &amp;&amp; spack containerize &gt; hidalgo.def
+</code></pre>
+</div>
+<ul>
+<li><p>
+base images: supports both
+</p>
+<ul>
+<li><a href="https://hub.docker.com/u/spack">official images with Spack preinstalled</a> and</li>
+<li>custom images</li>
+
+</ul>
+<div class="org-src-container">
+
+<pre><code class="yaml" >container:
+  images:
+    os: centos/7
+    spack: 0.16
+</code></pre>
+</div></li>
+<li><p>
+default format is Docker but one can put <code>format: singularity</code>
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >container:
+  format: singularity
+</code></pre>
+</div></li>
+<li>all configuration options can be found <a href="https://spack.readthedocs.io/en/latest/containers.html#configuration-reference">here</a></li>
+<li><b>caution</b>: avoid double-installing CUDA by using externals</li>
+<li><b>alternative</b>: <a href="https://spack.readthedocs.io/en/latest/binary_caches.html">build caches</a></li>
+
+</ul>
+
+</section>
+<section id="slide-orgc2ef371">
+<h3 id="orgc2ef371">GitLab-CI</h3>
+<p>
+TBA
+</p>
+</section>
+<section id="slide-org2dc5d25">
+<h3 id="org2dc5d25"><a href="https://spack.readthedocs.io/en/latest/module_file_support.html">Modules</a></h3>
+<ul>
+<li><p>
+modules vs <code>spack load</code>
+</p>
+<small>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<tbody>
+<tr>
+<td class="org-left"><code>spack load --only package libosrm</code></td>
+<td class="org-left"><code>module load libosrm</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>spack unload libosrm</code></td>
+<td class="org-left"><code>module unload libosrm</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>spack find --loaded</code></td>
+<td class="org-left"><code>module av</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>spack find -lp libosrm</code></td>
+<td class="org-left"><code>module show libosrm</code></td>
+</tr>
+
+<tr>
+<td class="org-left"><code>spack load --sh libosrm</code></td>
+<td class="org-left">-//-</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>spack load -r libosrm</code></td>
+<td class="org-left">-//-</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>spack info libosrm</code></td>
+<td class="org-left"><code>module whatis libosrm</code></td>
+</tr>
+</tbody>
+</table>
+</small></li>
+<li><code>Spack</code> suports <a href="https://spack-tutorial.readthedocs.io/en/latest/tutorial_modules.html">generation of modulefiles</a> for <code>tcl</code> and <code>lmod</code> (see <a href="https://spack.readthedocs.io/en/latest/module_file_support.html">manual</a>)
+<ul>
+<li><p>
+default notion for module names: <code>package-version-compiler-version-hash</code>
+</p>
+<pre>
+spack module tcl refresh libosrm
+</pre></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgb48c373">
+<h3 id="orgb48c373">Extending <code>spack</code></h3>
+<ul>
+<li>local use
+<ul>
+<li><a href="https://spack.readthedocs.io/en/latest/repositories.html#repo-namespaces-and-python">extentions for builtin packages</a> (clean way to do it with inheritance)</li>
+<li><a href="https://spack.readthedocs.io/en/latest/extensions.html">custom extensions</a> (new commands): <a href="https://github.com/alalazo/spack-scripting">examples</a></li>
+
+</ul></li>
+<li>open for <a href="https://spack.readthedocs.io/en/latest/contribution_guide.html">community contributions</a> in both ways:
+<ul>
+<li>new <a href="https://spack.readthedocs.io/en/latest/packaging_guide.html">packages</a></li>
+<li>core <a href="https://spack.readthedocs.io/en/latest/developer_guide.html">functionality</a></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org648402d">
+<h2 id="org648402d">Further information</h2>
+<ul>
+<li>Videos
+<ul>
+<li><a href="https://youtu.be/edpgwyOD79E"> <code>Spack</code> tutorial</a> by Todd Gamblin</li>
+<li><a href="https://youtu.be/z7ZdnCkaPCY">Managing with <code>Spack</code> </a>by Gregory Blum Becker</li>
+
+</ul></li>
+<li>Documentation: <a href="https://spack.readthedocs.io/en/latest/chain.html">manual</a>, <a href="https://spack-tutorial.readthedocs.io/en/latest/">tutorial</a>, <a href="https://spack.readthedocs.io/en/latest/getting_started.html#system-packages">quick start</a></li>
+<li><a href="https://spack.readthedocs.io/en/latest/contribution_guide.html">Contribution guide</a></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+
+overview: true,
+width: 1400,
+height: 1000,
+
+transition: 'convex',
+transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealHighlight ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>

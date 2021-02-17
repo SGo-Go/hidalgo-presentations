@@ -6,3 +6,6 @@
 - *[[http://sgo-go.github.io/hidalgo-presentations/20200603-ICCS.html][Towards Accurate Simulation of Global Challenges on Data Centers Infrastructures via Coupling of Models and Data Sources]]*. /[[https://www.iccs-meeting.org/iccs2020/][International Conference on Computational Science 2020 (ICCS'20)]]/.
   - paper DOI: https://doi.org/10.1007/978-3-030-50433-5_32
 - *[[http://sgo-go.github.io/hidalgo-presentations/20210120-HiPEAC-HiDALGO.html][Introduction to the Project HiDALGO, its Services and its Portal]]*. /[[https://www.hipeac.net/2021/budapest/][HiPEAC 2021 (HiPEAC'21)]]/.
+- local presentations
+  - *[[http://sgo-go.github.io/hidalgo-presentations/20210203-HiDALGO_integration_toolchain.html][HiDALGO integration toolchain]]*
+  - *Introduction to Spack for HiDALGO Software Developers*: [[http://sgo-go.github.io/hidalgo-presentations/20210203-spack_basics.html][Basics]], [[http://sgo-go.github.io/hidalgo-presentations/20210217-spack_on_clusters.html][On Clusters]]

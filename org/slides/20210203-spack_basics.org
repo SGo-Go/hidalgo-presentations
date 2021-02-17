@@ -305,6 +305,20 @@ Do not uninstall packages that are not sufficiently specified
   spack find -ldf
 #+END_SRC
 
+** ~extensions~: check out Python/R/lua/... packages
+
+=-s {packages,installed,activated,all}=
+
+- list extensible packages
+  #+BEGIN_SRC 
+    spack extensions
+  #+END_SRC
+- get Python extensions (works *only* for *installed* extensible package)
+  #+BEGIN_SRC sh
+    spack extensions python
+  #+END_SRC
+
+
 ** Summary
 * Externals
 
@@ -614,8 +628,14 @@ Do not uninstall packages that are not sufficiently specified
 	    return cmake_args
   #+END_SRC
 
+*** Package Skeleton: Commands
+
+- [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_buildsystems.html][build systems]]
+- [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_advanced_packaging.html][more on packaging]]
+
 *** Package Skeleton: Where to dig?
-- official documentation: [[https://spack.readthedocs.io/en/latest/packaging_guide.html][packaging guide]], [[https://spack.readthedocs.io/en/latest/spack.build_systems.html][build systems API]]
+- official documentation: [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_buildsystems.html][build systems tutorial]], [[https://spack.readthedocs.io/en/latest/packaging_guide.html][packaging guide]] & [[https://spack.readthedocs.io/en/latest/build_systems.html][build systems manual]]
+- search in [[https://spack.readthedocs.io/en/latest/spack.build_systems.html][build systems API]]
   #+BEGIN_SRC sh
     spack info libosrm
   #+END_SRC
@@ -623,15 +643,15 @@ Do not uninstall packages that are not sufficiently specified
     Installation Phases:
       cmake    build    install
   #+END_SRC
-- check examples in the default repo
+- check examples in the [[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages][builtin repo]]
   #+BEGIN_SRC sh
     grep -r $SPACK_ROOT/var/spack/repos/builtin -e "CMakePackage" *
     spack edit cgal
   #+END_SRC
-  - ~CMakePackage~ (=cgal=)
-  - ~AutotoolsPackage~ (=gcc=, =gdal=, =hdf5=, =mvapich2=),
-  - ~Package~ (=python=, =lua=, =julia=)
-    - [[https://spack.readthedocs.io/en/latest/packaging_guide.html#extensions][extensions]] (e.g., Python packages like =py-numpy=)
+  - ~[[https://spack.readthedocs.io/en/latest/build_systems/cmakepackage.html][CMakePackage]]~ (=[[https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/cgal/package.py][cgal]]=)
+  - ~[[https://spack.readthedocs.io/en/latest/build_systems/autotoolspackage.html][AutotoolsPackage]]~ (=[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/gcc][gcc]]=, =[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/gdal][gdal]]=, =[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/hdf5][hdf5]]=, =mvapich2=),
+  - ~[[https://spack.readthedocs.io/en/latest/build_systems.html][Package]]~ (=[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/python][python]]=, =[[https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/lua/package.py][lua]]=, =[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/julia][julia]]=)
+    - [[https://spack.readthedocs.io/en/latest/packaging_guide.html#extensions][extensions]] (e.g., [[https://spack.readthedocs.io/en/latest/build_systems/pythonpackage.html][Python packages]] like =[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/py-numpy][py-numpy]]=)
   - ...
 
 ** Installation of Dependencies
@@ -705,5 +725,3 @@ Do not uninstall packages that are not sufficiently specified
   - [[https://youtu.be/edpgwyOD79E][ ~Spack~ tutorial]] by Todd Gamblin
   - [[https://youtu.be/z7ZdnCkaPCY][Managing with ~Spack~ ]]by Gregory Blum Becker
 - Documentation: [[https://spack.readthedocs.io/en/latest/chain.html][manual]], [[https://spack-tutorial.readthedocs.io/en/latest/][tutorial]], [[https://spack.readthedocs.io/en/latest/getting_started.html#system-packages][quick start]]
-
-
