@@ -7,22 +7,14 @@
 <style type="text/css">
 .underline { text-decoration: underline; }
 </style>
-<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
 
-<link rel="stylesheet" href="./reveal.js/css/theme/beige.css" id="theme"/>
+<link rel="stylesheet" href="./reveal.js/dist/theme/beige.css" id="theme"/>
 
 <link rel="stylesheet" href="./hidalgo-style/extra.css"/>
 
-<!-- If the query includes 'print-pdf', include the PDF print sheet -->
-<script>
-    if( window.location.search.match( /print-pdf/gi ) ) {
-        var link = document.createElement( 'link' );
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = './reveal.js/css/print/pdf.css';
-        document.getElementsByTagName( 'head' )[0].appendChild( link );
-    }
-</script>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/monokai.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
 </head>
 <body>
 <div class="header-x"><div class="left"><img src="./hidalgo-style/hidalgo-logo.png"><hr/></div><div class="center"><b>H</b>PC and B<b>i</b>g <b>Da</b>ta Techno<b>l</b>ogies for <b>G</b>l<b>o</b>bal Challenges</div><div class="right"><hr/></div></div> <div class="footer-x"><div class="left">2021-01-20</div><div class="center"><b>Sergiy Gogolenko</b><br><i><small>Introduction to the Project HiDALGO and its Services</small></i></div> <div class="right"><img src="./hidalgo-style/Flag_of_Europe.svg" alt="HiDALGO"><b>EU</b> <small>founded project</small><br><b>&aleph;824115</b><br><sup><sup><sup><sup><sup><sup><sup><b><code>@OITTTIO</code><b></sup></sup></sup></sup></sup></sup></sup></div></div>
@@ -33,8 +25,8 @@
 </section>
 
 <section>
-<section id="slide-org67878a3" data-background="https://aer.eu/wp-content/uploads/2019/10/SDGs-Summit-article-cover-.png" data-background-opacity="0.25">
-<h2 id="org67878a3">Introduction</h2>
+<section id="slide-org2695ada" data-background="https://aer.eu/wp-content/uploads/2019/10/SDGs-Summit-article-cover-.png" data-background-opacity="0.25">
+<h2 id="org2695ada">Introduction</h2>
 <aside class="notes">
 <p>
 Helo everyone.
@@ -49,8 +41,8 @@ They are broadly discussed in the media.
 
 </aside>
 </section>
-<section id="slide-orge756e39">
-<h3 id="orge756e39">Global Challenges: Media and Pop Culture</h3>
+<section id="slide-org95e1e32">
+<h3 id="org95e1e32">Global Challenges: Media and Pop Culture</h3>
 <div class="image-stack-overlapped">
   <a href="https://en.wikipedia.org/wiki/Frozen_Planet">
     <img class="image1-overlapped" height="600" src="https://fanart.tv/fanart/tv/251418/tvposter/frozen-planet-536514f13374c.jpg">
@@ -81,8 +73,8 @@ the Netflix which usually should entertain us.
 </aside>
 
 </section>
-<section id="slide-org3b4daf2" data-background-iframe="https://en.wikipedia.org/wiki/Climate_change_art" data-background-opacity="0.2" data-background-interactive>
-<h3 id="org3b4daf2">Global Challenges: Art</h3>
+<section id="slide-org36cc1d3" data-background-iframe="https://en.wikipedia.org/wiki/Climate_change_art" data-background-opacity="0.2" data-background-interactive>
+<h3 id="org36cc1d3">Global Challenges: Art</h3>
 <div class="image-stack-overlapped">
 <a href="https://en.wikipedia.org/wiki/Frozen_Planet">
 <img class="image1-overlapped" height="600" src="https://upload.wikimedia.org/wikipedia/commons/4/45/Gabriele_Evertz_Double_1999-2000_Acrylic_on_Canvas.jpg">
@@ -106,8 +98,8 @@ dedicated to global challenges like, for example, climate change art.
 </aside>
 
 </section>
-<section id="slide-org8d115a4" data-background="./figs/partners.png" data-background-size="1000px" data-background-opacity="0.15">
-<h3 id="org8d115a4">CoE for Global Challenges</h3>
+<section id="slide-orgb6140ac" data-background="./figs/partners.png" data-background-size="1000px" data-background-opacity="0.15">
+<h3 id="orgb6140ac">CoE for Global Challenges</h3>
 <div class="column" style="float:left; width:%50">
 <ul>
 <li><b>Consortium</b>:
@@ -154,8 +146,8 @@ The work is coordinated by ATOS Spain and we are in the 3rd year of the project.
 
 </aside>
 </section>
-<section id="slide-orgbc2a708" data-background="https://apolitical.co/wp-content/uploads/2018/12/Screen-Shot-2018-12-04-at-13.55.24.png" data-background-size="900px" data-background-opacity="0.15">
-<h3 id="orgbc2a708">HiDALGO Motivation and Main Objectives</h3>
+<section id="slide-org20dc8ce" data-background="https://apolitical.co/wp-content/uploads/2018/12/Screen-Shot-2018-12-04-at-13.55.24.png" data-background-size="900px" data-background-opacity="0.15">
+<h3 id="org20dc8ce">HiDALGO Motivation and Main Objectives</h3>
 <div class="alert alert-info">
 <p>
 <b>Goal</b>: evidence based <span class="underline"><i>policy-making</i></span> for current and upcoming situations via accurate <i>GC simulations</i>
@@ -196,8 +188,8 @@ The project focuses on 3 main objectives&#x2026;
 </section>
 </section>
 <section>
-<section id="slide-org0d0958c" data-background="./figs/use_cases/global-challenges.png" data-background-size="1000px" data-background-opacity="0.25">
-<h2 id="org0d0958c">Use Cases</h2>
+<section id="slide-org48b8f6b" data-background="./figs/use_cases/global-challenges.png" data-background-size="1000px" data-background-opacity="0.25">
+<h2 id="org48b8f6b">Use Cases</h2>
 <aside class="notes">
 <p>
 At the moment there are many global challenges in the world.
@@ -206,8 +198,8 @@ Now the question is how to select the right case studies?
 
 </aside>
 </section>
-<section id="slide-org3d7377f" data-background="https://flytoy.pl/pol_pl_Homo-Deus-A-Brief-History-of-Tomorrow-ENG-3223_1.jpg" data-background-size="1000px" data-background-opacity="0.25">
-<h3 id="org3d7377f">What challenges to choose?</h3>
+<section id="slide-org646a143" data-background="https://flytoy.pl/pol_pl_Homo-Deus-A-Brief-History-of-Tomorrow-ENG-3223_1.jpg" data-background-size="1000px" data-background-opacity="0.25">
+<h3 id="org646a143">What challenges to choose?</h3>
 <small>
 <blockquote>
 <p>
@@ -249,8 +241,8 @@ So these constitute use cases for our research.
 </aside>
 
 </section>
-<section id="slide-org2718b69" data-background="https://d15l9woddkztht.cloudfront.net/logos/unhcr-united-nations-high-commissioner-for-refugees.svg" data-background-size="1400px" data-background-opacity="0.2">
-<h3 id="org2718b69">Refugee and human migration simulation</h3>
+<section id="slide-orgafa04a8" data-background="https://d15l9woddkztht.cloudfront.net/logos/unhcr-united-nations-high-commissioner-for-refugees.svg" data-background-size="1400px" data-background-opacity="0.2">
+<h3 id="orgafa04a8">Refugee and human migration simulation</h3>
 <div class="alert alert-info">
 <ul>
 <li>develop realistic models for simulating refugee streams</li>
@@ -300,8 +292,8 @@ Later on today, we will have a talk of Christoph Schwimmer this this topic.
 
 </aside>
 </section>
-<section id="slide-orgca342be" data-background="https://upload.wikimedia.org/wikipedia/commons/8/82/SARS-CoV-2_without_background.png" data-background-size="1000px" data-background-opacity="0.2">
-<h3 id="orgca342be">COVID and Flu spread simulation</h3>
+<section id="slide-orgc883afa" data-background="https://upload.wikimedia.org/wikipedia/commons/8/82/SARS-CoV-2_without_background.png" data-background-size="1000px" data-background-opacity="0.2">
+<h3 id="orgc883afa">COVID and Flu spread simulation</h3>
 <div class="alert alert-info">
 <ul>
 <li>simulate epidemics spread across the <i>local</i> area</li>
@@ -349,8 +341,8 @@ Derek Groen will present synopsis of our results in this direction right after m
 
 </aside>
 </section>
-<section id="slide-org410797e" data-background="./figs/uap_gyor.png" data-background-size="1500px" data-background-opacity="0.1">
-<h3 id="org410797e">Urban air pollution simulation</h3>
+<section id="slide-orgcf4ceb5" data-background="./figs/uap_gyor.png" data-background-size="1500px" data-background-opacity="0.1">
+<h3 id="orgcf4ceb5">Urban air pollution simulation</h3>
 <div class="alert alert-info">
 
 <ul>
@@ -398,8 +390,8 @@ Derek Groen will present synopsis of our results in this direction right after m
 </div>
 
 </section>
-<section id="slide-orgda8e06e" data-background="./figs/use_cases/sna-clustering.png" data-background-opacity="0.25">
-<h3 id="orgda8e06e">Social network analysis</h3>
+<section id="slide-org3913af4" data-background="./figs/use_cases/sna-clustering.png" data-background-opacity="0.25">
+<h3 id="org3913af4">Social network analysis</h3>
 <div class="alert alert-info">
 
 <ul>
@@ -443,8 +435,8 @@ Derek Groen will present synopsis of our results in this direction right after m
 </div>
 
 </section>
-<section id="slide-org9eb5f58" data-background="./figs/hidalgo_workflow.svg" data-background-size="900px" data-background-opacity="0.05">
-<h3 id="org9eb5f58">HiDALGO Approach and Generalized Workflow</h3>
+<section id="slide-org5c51420" data-background="./figs/hidalgo_workflow.svg" data-background-size="900px" data-background-opacity="0.05">
+<h3 id="org5c51420">HiDALGO Approach and Generalized Workflow</h3>
 <div class="alert alert-info">
 <p>
 <b>Accurate digital twinning</b> of GCs <font color="#2d5986">&#10562;</font> <b>coupled simulations</b> + <b>HPDA</b>
@@ -478,8 +470,8 @@ and to design of HPDA methods.
 
 </aside>
 </section>
-<section id="slide-org0edba16" data-background="./figs/hidalgo_workflow.svg" data-background-size="900px" data-background-opacity="0.05">
-<h3 id="org0edba16">HiDALGO Tools</h3>
+<section id="slide-orgaf2c630" data-background="./figs/hidalgo_workflow.svg" data-background-size="900px" data-background-opacity="0.05">
+<h3 id="orgaf2c630">HiDALGO Tools</h3>
 
 <div class="figure">
 <p><img src="./figs/tools/hidalgo-tools.png" alt="hidalgo-tools.png" width="80%" />
@@ -503,8 +495,8 @@ Finally, for orchestrating complicated coupled simulation workflows, we use tool
 </section>
 </section>
 <section>
-<section id="slide-org438f15a">
-<h2 id="org438f15a">Services and portal</h2>
+<section id="slide-orga750a0a">
+<h2 id="orga750a0a">Services and portal</h2>
 
 <div class="figure">
 <p><img src="./figs/services/hidalgo-services.png" alt="hidalgo-services.png" />
@@ -518,8 +510,8 @@ In the next slides I will quickly go through them.
 
 </aside>
 </section>
-<section id="slide-org0e67f2a" data-background="http://ssolution.ca/wp-content/uploads/2016/02/Consulting1.jpg" data-background-size="1500px" data-background-opacity="0.25">
-<h3 id="org0e67f2a">HiDALGO Services: Consultancy</h3>
+<section id="slide-org27e39c2" data-background="http://ssolution.ca/wp-content/uploads/2016/02/Consulting1.jpg" data-background-size="1500px" data-background-opacity="0.25">
+<h3 id="org27e39c2">HiDALGO Services: Consultancy</h3>
 <ul>
 <li>Analyse problems</li>
 <li>Analyse systems/codes</li>
@@ -543,8 +535,8 @@ participating in different events.
 
 </aside>
 </section>
-<section id="slide-org880f6d9" data-background="https://www.hlrs.de/fileadmin/_processed_/c/4/csm_SAS_2019_5f57034438.jpg" data-background-size="1500px" data-background-opacity="0.25">
-<h3 id="org880f6d9">HiDALGO Services: Training &amp; Community</h3>
+<section id="slide-org7e11507" data-background="https://www.hlrs.de/fileadmin/_processed_/c/4/csm_SAS_2019_5f57034438.jpg" data-background-size="1500px" data-background-opacity="0.25">
+<h3 id="org7e11507">HiDALGO Services: Training &amp; Community</h3>
 <div class="column" style="float:left; width:%50">
 
 <ul>
@@ -582,8 +574,8 @@ participating in different events.
 
 </aside>
 </section>
-<section id="slide-org8c7c065" data-background="./figs/services/hidalgo-support.png" data-background-size="1400px" data-background-opacity="0.2">
-<h3 id="org8c7c065">HiDALGO Services: Support</h3>
+<section id="slide-orgb128ee0" data-background="./figs/services/hidalgo-support.png" data-background-size="1400px" data-background-opacity="0.2">
+<h3 id="orgb128ee0">HiDALGO Services: Support</h3>
 <ul>
 <li>Expert Support through
 <ul>
@@ -602,8 +594,8 @@ Hidalgo provides experts support through Zammad-based ticketing systems and Askb
 
 </aside>
 </section>
-<section id="slide-orgc0d1de9" data-background="./figs/use_cases/flee-scaling.png" data-background-size="1400px" data-background-opacity="0.25">
-<h3 id="orgc0d1de9">HiDALGO Services: Co-Design</h3>
+<section id="slide-org3275ae9" data-background="./figs/use_cases/flee-scaling.png" data-background-size="1400px" data-background-opacity="0.25">
+<h3 id="org3275ae9">HiDALGO Services: Co-Design</h3>
 <div style="display: flex;">
 <div style="flex: 1;">
 <p>
@@ -636,8 +628,8 @@ We work in both directions &#x2013; SW/SW and HW/SW co-design.
 
 </aside>
 </section>
-<section id="slide-org3fd8907" data-background-iframe="https://hidalgo1.man.poznan.pl/dataset" data-background-opacity="0.2" data-background-interactive>
-<h3 id="org3fd8907">HiDALGO Services: Repositories</h3>
+<section id="slide-orga2d251f" data-background-iframe="https://hidalgo1.man.poznan.pl/dataset" data-background-opacity="0.2" data-background-interactive>
+<h3 id="orga2d251f">HiDALGO Services: Repositories</h3>
 <ul>
 <li>Data for Global Challenges:
 <ul>
@@ -663,8 +655,8 @@ as well as tools that facilitate access to these data.
 
 </aside>
 </section>
-<section id="slide-orgedb8b87" data-background="./figs/services/hidalgo-portal.png" data-background-size="1400px" data-background-opacity="0.2">
-<h3 id="orgedb8b87">HiDALGO Services: Portal - Single Entry Point</h3>
+<section id="slide-orga2fccab" data-background="./figs/services/hidalgo-portal.png" data-background-size="1400px" data-background-opacity="0.2">
+<h3 id="orga2fccab">HiDALGO Services: Portal - Single Entry Point</h3>
 <ul>
 <li><b>Market Place</b></li>
 <li><b>Community Tools</b>: <a href="https://moodle.hidalgo-project.eu">Moodle</a>, Matchmaking, <a href="https://support.hidalgo-project.eu/">Zammad</a>, <a href="https://askbot.hidalgo-project.eu/">Askbot</a></li>
@@ -686,8 +678,8 @@ Currently, we have such portal components as&#x2026;
 
 </aside>
 </section>
-<section id="slide-org111ba0b" data-background="./figs/services/hidalgo-collaboration.png" data-background-size="1400px" data-background-opacity="0.9">
-<h3 id="org111ba0b">Collaborating</h3>
+<section id="slide-org4068ea5" data-background="./figs/services/hidalgo-collaboration.png" data-background-size="1400px" data-background-opacity="0.9">
+<h3 id="org4068ea5">Collaborating</h3>
 <p>
 <b><a href="https://hidalgo-project.eu/stakeholder-survey">https://hidalgo-project.eu/stakeholder-survey</a></b>
 </p>
@@ -710,8 +702,8 @@ please feel free to contact us.
 </section>
 </section>
 <section>
-<section id="slide-org515b98c" data-background="./hidalgo-style/hidalgo-logo.png" data-background-size="1400px" data-background-opacity="0.25">
-<h2 id="org515b98c">Thank you for your attention!</h2>
+<section id="slide-org69faec6" data-background="./hidalgo-style/hidalgo-logo.png" data-background-size="1400px" data-background-opacity="0.25">
+<h2 id="org69faec6">Thank you for your attention!</h2>
 <p>
 <a href="https://hidalgo-project.eu/consulting">https://hidalgo-project.eu/consulting</a> 
 </p>
@@ -781,8 +773,8 @@ January 20
 </section>
 </div>
 </div>
-<script src="./reveal.js/lib/js/head.min.js"></script>
-<script src="./reveal.js/js/reveal.js"></script>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
@@ -804,17 +796,15 @@ overview: true,
 width: 1400,
 height: 1000,
 
-theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-transition: Reveal.getQueryHash().transition || 'convex', // see README of reveal.js for options
+transition: 'convex',
 transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealHighlight ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [
- { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
- { src: './reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } },
- { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }]
+]
 
 });
 </script>

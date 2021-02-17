@@ -562,3 +562,198 @@ January 20
 | 17:50 – 18:30 | *Lara López*, ATOS, ES          | *Round table*: /How can we solve Global Challenges through HPC/HPDA/AI?/     |
 |---------------+---------------------------------+------------------------------------------------------------------------------|
 #+REVEAL_HTML: </small>
+
+#+BEGIN_NOTES
+:DRAWERNAME:
+# * Introduction
+Hello everyone.
+Welcome to the Workshop on Tackling Global Challenges with HPC and HPDA technologies.
+Since half of the talks today will be related to
+the work done in the frame of European CoE for GCs called HiDALGO,
+we decided to start our workshop with the high level presentation of this project.
+In this opening talk, I will briefly introduce you to
+the HiDALGO objectives, use cases, and its services.
+
+--
+
+Global challenges gain a solid attention from the society.
+They are broadly discussed in the media. 
+Almost daily we hear about wars, pandemics, climate change and other troubles 
+from the TV, newspapers, Twitter, FB and so on.
+
+--
+
+We even have Netflix documentaries about global challenges -- 
+the Netflix which main purpose by design is to entertain us.
+
+--
+
+Moreover, we have new directions in conceptual art
+dedicated to global challenges like, for example, climate change art.
+
+--
+
+HiDALGO project was established in order to address this solid demand in the society
+to know more about global challenges and how to deal with them efficiently.
+We are an EU funded project which brings together GSS, AI and HPC experts
+from 13 partner institutions out of 7 countries.
+The work is coordinated by ATOS Spain and we are in the 3rd year of the project.
+
+--
+
+Essentially the goal of the project is to target computer-aided
+evidence based policy-making for current and upcoming situations via accurate simulation of GCs.
+The project focuses on 3 main objectives:
+First and foremost, we try to benefit from the synergies between HPC, HPDA, AI, and GCs.
+In particular, we aim to establish a baseline for HPC, HPDA, and AI research in the domain of GCs
+focusing primarily on the highly accurate models.
+Our next objective is to provide a single entry point for decision makers and other relevant entities.
+To fulfil this goal, a multi-domain portal for the GC community
+Last but not least, people working on GCs ususally come wiht different backgrounds.
+For example, in our consortium, we have global system scientists, as well as AI and HPC experts.
+Our goal is to connect & train this diverse community.
+
+# * Use Cases
+
+At the moment there are many global challenges in the world.
+Now the question is how to select the right one to study?
+
+-- 
+
+Some thinkers tend to reason that famine, plagues, and wars are essentially problems of the former centuries
+and humanity must look forward on the challenges of the future like happiness, immortality or God-like powers.
+In HiDALGO team, we have a more conservative view.
+Well, if we take a look on the news that dominate in the media over the last months,
+we still see pandemics and wars, besides other titles.
+So these topics constitute the use cases for our research.
+
+--
+
+Our first use-case deals with simulation of refugees and human migration.
+In this use case we try to...
+This use case uses HPC to perform time-consuming individual and ensamble simulation runs.
+HPDA tasks include...
+Later today, we will have a dedicated talk 
+about the new algorithms of pre-process geo-spacial information for the purposes of migration use-case
+given by Christoph Schwimmer from KNOW-Center.
+The results of this use case were applied to study conflicts in...
+We are also in touch with some NGOs like UN High Commissioner for Refugees and Save-the-Children.
+
+--
+
+There's a lot of hype around infection spread simulation these days and it is one our use cases too.
+...
+Derek Groen from BUL will present synopsis of our results in this direction right after my talk.
+
+--
+
+Our next use case is ...
+
+--
+
+Last, but not least, we have a SNA use case.
+
+--
+
+HiDALGO approaches policy-making via accurate digital twinning of GCs. 
+Accurate digital twins for GCs inevitably
+involve models for diverse social and physical phenomena --
+often multi-scale by design and
+consuming massive sets of static and streaming data.
+The generalized HiDALGO workflow is demonstrated on this slide.
+Such simulation-centric approach gives rise to a number of research topics related to 
+coupling of models and data sources, as well as design of HPDA methods.
+One of such topics is coupling across data centers.
+
+--
+
+In particular, our partners developed and implemented a set of tools -- called polytop -- 
+to enable acyclic asynchronous coupling across data centers.
+In our case, we use it to couple weather forecasts produced at
+the clusters of the [[https://en.wikipedia.org/wiki/European_Centre_for_Medium-Range_Weather_Forecasts][European Centre for Medium-Range Weather Forecasts]]
+with the migration and UAP simulations done at the resources of the HPC centers from HiDALGO consortium.
+
+--
+
+In order to implement the simulation-centric approach,
+besides polytop, we use, develop, and promote a bunch of other software tools.
+You can see some on them listed on this slide.
+In the domain of simulation we use ABM and CFD frameworks,
+as well as specific linear algebra packages,
+some of which are developed by our researchers.
+In the domain of DA, we primarily rely on the well established frameworks like Dask and Spark.
+For visualization, we use our developments -- Covise and Visualizer --
+capable of tackling massive datasets and providing immersive visualization features.
+Finally, for orchestrating complicated coupled simulation workflows, we use tools like Cloudify and FabSim.
+
+# * Services and portal
+
+HiDALGO provides a bunch of services listed on this slide.
+In the next slides I will quickly go through them.
+
+--
+
+First of all, we provide consultancy services. We...
+
+--
+
+We organize workshops, like the one you are present today.
+Also we prepare on-site trainings.
+Well, at least, we did it before the COVID outbreak and
+you can see photo from one of our on-site training in the background to this slide
+Finally, we deployed several on-line courser which are posted on our Moodle platform.
+In addition, we support community by 
+yellow pages, matchmaking tools,
+contributing to public discussion forums,
+and participating in different events.
+
+--
+
+Hidalgo provides experts support through Zammad-based ticketing systems and Askbot-based public forum,
+as well as a bunch of on-line documentation.
+
+--
+
+Co-design plays a special role in our project.
+We work in both directions -- sw/sw and hw/sw co-design.
+As all we know, HPC consumes a lot of electricity.
+One of our tasks is to make this consumption as small as possible by selecting the proper hardware and tuning the software.
+Otherwise, while solving different global challenges, we will contribute to another one.
+
+--
+
+While dealing with data-intensive tasks,
+we also establish data-repositories and organize access to
+collections of massive real-world datasets useful for tackling global challenges,
+as well as tools that facilitate access to these data.
+
+--
+
+As I mentioned on one of the previous slides, 
+establishing a single entry point for decision makers and people interested
+in GCs is one of the fundamental objectives of our project.
+Therefore, we are keen on designing a convenient portal for our potential users.
+Currently, we have such portal components as...
+
+--
+
+You can get an impression about the high-level design of our portal from this slide.
+
+--
+
+Last but not least, we are open for collaboration with individuals and organizations
+in all directions you see on this slide.
+Well, it will be a great help for us
+if you follow the stakeholder survey link from this slide and fill in the survey.
+All in all, if you have global challenges in mind,
+or you have interest in our research, our use cases, or our services,
+or you just want to leave your feedback,
+please feel free to contact us any time.
+
+==
+
+You see contact information on this slide.
+Thank you for your attention!
+And I hope you'll enjoy the rest of the workshop!
+:END:
+#+END_NOTES

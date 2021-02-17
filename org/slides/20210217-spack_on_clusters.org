@@ -46,6 +46,7 @@
 
 *_Key mechanisms of =Spack=_*:
 - store dependencies in [[https://spack.readthedocs.io/en/latest/packaging_guide.html#handling-rpaths][RPATH]] ([[https://en.wikipedia.org/wiki/Rpath][wiki]])
+  - it enables many cool features (like build caches, less troubles with environment variables)
 
 *_Key parts of =Spack=_*:
 - *Specs*: expressions for describing builds of software, and
@@ -74,7 +75,7 @@
 - flags (for compilers & linkers)
   # - compilers: ~cppflags~, ~cflags~, ~cxxflags~, and ~fflags~
   # - linkers: ~ldflags~, and ~ldlibs~
-- boolean variants and dependencies
+- variants and dependencies
   #+BEGIN_SRC sh
     spack info python
   #+END_SRC
@@ -108,7 +109,7 @@
 | Nodes        | 5632            | 96                     | 1087               |
 | CPU model    | EPYC 7742       | Xeon 6248              | E5-2697V3          |
 | *Cores*      | 2 x 64 x *[[https://en.wikipedia.org/wiki/Epyc][zen2]]* | 2 x 20 x *[[https://de.wikipedia.org/wiki/Intel_Xeon_(Cascade_Lake)][cascadelake]]* | 2 x 14 x *[[https://en.wikipedia.org/wiki/Haswell_(microarchitecture)][haswell]]* |
-| RAM per node | 256GB           | 384GB                  | 256 GB             |
+| RAM per node | 256GB           | 384GB                  | 256GB              |
 | Interconnect | IB HDR200       | IB HDR                 | IB FDR56           |
 |--------------+-----------------+------------------------+--------------------|
 | *OS*         | CentOS 8.2      | CentOS 7.9             | CentOS 7.6         |
@@ -117,10 +118,10 @@
 #+REVEAL_HTML: </small>
 
 * Going off-line
-** Deploying =spack= 
+** Deploying =Spack= 
 
 #+ATTR_REVEAL: :frag (none appear appear) :frag_idx (- 1 2)
-- download your favorite release or clone =spack= and patch (if necessary)
+- download your favorite release or clone =Spack= and patch (if necessary)
   #+BEGIN_SRC sh
     curl https://github.com/spack/spack/releases/download/v0.16.0/spack-0.16.0.tar.gz |
         ssh hawk 'cat > ~/spack.tar.gz'
@@ -263,7 +264,7 @@
 * Reuse of installed packages
 ** [[https://spack.readthedocs.io/en/latest/chain.html][Upstreams]]
 
-- default location of =spack= installations at Hawk
+- default location of =Spack= installations at Hawk
   #+BEGIN_SRC sh
     ll /opt/hlrs/spack/current
     # lrwxrwxrwx 1 hpcoft28 hpc43203 18 Jul  3  2020 /opt/hlrs/spack/current -> rev-004_2020-06-17
@@ -296,14 +297,14 @@
   #+BEGIN_SRC sh
     spack external list
   #+END_SRC
-- =spack= does not 
+- =Spack= does not 
   - collects and examines /beyond executable files/
   - search through /module files/
   - /overwrite existing entries/ in the package configuration
 
 *** Externals: steal configs
 
-- tempting solution: on Hawk, reuse =compilers.yaml= and =packages.yaml= from upstreamed =spack=
+- tempting solution: on Hawk, reuse =compilers.yaml= and =packages.yaml= from upstreamed =Spack=
   #+BEGIN_SRC yaml
     include:
     - /opt/hlrs/non-spack/misc/spack/spack-hlrs/spack-config/compilers.yaml
@@ -450,9 +451,9 @@
 
 ** Summary: Step-Wise Instructions
 
-- upstream =spack=-installed packages
+- upstream =Spack=-installed packages
 - reuse configs carefully
-- use modules for non-=spack= installations
+- use modules for non-=Spack= installations
 - use =external find=
 - use manual specification of externals via prefix for the rest
 * Build customization
@@ -809,7 +810,7 @@ Allow to define "a set of packages we want to install across a wide range of com
       spack module tcl refresh libosrm
     #+END_SRC
 
-** Extending =spack=
+** Extending =Spack=
 
 - local use
   - [[https://spack.readthedocs.io/en/latest/repositories.html#repo-namespaces-and-python][extentions for builtin packages]] (clean way to do it with inheritance)

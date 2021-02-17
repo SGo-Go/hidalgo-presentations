@@ -29,7 +29,7 @@
   #+ATTR_REVEAL: :code_attribs data-line-numbers="2,3"
   #+BEGIN_SRC sh
     cd $SPACK_ROOT &&
-	git checkout releases/v0.16
+        git checkout releases/v0.16
     git apply ../spack-0.16-ml.patch
   #+END_SRC
 - Activate
@@ -119,22 +119,22 @@
   #+ATTR_REVEAL: :code_attribs data-line-numbers="6-7,9-10"
   #+BEGIN_SRC yaml
     - compiler:
-	spec: clang-gfortran@3.8.0
-	paths:
-	  cc: /usr/bin/clang-3.8
-	  cxx: /usr/bin/clang++-3.8
+        spec: clang-gfortran@3.8.0
+        paths:
+          cc: /usr/bin/clang-3.8
+          cxx: /usr/bin/clang++-3.8
           f77: /usr/bin/gfortran
           fc: /usr/bin/gfortran
-	operating_system: ubuntu16.04
-	flags:
-	  cflags: -O3 -fPIC
-	target: x86_64
+        operating_system: ubuntu16.04
+        flags:
+          cflags: -O3 -fPIC
+        target: x86_64
         modules: []
         environment: {}
         extra_rpaths: []
   #+END_SRC
 
-*** Specs: Compiler - =spack=-installed (4)
+*** Specs: Compiler - =Spack=-installed (4)
 
 - use external compilers
   #+BEGIN_SRC sh
@@ -145,7 +145,7 @@
     spack compilers
     spack compiler info clang
   #+END_SRC
-- use =spack=-installed compilers
+- use =Spack=-installed compilers
   #+BEGIN_SRC sh
     spack install clang@8.0.0
     spack compiler add $(spack location -i clang@8.0.0)
@@ -233,7 +233,7 @@ How to distinguish between 2 installations with the same version but different s
 {{{end_block}}}
 
 #+ATTR_REVEAL: :frag (appear appear appear) :frag_idx (1 1 1)
-- =spack= generates a unique hash for each new spec
+- =Spack= generates a unique hash for each new spec
 - sigil: ~/~
 - installation specification with package dependency specified by hash
   #+BEGIN_SRC sh
@@ -355,13 +355,13 @@ Do not uninstall packages that are not sufficiently specified
   #+BEGIN_SRC yaml
       buildable: False
       modules:
-	binutils+libiberty~nls: binutils/2.26.1
+        binutils+libiberty~nls: binutils/2.26.1
       version: [2.26.1]
 
     binutils:
       externals:
       - spec: binutils@2.26.1+libiberty~nls
-	prefix: /usr
+        prefix: /usr
       buildable: False
   #+END_SRC
 * Environments
@@ -430,8 +430,8 @@ Do not uninstall packages that are not sufficiently specified
       specs:
       - python@3.9.0+optimizations
       - matrix:
-	- [py-numpy, py-scipy, py-matplotlib, py-scikit-learn, py-jupyter ^cairo+X+fc+ft]
-	- [^python@3.9.0+optimizations]
+        - [py-numpy, py-scipy, py-matplotlib, py-scikit-learn, py-jupyter ^cairo+X+fc+ft]
+        - [^python@3.9.0+optimizations]
       concretization: together
       view: true
   #+END_SRC
@@ -497,7 +497,7 @@ Do not uninstall packages that are not sufficiently specified
   - its dependencies
   - options for building the software from source
   - build commands
-- =spack=-installation scripts \(\equiv\) Python recipes including this info
+- =Spack=-installation scripts \(\equiv\) Python recipes including this info
 
 ** Preparing environment for the experiments
 
@@ -568,13 +568,13 @@ Do not uninstall packages that are not sufficiently specified
 #+ATTR_REVEAL: :code_attribs data-line-numbers="1,3,7"
 #+BEGIN_SRC python
       variant('build_type', default='Release',
-	      description='The build type to build',
-	      values=('Debug', 'Release'))
+              description='The build type to build',
+              values=('Debug', 'Release'))
 
       # ---- See about library OSRM at:
       # https://github.com/Project-OSRM/osrm-backend/blob/master/docs/libosrm.md
       variant('lib_only', default=True,
-	      description='Install OSRM in a library only mode')
+              description='Install OSRM in a library only mode')
 #+END_SRC
 
 - *[[https://spack.readthedocs.io/en/latest/packaging_guide.html#variants][variants]]*: can be /boolean/ or /multi-valued/ with /validation logic/
@@ -617,15 +617,15 @@ Do not uninstall packages that are not sufficiently specified
 
   #+ATTR_REVEAL: :code_attribs data-line-numbers="2,5,6"
   #+BEGIN_SRC python
-	def cmake_args(self):
-	    variant_bool = lambda feature: str(feature in self.spec)
-	    cmake_args = []
+        def cmake_args(self):
+            variant_bool = lambda feature: str(feature in self.spec)
+            cmake_args = []
 
-	    cmake_args.append('-DLUA_INCLUDE_DIR=%s' % self.spec['lua'].headers.directories[0])
-	    cmake_args.append('-DBUILD_SHARED_LIBS:BOOL=%s' % variant_bool('+shared'))
-	    cmake_args.append('-DBoost_USE_STATIC_LIBS=ON') # %s' % variant_bool('+shared')
+            cmake_args.append('-DLUA_INCLUDE_DIR=%s' % self.spec['lua'].headers.directories[0])
+            cmake_args.append('-DBUILD_SHARED_LIBS:BOOL=%s' % variant_bool('+shared'))
+            cmake_args.append('-DBoost_USE_STATIC_LIBS=ON') # %s' % variant_bool('+shared')
 
-	    return cmake_args
+            return cmake_args
   #+END_SRC
 
 *** Package Skeleton: Commands
@@ -648,10 +648,10 @@ Do not uninstall packages that are not sufficiently specified
     grep -r $SPACK_ROOT/var/spack/repos/builtin -e "CMakePackage" *
     spack edit cgal
   #+END_SRC
-  - ~[[https://spack.readthedocs.io/en/latest/build_systems/cmakepackage.html][CMakePackage]]~ (=[[https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/cgal/package.py][cgal]]=)
-  - ~[[https://spack.readthedocs.io/en/latest/build_systems/autotoolspackage.html][AutotoolsPackage]]~ (=[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/gcc][gcc]]=, =[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/gdal][gdal]]=, =[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/hdf5][hdf5]]=, =mvapich2=),
-  - ~[[https://spack.readthedocs.io/en/latest/build_systems.html][Package]]~ (=[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/python][python]]=, =[[https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/lua/package.py][lua]]=, =[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/julia][julia]]=)
-    - [[https://spack.readthedocs.io/en/latest/packaging_guide.html#extensions][extensions]] (e.g., [[https://spack.readthedocs.io/en/latest/build_systems/pythonpackage.html][Python packages]] like =[[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/py-numpy][py-numpy]]=)
+  - [[https://spack.readthedocs.io/en/latest/build_systems/cmakepackage.html][CMakePackage]] ([[https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/cgal/package.py][cgal]])
+  - [[https://spack.readthedocs.io/en/latest/build_systems/autotoolspackage.html][AutotoolsPackage]] ([[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/gcc][gcc]], [[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/gdal][gdal]], [[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/hdf5][hdf5]], =mvapich2=),
+  - [[https://spack.readthedocs.io/en/latest/build_systems.html][Package]] ([[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/python][python]], [[https://github.com/spack/spack/blob/develop/var/spack/repos/builtin/packages/lua/package.py][lua]], [[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/julia][julia]])
+    - [[https://spack.readthedocs.io/en/latest/packaging_guide.html#extensions][extensions]] (e.g., [[https://spack.readthedocs.io/en/latest/build_systems/pythonpackage.html][Python packages]] like [[https://github.com/spack/spack/tree/develop/var/spack/repos/builtin/packages/py-numpy][py-numpy]])
   - ...
 
 ** Installation of Dependencies
@@ -665,8 +665,8 @@ Do not uninstall packages that are not sufficiently specified
 
   #+BEGIN_SRC sh
        46    /home/hpcgogol/dev/spack/lib/spack/env/gcc/gcc -std=gnu99 -fPIC -o luac  -L/home/hpcgogol/dev/spack/opt/spack/linux-ubuntu16.04-broad
-	     well/gcc-5.4.0/readline-8.0-feqfow6hrrf5blkasduwuwnuap6s5h7n/lib -L/usr/lib luac.o liblua.a -lm -Wl,-E -ldl -lreadline -lncursesw -lt
-	     infow
+             well/gcc-5.4.0/readline-8.0-feqfow6hrrf5blkasduwuwnuap6s5h7n/lib -L/usr/lib luac.o liblua.a -lm -Wl,-E -ldl -lreadline -lncursesw -lt
+             infow
     >> 47    /usr/bin/ld: cannot find -ltinfow
     >> 48    collect2: error: ld returned 1 exit status
   #+END_SRC
@@ -676,10 +676,10 @@ Do not uninstall packages that are not sufficiently specified
 - =libtinfow= is a part of =ncurses=
   #+BEGIN_SRC yaml
       ncurses:
-	externals:
-	- spec: ncurses@6.0.20160213+symlinks+termlib
-	  prefix: /usr
-	buildable: false
+        externals:
+        - spec: ncurses@6.0.20160213+symlinks+termlib
+          prefix: /usr
+        buildable: false
   #+END_SRC
 - comment it out and use the spec =libosrm^ncurses+termlib=
   #+BEGIN_SRC sh

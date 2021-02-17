@@ -7,40 +7,29 @@
 <style type="text/css">
 .underline { text-decoration: underline; }
 </style>
-<link rel="stylesheet" href="./reveal.js/css/reveal.css"/>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
 
-<link rel="stylesheet" href="./reveal.js/css/theme/beige.css" id="theme"/>
+<link rel="stylesheet" href="./reveal.js/dist/theme/beige.css" id="theme"/>
 
 <link rel="stylesheet" href="./hidalgo-style/extra.css"/>
-
-<!-- If the query includes 'print-pdf', include the PDF print sheet -->
-<script>
-    if( window.location.search.match( /print-pdf/gi ) ) {
-        var link = document.createElement( 'link' );
-        link.rel = 'stylesheet';
-        link.type = 'text/css';
-        link.href = './reveal.js/css/print/pdf.css';
-        document.getElementsByTagName( 'head' )[0].appendChild( link );
-    }
-</script>
 </head>
 <body>
 <div class="header-x"><div class="left"><img src="./hidalgo-style/iccs-logo.png"></div><div class="right">2020-06-12 Fri 14:10<br></div></div> <div class="footer-x"><div class="left"><img src="./hidalgo-style/hidalgo-logo.png"></div><div class="center"><b>Sergiy Gogolenko</b><br><i><small>Towards Accurate Simulation of Global Challenges on Data Centers Infrastructures via Coupling of Models and Data Sources</small></i></div> <div class="right"><img src="./hidalgo-style/Flag_of_Europe.svg" alt="HiDALGO"><b>EU</b> <small>founded project</small><br><b>#824115</b><br><sup><sup><sup><sup><sup><sup><sup><b><code>@O_TTT_O</code><b></sup></sup></sup></sup></sup></sup></sup></div></div>
 <div class="reveal">
 <div class="slides">
-<section id="sec-title-slide" data-background="./hidalgo-style/hidalgo-logo.png" data-background-size="35%" data-background-position="top">
-<h1><small>Towards Accurate Simulation of Global Challenges on Data Centers Infrastructures via Coupling of Models and Data Sources</sup></small></h1><h2><a href='mailto:<a href="mailto:gogolenko@hlrs.de">gogolenko@hlrs.de</a>'>Sergiy Gogolenko</a></h2><h4></h4><h3>ICCS'2020 <small><sup>@</sup></small> <del>Amsterdam (NL)</del> remote&compfn;2020-06-12 Fri 14:10</h3> <!-- <p>View online: <a href="http://sgo-go.github.io/hidalgo-presentations/20200603-ICCS.html">http://sgo-go.github.io/hidalgo-presentations/20200603-ICCS.html</a></p><p>This could be the file name in the <code>src</code> attribute of an <code>img</code> element for a QR code:  -->
+<section id="sec-title-slide" data-background="./hidalgo-style/hidalgo-bg-title.jpg" data-background-size="100%" data-background-position="top">
+<h1><small>Towards Accurate Simulation of Global Challenges on Data Centers Infrastructures via Coupling of Models and Data Sources</sup></small></h1><h2><a href='mailto:<a href="mailto:gogolenko@hlrs.de">gogolenko@hlrs.de</a>'>Sergiy Gogolenko</a></h2><h4></h4><h3>ICCS'2020 <small><sup>@</sup></small> <del>Amsterdam (NL)</del> remote&compfn;2020-06-12 Fri 14:10</h3>
 </section>
 
 </section>
-<section id="slide-org60808af" data-background="https://apolitical.co/wp-content/uploads/2018/12/Screen-Shot-2018-12-04-at-13.55.24.png" data-background-size="1000px" data-background-opacity="0.15">
-<h3 id="org60808af">Computational global systems science applications and HiDALGO</h3>
+<section id="slide-org7621229" data-background="https://apolitical.co/wp-content/uploads/2018/12/Screen-Shot-2018-12-04-at-13.55.24.png" data-background-size="1000px" data-background-opacity="0.15">
+<h3 id="org7621229">Computational global systems science applications and HiDALGO</h3>
 <p>
 <b>Goal</b>: evidence based <i>policy-making</i> for current and upcoming situations via accurate <i>GC simulations</i>
 </p>
 
 <p>
-<b>Accurate digital twinning</b> of GCs <font color="darkgray">&#10155;</font> <b>coupled simulations</b>
+<b>Accurate digital twinning</b> of GCs <font color="#2d5986">&#10562;</font> <b>coupled simulations</b>
 </p>
 <ul>
 <li><b>models</b> for diverse <i>social</i> and <i>physical</i> phenomena (often multiscale)</li>
@@ -49,8 +38,8 @@
 </ul>
 
 </section>
-<section id="slide-org4b4b85b" data-background="./figs/hidalgo-approach.png" data-background-size="1400px" data-background-opacity="0.15">
-<h3 id="org4b4b85b">Technical Challenges in simulating GC across data centers</h3>
+<section id="slide-org4d3befe" data-background="./figs/hidalgo-approach.png" data-background-size="1400px" data-background-opacity="0.15">
+<h3 id="org4d3befe">Technical Challenges in simulating GC across data centers</h3>
 <div class="column" style="float:left; width:%50">
 <p>
 <b>HPC and data centers environments</b>:
@@ -119,11 +108,12 @@ GC simulations
 </section>
 </section>
 <section>
-<section id="slide-orgf11475e" data-background="https://aer.eu/wp-content/uploads/2019/10/SDGs-Summit-article-cover-.png" data-background-opacity="0.25">
-<h2 id="orgf11475e">Representative Global Challenges</h2>
+<section id="slide-org0d30bc3" data-background="https://aer.eu/wp-content/uploads/2019/10/SDGs-Summit-article-cover-.png" data-background-opacity="0.25">
+<h2 id="org0d30bc3">Representative Global Challenges</h2>
+
 </section>
-<section id="slide-org27b9176" data-background="https://d15l9woddkztht.cloudfront.net/logos/unhcr-united-nations-high-commissioner-for-refugees.svg" data-background-size="1400px" data-background-opacity="0.2">
-<h3 id="org27b9176">Human migration</h3>
+<section id="slide-org71555d3" data-background="https://d15l9woddkztht.cloudfront.net/logos/unhcr-united-nations-high-commissioner-for-refugees.svg" data-background-size="1400px" data-background-opacity="0.2">
+<h3 id="org71555d3">Human migration</h3>
 <div class="column" style="float:left; width:%50">
 <ul>
 <li><b>Data</b>:
@@ -166,8 +156,8 @@ GC simulations
 </div>
 
 </section>
-<section id="slide-orgb1018f5" data-background="./figs/uap_gyor.png" data-background-size="1500px" data-background-opacity="0.25">
-<h3 id="orgb1018f5">Urban air pollution</h3>
+<section id="slide-orgf5de9ba" data-background="./figs/uap_gyor.png" data-background-size="1500px" data-background-opacity="0.25">
+<h3 id="orgf5de9ba">Urban air pollution</h3>
 <div class="column" style="float:left; width:%50">
 <ul>
 <li><b>Models and software</b>:
@@ -202,7 +192,7 @@ GC simulations
 
 <li data-fragment-index="1" class="fragment appear"><b>Usage</b>: twins for
 <ul>
-<li><font color="green">&check;</font> <span class="underline">Györ</span> (HG)</li>
+<li><font color="green">&check;</font>  <span class="underline">Györ</span> (HG)</li>
 <li>EU: Stuttgart(DE), Graz(AT)</li>
 <li>US: Milwakee(WS)</li>
 
@@ -212,8 +202,8 @@ GC simulations
 </div>
 
 </section>
-<section id="slide-org8e2560d" data-background="https://blog.eonetwork.org/wp-content/uploads/2018/07/iStock-481683826_resize-1024x915.jpg" data-background-opacity="0.15">
-<h3 id="org8e2560d">Social network analysis</h3>
+<section id="slide-orgf7017c7" data-background="https://blog.eonetwork.org/wp-content/uploads/2018/07/iStock-481683826_resize-1024x915.jpg" data-background-opacity="0.15">
+<h3 id="orgf7017c7">Social network analysis</h3>
 <div class="column" style="float:left; width:%50">
 <ul>
 <li><b>Models and software</b>:
@@ -254,8 +244,8 @@ GC simulations
 </section>
 </section>
 <section>
-<section id="slide-orgb02bcb9">
-<h2 id="orgb02bcb9">Generalized Workflow</h2>
+<section id="slide-orgda63372">
+<h2 id="orgda63372">Generalized Workflow</h2>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="./figs/hidalgo_workflow.svg" class="org-svg" width="80%">
@@ -266,8 +256,8 @@ Sorry, your browser does not support SVG.</object>
 </section>
 </section>
 <section>
-<section id="slide-org1720137">
-<h2 id="org1720137">High-Level Design</h2>
+<section id="slide-org10fd63b">
+<h2 id="org10fd63b">High-Level Design</h2>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="./figs/HiDALGO-System-Workflow.svg" class="org-svg" width="80%">
@@ -276,8 +266,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 </section>
-<section id="slide-org889a0aa" data-background="./figs/HiDALGO-WM.svg" data-background-size="1400px" data-background-opacity="0.15">
-<h3 id="org889a0aa">Orchestrator &amp; monitor</h3>
+<section id="slide-orgd25ded3" data-background="./figs/HiDALGO-WM.svg" data-background-size="1400px" data-background-opacity="0.15">
+<h3 id="orgd25ded3">Orchestrator &amp; monitor</h3>
 <div class="column" style="float:left; width:%50">
 
 <p>
@@ -304,8 +294,8 @@ Sorry, your browser does not support SVG.</object>
 <ul>
 <li><i>workload managers</i>:
 <ul>
-<li>HPC: <font color="green">&check;</font> <code>Slurm</code>, <font color="green">&check;</font> <code>Torque</code></li>
-<li>HPDA: <font color="gold">&circlearrowleft;</font> <code>Mesos</code></li>
+<li>HPC: <font color="green">&check;</font>  <code>Slurm</code>, <font color="green">&check;</font>  <code>Torque</code></li>
+<li>HPDA: <font color="gold">&circlearrowleft;</font>  <code>Mesos</code></li>
 
 </ul></li>
 <li data-fragment-index="1" class="fragment appear"><i>coupling</i> mechanisms:
@@ -318,30 +308,30 @@ Sorry, your browser does not support SVG.</object>
 </ul></li>
 
 </ul></li>
-<li><i>data catalogues</i>: <font color="gold">&circlearrowleft;</font> <code>CKAN</code></li>
+<li><i>data catalogues</i>: <font color="gold">&circlearrowleft;</font>  <code>CKAN</code></li>
 
 </ul>
 </div>
 
 </section>
-<section id="slide-org9a991dd" data-background="./figs/coupling.jpg" data-background-size="1500px" data-background-opacity="0.15">
-<h3 id="org9a991dd">Coupling: locally simulated models</h3>
+<section id="slide-orgbb317ca" data-background="./figs/coupling.jpg" data-background-size="1500px" data-background-opacity="0.15">
+<h3 id="orgbb317ca">Coupling: locally simulated models</h3>
 <div class="column" style="float:left; width:%50">
 <ul>
 <li data-fragment-index="1" class="fragment shrink"><b>Notation</b>
 <ul>
-<li><font color="darksilver">&RightTeeArrow;</font> acyclic coupling</li>
+<li><font color="#2d5986">&RightTeeArrow;</font> acyclic coupling</li>
 <li>cyclic coupling:
 <ul>
-<li><font color="darksilver">&#10562;</font> sequential</li>
-<li><font color="darksilver">&LeftArrowRightArrow;</font> concurrent</li>
+<li><font color="#2d5986">&#10562;</font> sequential</li>
+<li><font color="#2d5986">&LeftArrowRightArrow;</font> concurrent</li>
 
 </ul></li>
 
 </ul></li>
 <li data-fragment-index="1" class="fragment appear"><b>SNA</b>:
 <ul>
-<li>sim<font color="darksilver">&RightTeeArrow;</font>verify/validate</li>
+<li>sim<font color="#2d5986">&RightTeeArrow;</font>verify/validate</li>
 
 </ul></li>
 
@@ -353,15 +343,15 @@ Sorry, your browser does not support SVG.</object>
 <ul>
 <li data-fragment-index="1" class="fragment appear"><b>Migration</b>:
 <ul>
-<li>conflict model <font color="darksilver">&RightTeeArrow;</font> migration model</li>
-<li>migration model <font color="darksilver">&RightTeeArrow;</font> validation activities</li>
-<li>coarse-grained national <font color="darksilver">&LeftArrowRightArrow;</font> refined local</li>
+<li>conflict model <font color="#2d5986">&RightTeeArrow;</font> migration model</li>
+<li>migration model <font color="#2d5986">&RightTeeArrow;</font> validation activities</li>
+<li>coarse-grained national <font color="#2d5986">&LeftArrowRightArrow;</font> refined local</li>
 
 </ul></li>
 <li data-fragment-index="1" class="fragment appear"><b>UAP</b>:
 <ul>
-<li>traffic model <font color="darksilver">&RightTeeArrow;</font> CFD model of NO<sub>x</sub> flows</li>
-<li>WCD <font color="darksilver">&RightTeeArrow;</font> CFD model of NO<sub>x</sub> flows</li>
+<li>traffic model <font color="#2d5986">&RightTeeArrow;</font> CFD model of NO<sub>x</sub> flows</li>
+<li>WCD <font color="#2d5986">&RightTeeArrow;</font> CFD model of NO<sub>x</sub> flows</li>
 
 </ul></li>
 
@@ -370,8 +360,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 </section>
-<section id="slide-org66f5341" data-background="./figs/HiDALGO-data.svg" data-background-size="1400px" data-background-opacity="0.15">
-<h3 id="org66f5341">Coupling: external data sources</h3>
+<section id="slide-org6d01d70" data-background="./figs/HiDALGO-data.svg" data-background-size="1400px" data-background-opacity="0.15">
+<h3 id="org6d01d70">Coupling: external data sources</h3>
 <div class="column" style="float:left; width:%50">
 <p>
 <b><a href="https://en.wikipedia.org/wiki/CKAN"><code>CKAN</code></a></b> (<b>DMS/DC</b>):
@@ -382,9 +372,9 @@ Sorry, your browser does not support SVG.</object>
 <li><i>extensible</i> via plugins</li>
 <li>data <i>delivery methods</i>:
 <ul>
-<li><font color="green">&check;</font> <i>files</i></li>
-<li><font color="green">&check;</font> <i>links</i> to external sources</li>
-<li><font color="green">&check;</font> profiled <i>harvester</i></li>
+<li><font color="green">&check;</font>  <i>files</i></li>
+<li><font color="green">&check;</font>  <i>links</i> to external sources</li>
+<li><font color="green">&check;</font>  profiled <i>harvester</i></li>
 
 </ul></li>
 
@@ -399,7 +389,7 @@ Sorry, your browser does not support SVG.</object>
 <li>real-time <i>data pipelines</i></li>
 <li><i>streaming data</i> in HiDALGO
 <ul>
-<li><font color="gold">&circlearrowleft;</font> <a href="https://en.wikipedia.org/wiki/Twitter"><code>Twitter</code></a> (with <a href="https://www.tweepy.org/"><code>tweepy</code></a>)</li>
+<li><font color="gold">&circlearrowleft;</font>  <a href="https://en.wikipedia.org/wiki/Twitter"><code>Twitter</code></a> (with <a href="https://www.tweepy.org/"><code>tweepy</code></a>)</li>
 <li>camera based traffic</li>
 <li>monitor based pollution</li>
 
@@ -421,8 +411,8 @@ Data Management System
 </aside>
 
 </section>
-<section id="slide-org3356ac8" data-background="./figs/ecmwf-polytope.png" data-background-size="1400px" data-background-opacity="0.10">
-<h3 id="org3356ac8">Coupling: across HPC centres</h3>
+<section id="slide-org91182c4" data-background="./figs/ecmwf-polytope.png" data-background-size="1400px" data-background-opacity="0.10">
+<h3 id="org91182c4">Coupling: across HPC centres</h3>
 <div class="column" style="float:left; width:%50">
 <ul>
 <li><b>specialized data center</b>:
@@ -451,12 +441,12 @@ Data Management System
 </ul></li>
 <li data-fragment-index="2" class="fragment appear"><b>implementation</b>:
 <ul>
-<li><font color="green">&check;</font> Step 1: <i>Static coupling</i>
+<li><font color="green">&check;</font>  Step 1: <i>Static coupling</i>
 <ul>
 <li>static <i>reanalysis data</i> (calibration)</li>
 
 </ul></li>
-<li><font color="gold">&circlearrowleft;</font> Step 2: <i>Dynamic coupling</i>
+<li><font color="gold">&circlearrowleft;</font>  Step 2: <i>Dynamic coupling</i>
 <ul>
 <li><i>forecast</i> data via a REST API</li>
 
@@ -470,12 +460,12 @@ Data Management System
 </section>
 </section>
 <section>
-<section id="slide-orgfc0019b" data-background="./figs/don_quijote_fighting_sheep.jpg" data-background-size="1400px" data-background-opacity="0.4">
-<h2 id="orgfc0019b">Future work</h2>
+<section id="slide-orged84199" data-background="./figs/don_quijote_fighting_sheep.jpg" data-background-size="1400px" data-background-opacity="0.4">
+<h2 id="orged84199">Future work</h2>
 <ul>
 <li>develop mechanisms for moving/handling <i>large simulation results</i>
 <ul>
-<li>Simulation <font color="darkgray">&#10155;</font> <b>HPDA</b> (Apache <a href="https://en.wikipedia.org/wiki/Apache_Flink"><code>Flink</code></a>) <font color="darkgray">&#10155;</font> { DMS/DS | Visualization }</li>
+<li>Simulation <font color="#2d5986">&#10562;</font> <b>HPDA</b> (Apache <a href="https://en.wikipedia.org/wiki/Apache_Flink"><code>Flink</code></a>) <font color="#2d5986">&#10562;</font> { DMS/DS | Visualization }</li>
 
 </ul></li>
 <li>improve mechanisms for <i>acyclic coupling across data centers</i></li>
@@ -487,8 +477,8 @@ Data Management System
 </section>
 </section>
 <section>
-<section id="slide-org33f73a9" data-background="./figs/partners.png" data-background-size="1000px" data-background-opacity="0.25">
-<h2 id="org33f73a9">Contributors</h2>
+<section id="slide-org18a79fd" data-background="./figs/partners.png" data-background-size="1000px" data-background-opacity="0.25">
+<h2 id="org18a79fd">Contributors</h2>
 <ul>
 <li><b>BUL</b>: Derek Groen, Diana Suleimenova, <i>Imran Mahmood</i></li>
 <li><b>PSNC</b>: Marcin Lawenda</li>
@@ -503,8 +493,8 @@ Data Management System
 </section>
 </section>
 <section>
-<section id="slide-orgae9b8fa" data-background="./hidalgo-style/hidalgo-logo.png" data-background-size="1400px" data-background-opacity="0.25">
-<h2 id="orgae9b8fa">Thank you for your attention!</h2>
+<section id="slide-orgc2e609d" data-background="./hidalgo-style/hidalgo-logo.png" data-background-size="1400px" data-background-opacity="0.25">
+<h2 id="orgc2e609d">Thank you for your attention!</h2>
 <p>
 <a href="https://hidalgo-project.eu">https://hidalgo-project.eu</a>
 </p>
@@ -559,8 +549,11 @@ June 12
 </section>
 </div>
 </div>
-<script src="./reveal.js/lib/js/head.min.js"></script>
-<script src="./reveal.js/js/reveal.js"></script>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/markdown/markdown.js"></script>
+<script src="./reveal.js/plugin/notes/notes.js"></script>
+<script src="./reveal.js/plugin/search/search.js"></script>
+<script src="./reveal.js/plugin/zoom/zoom.js"></script>
 <script>
 // Full list of configuration options available here:
 // https://github.com/hakimel/reveal.js#configuration
@@ -582,17 +575,15 @@ overview: true,
 width: 1400,
 height: 1000,
 
-theme: Reveal.getQueryHash().theme, // available themes are in /css/theme
-transition: Reveal.getQueryHash().transition || 'convex', // see README of reveal.js for options
+transition: 'convex',
 transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealMarkdown, RevealNotes, RevealSearch, RevealZoom ],
 
 // Optional libraries used to extend reveal.js
 dependencies: [
- { src: './reveal.js/plugin/markdown/marked.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: './reveal.js/plugin/markdown/markdown.js', condition: function() { return !!document.querySelector( '[data-markdown]' ); } },
- { src: './reveal.js/plugin/notes/notes.js', async: true, condition: function() { return !!document.body.classList; } },
- { src: './reveal.js/plugin/search/search.js', async: true, condition: function() { return !!document.body.classList; } },
- { src: './reveal.js/plugin/zoom-js/zoom.js', async: true, condition: function() { return !!document.body.classList; } }]
+]
 
 });
 </script>
