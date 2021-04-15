@@ -1,0 +1,502 @@
+* Ansible
+
+  #+ATTR_HTML: :width 75%
+  [[./figs/spack/Ansible_concepts.svg]]
+
+# https://www.ansible.com/hs-fs/hub/330046/file-481209752.png?width=1484&name=file-481209752.png
+# https://1.cms.s81c.com/sites/default/files/2018-11-22/Ansible_ov.png
+# https://www.guruadvisor.net/images/numero20/ansible_1/ansible_sketch.gif
+# https://thepracticaldev.s3.amazonaws.com/i/skvvt051gys64k62ez0h.png
+# logo: https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg
+# - [[https://www.ansible.com/use-cases/configuration-management][Configuration Management]]
+*** 
+
+  #+ATTR_HTML: :width 75%
+  [[./figs/spack/Ansible_local_remote.svg]]
+
+** Prerquisites 
+
+# - [[https://spack.readthedocs.io/en/latest/getting_started.html#prerequisites][Spack]]
+| Local | Remote | Dependencies                          |
+|-------+--------+---------------------------------------|
+| AS    | S      | Python 2.6+ or 3.5+                   |
+| A     |        | Extra modules of Python               |
+|       | A      | =bash=                                |
+| A     |        | =ssh=                                 |
+|       | S      | A C/C++ compiler for building         |
+|       | AS     | =make=                                |
+| A     | S      | =tar=, =gzip=, =unzip=, =bzip2=, =xz= |
+|       | S      | =patch=                               |
+| S     |        | =git= and =curl= for fetching         |
+
+# bash
+# to tailor the configuration of zsh, ssh, git, tmux
+
+** Inventory files
+
+#+ATTR_REVEAL: :frag (none appear) :frag_idx (- 1)
+- inventory folder structure
+  # $ tree inventory
+  #+BEGIN_SRC yaml
+    inventory
+    ├── 01-clusters.yaml
+    └── group_vars
+        ├── HLRS.yaml
+        └── PSNC.yaml
+  #+END_SRC
+- hosts and groups definition (=01-clusters.yaml=)
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC yaml
+    ---
+    HLRS:
+      hosts:
+        hawk:
+          ansible_host: hawk.hww.hlrs.de
+        vulcan:
+          ansible_host: vulcan.hww.hlrs.de
+      vars:
+        use_workspace: true
+    PSNC:
+      hosts:
+        eagle:
+          ansible_host: eagle.man.poznan.pl
+    hidalgo:
+      children:
+        HLRS:
+        PSNC:
+      vars:
+        spack_prefix: ~/spack-hidalgo/{{ inventory_hostname }}
+        use_workspace: false
+  #+END_SRC
+
+*** Inventory: Check Setup
+
+- check what variables Ansible set up in inventory for each host
+  #+BEGIN_SRC sh
+    ansible-inventory all -i inventory --graph --var
+  #+END_SRC
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC yaml
+    @all:
+      |--@hidalgo:
+      |  |--@HLRS:
+      |  |  |--hawk
+      |  |  |  |--{ansible_host = hawk.hww.hlrs.de}
+      |  |  |  |--{ansible_user = hpcgogol}
+      |  |  |  |--{spack_prefix = ~/spack-hidalgo/{{ inventory_hostname }}}
+      |  |  |  |--{use_workspace = True}
+      |  |  |--vulcan
+      |  |  |  |--{ansible_host = vulcan.hww.hlrs.de}
+      |  |  |  |--{ansible_user = hpcgogol}
+      |  |  |  |--{spack_prefix = ~/spack-hidalgo/{{ inventory_hostname }}}
+      |  |  |  |--{use_workspace = True}
+      |  |  |--{ansible_user = hpcgogol}
+      |  |  |--{use_workspace = True}
+      |  |--@PSNC:
+      |  |  |--eagle
+      |  |  |  |--{ansible_host = eagle.man.poznan.pl}
+      |  |  |  |--{ansible_user = gogolenko}
+      |  |  |  |--{spack_prefix = ~/spack-hidalgo/{{ inventory_hostname }}}
+      |  |  |  |--{use_workspace = False}
+      |  |  |--{ansible_user = gogolenko}
+      |  |--{spack_prefix = ~/spack-hidalgo/{{ inventory_hostname }}}
+      |  |--{use_workspace = False}
+      |--@ungrouped:
+  #+END_SRC
+
+*** Inventory: Check Accessibility
+
+- check accessibility of HiDALGO HPC infrastructure
+  #+BEGIN_SRC sh
+    ansible hidalgo -i inventory -m ping
+  #+END_SRC
+  #+ATTR_REVEAL: :code_attribs data-line-numbers=3-6,9-11
+  #+BEGIN_SRC yaml
+    PLAY [Ansible Ad-Hoc] **********************************************************
+
+    TASK [ping] ********************************************************************
+    ok: [vulcan]
+    ok: [hawk]
+    ok: [eagle]
+
+    PLAY RECAP *********************************************************************
+    eagle                      : ok=1    changed=0    unreachable=0    failed=0    skipped=0
+    hawk                       : ok=1    changed=0    unreachable=0    failed=0    skipped=0
+    vulcan                     : ok=1    changed=0    unreachable=0    failed=0    skipped=0
+  #+END_SRC
+** Simple Playbook
+
+- simple playbook: download locally and distribute
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC yaml
+    ---
+    - name: Install Spack on HiDALGO infrastructure
+      hosts: hidalgo
+      gather_facts: no
+      vars:
+        spack_tarball: ./spack-0.16.1.tar.gz
+        spack_version: '0.16.1'
+        spack_checksum: 'md5:b6f9fdea5b5228f0a591c7cdcf44513c'
+        spack_extra_repos:
+        - $spack/var/spack/repos/hidalgo
+
+      tasks:
+        - name: Download new Spack release locally
+          run_once: True
+          delegate_to: localhost
+          delegate_facts: True
+          ansible.builtin.get_url:
+            url: 'https://github.com/spack/spack/releases/download/v{{ spack_version }}/spack-{{ spack_version }}.tar.gz'
+            dest: '{{ spack_tarball | default(".") }}'
+            checksum: '{{ spack_checksum }}'
+            force: no
+          register: spack_local_tarball
+
+        - name: Unarchive Spack tarball {{ spack_local_tarball.dest }} locally
+          unarchive:
+            src: '{{ spack_local_tarball.dest }}'
+            dest: '{{ spack_prefix }}'
+            extra_opts: [--strip-components=1]
+            creates: '{{ spack_prefix }}/bin/spack'
+  #+END_SRC
+- launch
+  #+BEGIN_SRC sh
+    ansible-playbook -i inventory -l hawk,eagle install_spack.yml
+  #+END_SRC
+
+*** Assembling configs
+
+- task for creating configs from variables
+  #+ATTR_REVEAL: :code_attribs data-line-numbers=2-5
+  #+BEGIN_SRC yaml
+    - name: Mock =repos.yaml= to enable accessing additional repos
+      ansible.builtin.copy:
+        content: |
+          repos:
+          {{ spack_extra_repos | default([]) | to_nice_yaml }}
+        dest: '{{ spack_prefix }}/etc/spack/repos.yaml'
+        force: true
+  #+END_SRC
+- result
+  #+BEGIN_SRC sh
+    ssh hawk 'cat ~/spack-hidalgo/hawk/etc/spack/repos.yaml'
+  #+END_SRC
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC yaml
+    repos:
+    - $spack/var/spack/repos/hidalgo
+  #+END_SRC
+
+*** @@html:<div style="font-size: 4em; color:#171;">@@ So we've done it! @@html:</div>@@
+  :PROPERTIES:
+  :reveal_background: ./figs/spack/happy_homer.png
+  :reveal_background_size: 30%
+  :reveal_extra_attr: data-background-opacity="0.9"
+  :END:
+
+@@html:<p class="fragment fade-up" style="font-size: 5em; color:#a11;"> <b>Not really...</b></p>@@
+
+# https://w7.pngwing.com/pngs/430/317/png-transparent-homer-simpson-illustration-homer-simpson-mr-burns-waylon-smithers-maggie-simpson-lisa-simpson-simpsons-heroes-hand-vertebrate.png
+# https://w7.pngwing.com/pngs/338/339/png-transparent-homer-simpson-homer-simpson-bart-simpson-marge-simpson-lisa-simpson-television-show-simpsons-television-heroes-simpsons-movie-thumbnail.png
+# https://img1.pnghut.com/9/14/16/kUwVfqdakd/cartoon-bart-simpson-hand-homer-ducks-geese-and-swans.jpg
+
+# https://img1.looper.com/img/gallery/homer-simpsons-backstory-explained/intro-1568401380.jpg
+
+# *** @@html:<div style="font-size: 4em; color:#171;">@@ What about mirror? @@html:</div>@@
+*** 
+  :PROPERTIES:
+  :reveal_background: https://i.pinimg.com/474x/6d/17/54/6d1754aecc594e7a7fa442719e4e4678--homer-simpson-the-simpsons.jpg
+  :reveal_background_size: 65%
+  :reveal_extra_attr: data-background-opacity="0.9"
+  :END:
+
+@@html:<p class="fragment" style="font-size: 3em; color:#ffe;"> <b>What about "off-line" clusters?!</br>mirror</b></p>@@
+# https://recapguide.com/recap/117/The-Simpsons/season-9/episode-23/
+# https://s3cf.recapguide.com:444/img/tv/117/9x23/The-Simpsons-Season-9-Episode-23-18-fb68.jpg
+# https://i.pinimg.com/originals/90/4b/69/904b69efab2ea39db01ec3288495e238.gif
+# https://i.pinimg.com/474x/6d/17/54/6d1754aecc594e7a7fa442719e4e4678--homer-simpson-the-simpsons.jpg
+# https://i.pinimg.com/originals/90/4b/69/904b69efab2ea39db01ec3288495e238.gif
+
+** Workflow: Spack deployment with "cluster agnostic" mirror
+
+  #+ATTR_HTML: :width 75%
+  [[./figs/spack/Spack_deployment_workflow_common_mirror.svg]]
+
+*** Mirror for spec list
+
+- mirror for individual specs
+  #+ATTR_REVEAL: :code_attribs data-line-numbers=2-6
+  #+BEGIN_SRC yaml
+        - name: Mirror individual packages
+          ansible.builtin.shell:
+            cmd: |
+              spack \
+                mirror create -D -n{{ spack_mirror_versions_per_spec }} -d {{ spack_mirror_dir }} \
+                  {{ spack_mirror_packages | join(' ')  }}
+            creates: '{{ spack_mirror_dir }}'
+          when: spack_mirror_packages is defined and (spack_mirror_packages | length > 0)
+  #+END_SRC
+- issue: interference of =~/.spack=
+  - =Spack= will ignore packages defined in =packages.yaml= (non-buildable)
+
+*** Mirror for spec list: Interference of =~/.spack=
+
+#+ATTR_REVEAL: :frag (appear) :frag_idx (1)
+- 
+  #+BEGIN_SRC sh
+    spack graph -d libosrm | dot -Tpdf | zathura - 
+    spack graph -d libosrm | dot -Tsvg -o/tmp/spack.stdin.svg && eog /tmp/spack.stdin.svg
+    spack graph -i -d | dot -Tsvg -o./full_installation.svg # all installed (not only in env)
+  #+END_SRC
+
+#+REVEAL_HTML: <div style="display: flex;">
+#+REVEAL_HTML: <div style="flex: 1;">
+#+ATTR_HTML: :width 75%
+[[./figs/spack/spack_libosrm_default.svg]]
+
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div style="flex: 1;">
+#+ATTR_HTML: :width 75%
+[[./figs/spack/spack_libosrm_full.svg]]
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: </div>
+
+*** Mirror for spec list: corrected
+
+#+ATTR_REVEAL: :frag (none fade-out appear) :frag_idx (- 1 1)
+- mirror for individual specs
+  #+ATTR_REVEAL: :code_attribs data-line-numbers=4,8-9
+  #+BEGIN_SRC yaml
+        - name: Mirror individual packages
+          ansible.builtin.shell:
+            cmd: |
+              spack -C {{ tempdir_spack_build.path }}/etc/spack \
+                mirror create -D -n{{ spack_mirror_versions_per_spec }} -d {{ spack_mirror_dir }} \
+                  {{ spack_mirror_packages | join(' ')  }}
+            creates: '{{ spack_mirror_dir }}'
+          environment:
+            PATH: "{{ ansible_env.PATH }}:{{ tempdir_spack_build.path }}/bin"
+          when: spack_mirror_packages is defined and (spack_mirror_packages | length > 0)
+
+  #+END_SRC
+- tempting solution: put the following text to =packages.yaml=
+  #+BEGIN_SRC yaml
+    packages:: {}
+  #+END_SRC
+- correct solution: copy =packages.yaml= from =etc/spack/defaults= to ='{{ tempdir_spack_build.path }}/etc/spack'=
+
+*** Mirror for environments
+
+#+ATTR_REVEAL: :code_attribs data-line-numbers=4-12
+#+BEGIN_SRC yaml
+  - name: Mirror environments
+    ansible.builtin.shell:
+      cmd: |
+        . {{ tempdir_spack_build.path }}/share/spack/setup-env.sh && \
+           spack env create --without-view tmpenv{{ index }} {{ item  }} \
+        && spack env activate tmpenv{{ index }} \
+        && spack -C {{ tempdir_spack_build.path }}/etc/spack concretize \
+        && spack -C {{ tempdir_spack_build.path }}/etc/spack \
+             mirror create -a -n{{ spack_mirror_versions_per_spec }} -d {{ spack_mirror_dir }}
+    # environment:
+    #   PATH: "{{ ansible_env.PATH }}:{{ tempdir_spack_build.path }}/bin"
+    loop: "{{ spack_mirror_envs | flatten(levels=1) }}"
+    loop_control:
+      index_var: index
+    when: spack_mirror_envs is defined
+#+END_SRC
+
+** Workflow: Spack deployment with "cluster aware" mirror
+
+  #+ATTR_HTML: :width 75%
+  [[./figs/spack/Spack_deployment_workflow_specific_mirror.svg]]
+
+** Summary: Reproducing general software environments on the resources of several HPC centers at once
+  :PROPERTIES:
+  :reveal_background: https://spack.io/assets/images/spack-logo.svg
+  :reveal_background_size: 40%
+  :reveal_extra_attr: data-background-opacity="0.5"
+  :END:
+If =Ansible= inventory is available,
+#+ATTR_REVEAL: :frag (appear appear appear) :frag_idx (1 2 2)
+- take exact or prepare logical =Spack= environment. E.g.,
+  #+BEGIN_SRC yaml
+        spack:
+          specs:
+          - python@3.9.0+optimizations
+          - matrix:
+            - [py-numpy, py-scipy, py-scikit-learn]
+            - [^python@3.9.0+optimizations]
+          view: true
+  #+END_SRC
+- run =Spack= deployment playbook
+  #+BEGIN_SRC sh
+    ansible-playbook -i inventory install_spack.yml    
+  #+END_SRC
+- launch =Spack= command for installing environment
+  #+BEGIN_SRC sh
+    ansible hidalgo -i inventory -m shell -a \
+      'cmd=". {{ spack_prefix }}/share/spack/setup-env.sh \
+        && spactivate sna && spack install"'
+  #+END_SRC
+# - report/store the existing software environment
+#   #+BEGIN_SRC sh
+#     pip freeze > requirements.txt
+#   #+END_SRC
+
+** Spack Deployment: Summary
+  :PROPERTIES:
+  :reveal_extra_attr: data-visibility="hidden"
+  :END:
+*Highlights*
+- decouple =Spack= config variables from deployment rules in =Ansible=
+- have 2 strategies for creating mirrors:
+  - unsafe: download single generic mirror for all systems
+  - safe: download mirrors for each target system separately
+
+*Result*
+- deploy reproducible software environments (and specs)
+- deploy simultaneously on several hosts
+
+** Reporting hardware and software with =Ansible=
+  :PROPERTIES:
+  :reveal_background: https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg
+  :reveal_background_size: 75%
+  :reveal_extra_attr: data-background-opacity="0.5"
+  :END:
+
+- platform (hardware, OS): variable ='{{ ansible_facts }}'=
+  #+ATTR_REVEAL: :code_attribs data-line-numbers=1-2
+  #+BEGIN_SRC yaml
+        - name: Collect facts returned by facter
+          ansible.builtin.setup:
+            gather_subset:
+              - '!all'
+              - '!min'
+              - hardware
+            filter: "*processor*"
+  #+END_SRC
+- "exact" software: [[https://docs.ansible.com/ansible/latest/collections/ansible/builtin/slurp_module.html][slurp]] =spack.lock= and report it with
+  #+BEGIN_SRC yaml
+    {{ spack_env_lock['content']  | b64decode | from_json | to_nice_yaml }}
+  #+END_SRC
+
+*** Reporting hardware and software with =Ansible=: Alternative for reporing soft
+  :PROPERTIES:
+  :reveal_background: https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg
+  :reveal_background_size: 75%
+  :reveal_extra_attr: data-background-opacity="0.5"
+  :END:
+
+- "exact" software: options =--yaml= and =--json=
+  #+BEGIN_SRC sh
+    spack find --json
+    spack spec -y libosrm
+  #+END_SRC
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC yaml
+    spec:
+    - libosrm:
+        version: 5.24.0
+        arch:
+          platform: linux
+          platform_os: ubuntu16.04
+          target:
+            name: broadwell
+            vendor: GenuineIntel
+            features:
+            - adx
+            - aes
+            - avx
+            - avx2
+            - bmi1
+            - bmi2
+            - f16c
+            - fma
+            - mmx
+            - movbe
+            - pclmulqdq
+            - popcnt
+            - rdrand
+            - rdseed
+            - sse
+            - sse2
+            - sse4_1
+            - sse4_2
+            - ssse3
+            generation: 0
+            parents:
+            - haswell
+        compiler:
+          name: gcc
+          version: 5.4.0
+        namespace: hidalgo
+        parameters:
+          build_type: Release
+          doxygen: false
+          ipo: false
+          lib_only: true
+          osmium: false
+  #+END_SRC
+
+*** Reporting hardware and software with =Ansible=: From compute node
+  :PROPERTIES:
+  :reveal_background: https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg
+  :reveal_background_size: 75%
+  :reveal_extra_attr: data-background-opacity="0.5"
+  :END:
+
+#+ATTR_REVEAL: :frag (none none appear) :frag_idx (- - 1)
+- run from Eagle compute node
+  #+BEGIN_SRC sh
+    ansible all -i 127.0.0.1, -m ansible.builtin.setup --connection=local
+  #+END_SRC
+- known issues
+  #+ATTR_REVEAL: :code_attribs data-line-numbers=6
+  #+BEGIN_SRC yaml
+    facts:
+      discovered_interpreter_python: /usr/bin/python
+      processor:
+      - '0'
+      - GenuineIntel
+      - Common KVM processor
+      - '1'
+      - GenuineIntel
+      - Common KVM processor
+      - '2'
+      - GenuineIntel
+      - Common KVM processor
+      - '3'
+      - GenuineIntel
+      - Common KVM processor
+      - '4'
+      - GenuineIntel
+      - Common KVM processor
+      - '5'
+      - GenuineIntel
+      - Common KVM processor
+      - '6'
+      - GenuineIntel
+      - Common KVM processor
+      - '7'
+      - GenuineIntel
+      - Common KVM processor
+      - '8'
+      - GenuineIntel
+      - Common KVM processor
+      - '9'
+      - GenuineIntel
+      - Common KVM processor
+      - '10'
+      - GenuineIntel
+      - Common KVM processor
+      - '11'
+      - GenuineIntel
+      - Common KVM processor
+      processor_cores: 12
+      processor_count: 1
+      processor_nproc: 12
+      processor_threads_per_core: 1
+      processor_vcpus: 12
+  #+END_SRC
+- same thing inside =/proc/cpuinfo=

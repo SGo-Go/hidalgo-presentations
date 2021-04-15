@@ -1,0 +1,111 @@
+# -*- mode: org -*-
+#+INCLUDE: ./org/common/hidalgo-style.org
+
+#+TITLE: Reproducible Software Environments & Benchmarks with Ansible and Spack
+#+SUBTITLE: HiDALGO approach
+#+AUTHOR: Sergiy Gogolenko 
+#+REVEAL_ACADEMIC_TITLE: High-Performance Computing Center, Stuttgart, DE
+#+EMAIL: gogolenko@hlrs.de
+#+CREATOR: HiDALGO
+#+DATE: 2021-04-14
+#+OPTIONS: author:t date:t num:nil toc:nil created:nill email:t tex:t reveal_title_slide:nil
+#+REVEAL_TALK_URL: http://sgo-go.github.io/hidalgo-presentations/202104-reprodycibility_with_ansible_and_spack.html
+# file:///home/hpcgogol/dev/hidalgo-presentations/202104-reprodycibility_with_ansible_and_spack.html
+#+TIME: 60min
+
+#+BEGIN_NOTES
+:DRAWERNAME:
+
+# Abstract:
+
+In recent decades, there is a tendency to pay solid attention to reproducibility of experiments in science.
+In many cases, reproducibility becomes one of the corner-stone measures
+(or even pre-requisite for publication) of the high quality research.
+In terms of HPC, reproducibility of benchmarks presumes
+exhaustive reports of the hardware and software setup, as well as
+an easy and consistent way to replicate the software environment in use.
+
+Unfortunately, the users of HPC clusters and testbeds face with
+a number of obstacles on the way to prepare reproducible software environments.
+In particular, each data center provides its own subset of pre-installed software
+and has a set of specific policies and restrictions (like lack of access to internet).
+Moreover, in order to reach better performance, the end-user usually must
+install the software from sources # with certain requirements and preferences managing 
+watching all its dependencies,
+which demands an unnecessarily high level of technical expertise.
+As a results, installation often becomes a tedious time-consuming process
+discouraging people from taking care of software reproducibility particularly and from HPC generally.
+
+Spack is a HPC-oriented package manager, which
+solves most of the above-mentioned problems if configured correctly,
+while Ansible addresses the issue of deploying and configuring Spack
+with off-line mirrors for the end-users.
+In addition, Ansible and Spack feature deep integration of YAML and JSON formats
+along with a high extensibility via a wide range of builtin and external modules.
+It makes these tools a perfect combination not only for
+automated fully-reproducible software installation, but also for
+documenting hardware and software configurations
+along with the installation process
+uniformly in a human readable format easy to post-process.
+
+# Tentative agenda:
+
+- Introduction to Spack and Ansible (5min)
+- Spack from user prospective: basic usage (10min)
+- Configuring Spack (15 min)
+- Deployment of Spack on versatile hardware with Ansible (10min)
+- Reproducible benchmarks and their reporting with Ansible (10min)
+- Q&A (10min)
+
+docker run --rm -t -v `pwd`:/slides -v $PWD:/home/user astefanutti/decktape -s 1400x1000 /home/user/202104-reprodycibility_with_ansible_and_spack.html 202104-sgogolenko_reprodycibility_with_ansible_and_spack.pdf
+:END:
+#+END_NOTES
+
+#+INCLUDE: ./reprsci_spack/00-motivation.org
+#+INCLUDE: ./reprsci_spack/01-spack_basic.org
+#+INCLUDE: ./reprsci_spack/02-spack_configs.org
+#+INCLUDE: ./reprsci_spack/03-ansible.org
+
+* Further topics
+  :PROPERTIES:
+  :reveal_background: https://glasbergen.b-cdn.net/wp-content/gallery/education-technology/toon-1821.gif
+  :reveal_background_size: 35%
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+*Spack*
+#+ATTR_REVEAL: :frag (none appear appear appear) :frag_idx (- 1 2 3)
+- speed up time-consuming installation:
+  - [[https://spack.readthedocs.io/en/latest/binary_caches.html][build caches]] and binaries distribution (builds sharing)
+  -  [[https://spack.readthedocs.io/en/latest/packaging_guide.html#parallel-builds][parallel builds]]
+  - =Singularity= and =Docker= [[https://spack.readthedocs.io/en/latest/containers.html][containers]]
+- [[https://spack.readthedocs.io/en/latest/module_file_support.html][modulefiles]] generation
+- =CDash= support and =GitLabCI= [[https://spack.readthedocs.io/en/latest/pipelines.html][pipelines]]
+- package [[https://spack.readthedocs.io/en/latest/analyze.html][analyzers]] 
+
+# off-line 
+# https://s3.amazonaws.com/lowres.cartoonstock.com/literature-rebrand-rebranding-brands-reference-reference_libraries-rjo1094_low.jpg
+# https://pics.me.me/the-circle-of-office-life-lets-take-this-offline-lets-37496002.png
+# scale
+# https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-a-simpsons-as-a-service-storyboard-26-638.jpg
+
+** Resources (readings, videos)
+
+- Videos
+  - [[https://youtu.be/edpgwyOD79E][ ~Spack~ tutorial]] by Todd Gamblin
+  - [[https://youtu.be/z7ZdnCkaPCY][Managing with ~Spack~ ]]by Gregory Blum Becker
+- Documentation: [[https://spack.readthedocs.io/en/latest/chain.html][manual]], [[https://spack-tutorial.readthedocs.io/en/latest/][tutorial]], [[https://spack.readthedocs.io/en/latest/getting_started.html#system-packages][quick start]], [[https://spack.readthedocs.io/en/latest/command_index.html][commands]]
+- [[https://spack.readthedocs.io/en/latest/contribution_guide.html][Contribution guide]]
+- my former HiDALGO presentations about Spack: [[http://sgo-go.github.io/hidalgo-presentations/20210203-spack_basics.html][Basics]], [[http://sgo-go.github.io/hidalgo-presentations/20210217-spack_on_clusters.html][for HPC]]
+- HiDALGO configs and environments at [[https://gitlab.com/eu_hidalgo][GitLab]]:
+  - https://gitlab.com/eu_hidalgo/hidalgo_integration/
+
+* Thanks to
+
+#+ATTR_REVEAL: :frag (none none appear appear appear appear) :frag_idx (- - 1 2 3 4)
+- LLNL team led by Todd Gamblin, Adam Stewart from UIUC, and Spack community
+- Ansible team
+- users: =oshch= (Oleksandr) and =ktokm= (Kamil)
+- EC for HiDALGO project
+- @@html:<img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Matt_Groening_Signature.svg" width=250px alt="Matt Groening"/>@@
+- ... and you for your attention!

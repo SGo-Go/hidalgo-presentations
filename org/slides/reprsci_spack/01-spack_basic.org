@@ -1,0 +1,745 @@
+* Basics of =Spack=
+  :PROPERTIES:
+  :reveal_background: https://s.abcnews.com/images/Entertainment/ht_homer_simpson_higgs_boson_jc_150304_4x3t_992.jpg
+  :reveal_background_size: 50%
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+** Core Spack Concepts
+
+ #+ATTR_HTML: :width 75% :alt "specs, repos, concretizer"
+ [[./figs/spack/Spack_concepts.svg]]
+
+*** 
+ #+ATTR_HTML: :width 75% :alt workflow
+ [[./figs/spack/Spack_workflow.svg]]
+
+** Spec 
+
+# spec: syntax to describe customized DAG
+Syntax of spec (sigils, etc)
+#+ATTR_REVEAL: :code_attribs data-line-numbers=1,7
+#+BEGIN_SRC sh
+  $ spack install python                                     # unconstrained
+  $ spack install python@3                                   # @ custom version
+  $ spack install python@3.9%clang                           # % custom compiler
+  $ spack install python@3.9%gcc@5.4 +optimizations~debug    # +/- build option
+  $ spack install python@3.9 cppflags="-O3 –g3"              # set compiler flags
+  $ spack install python@3.9 target=skylake                  # set target microarchitecture
+  $ spack install python@3.9 ^openssl@1.1:%clang ^readline@8 # ^ dependency information
+#+END_SRC
+- installed packages can be referred by hash
+  #+BEGIN_SRC sh
+    $ spack find -l readline
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    ==> 2 installed packages
+    -- linux-ubuntu16.04-broadwell / gcc@5.4.0 ----------------------
+    sei2v7j readline@8.0  feqfow6 readline@8.0
+  #+END_SRC
+  #+BEGIN_SRC sh 
+    $ spack install python@3.9 ^openssl@1.1:%clang ^/feq     # / hash
+  #+END_SRC
+
+*** How to construct spec?
+
+- hash (~concretize~ or ~find -l~)
+- package name
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC sh
+    $ spack list                          # all packages
+    $ spack list *pyth*                   # simple filters 
+    $ spack list -d MPI                   # also search the description for a match (apt-chache search)
+  #+END_SRC
+  - list extensible packages
+    #+BEGIN_SRC sh
+      $ spack extensions                # extendable packages
+    #+END_SRC
+    #+BEGIN_SRC yaml
+      ==> Extendable packages:
+          aspell  go-bootstrap  jdk      lua     mofem-cephas  openjdk  python  ruby  spiral  yorick
+          go      icedtea       kim-api  matlab  octave        perl     r       rust  tcl
+    #+END_SRC
+  - list Python extensions
+    #+BEGIN_SRC sh
+      $ spack extensions -s packages python | head -n4
+    #+END_SRC
+    #+ATTR_REVEAL: :code_attribs data-line-numbers
+    #+BEGIN_SRC yaml
+      ==> python@3.9.0%gcc@5.4.0+bz2+ctypes+dbm~debug+libxml2+lzma~nis+optimizations+pic...
+      ==> 1345 extensions:
+      adios2
+      akantu
+    #+END_SRC
+
+*** How to construct spec?
+
+- version
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC sh
+    $ spack versions python                   # basic
+    $ spack versions  *mpi*                   # include virtual packages in list
+    $ spack list --format version_json *mpi*  # print output JSON with versions, deps, homepage, path to package
+  #+END_SRC
+- compiler
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC sh
+    $ spack compilers                     # list of specs for registered compilers
+    $ spack compiler list                 # ----/----
+    $ spack compiler info clang           # know better about configs of specific compilers 
+  #+END_SRC
+
+*** How to construct spec? Configuration and Options
+
+- flags (for compilers & linkers -> NOT RECOMMENDED)
+  - compilers: ~cppflags~, ~cflags~, ~cxxflags~, and ~fflags~
+  - linkers: ~ldflags~, and ~ldlibs~
+- variants and dependencies
+  #+BEGIN_SRC sh
+    $ spack info libosrm
+  #+END_SRC
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC yaml
+    CMakePackage:   libosrm
+
+    Description:
+        libOSRM is a high performance routing library written in C++14 designed
+        to run on OpenStreetMap data.
+
+    Homepage: http://project-osrm.org/
+
+    Tags: 
+        None
+
+    Preferred version:  
+        5.24.0    https://github.com/Project-OSRM/osrm-backend/archive/v5.24.0.tar.gz
+
+    Safe versions:  
+        5.24.0    https://github.com/Project-OSRM/osrm-backend/archive/v5.24.0.tar.gz
+
+    Variants:
+        Name [Default]          Allowed values    Description
+        ====================    ==============    =====================================
+
+        build_type [Release]    Debug, Release    The build type to build
+        doxygen [off]           on, off           Install with libosmium
+        ipo [off]               on, off           CMake interprocedural optimization
+        lib_only [on]           on, off           Install OSRM in a library only mode
+        osmium [off]            on, off           Install with libosmium
+        protozero [off]         on, off           Install with third party Protozero
+        shared [off]            on, off           Enables the build of shared libraries
+
+    Installation Phases:
+        cmake    build    install
+
+    Build Dependencies:
+        binutils  boost  bzip2  cmake  doxygen  git  intel-tbb  libosmium  libxml2  libzip
+        lua  pkg-config  protozero  zlib
+
+    Link Dependencies:
+        boost  bzip2  doxygen  intel-tbb  libosmium  libxml2  libzip  lua  protozero  zlib
+
+    Run Dependencies:
+        None
+
+    Virtual Packages: 
+        None
+  #+END_SRC
+
+*** How to construct spec? Virtual packages
+
+- list virtual packages
+  #+BEGIN_SRC sh
+    $ spack providers
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    Virtual packages:
+        D     fftw-api  golang  lapack          mysql-client  rpc        unwind
+        awk   flame     iconv   mariadb-client  opencl        scalapack  yacc
+        blas  gl        ipp     mkl             osmesa        sycl
+        daal  glu       java    mpe             pil           szip
+        elf   glx       jpeg    mpi             pkgconfig     tbb
+  #+END_SRC
+- get providers list
+  #+BEGIN_SRC sh
+    $ spack providers mpi
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    mpi:
+    fujitsu-mpi            mpich@1:   mpt@3:         mvapich2x       openmpi@2.0.0:
+    intel-mpi              mpich@3:   mvapich2       nvhpc           spectrum-mpi
+    intel-oneapi-mpi       mpilander  mvapich2@2.1:  openmpi
+    intel-parallel-studio  mpt        mvapich2@2.3:  openmpi@1.6.5
+    mpich                  mpt@1:     mvapich2-gdr   openmpi@1.7.5:
+  #+END_SRC
+
+*** How to construct spec? [[https://spack.readthedocs.io/en/latest/command_index.html#spack-arch][Platform]]
+
+- full specification of the current [[https://spack.readthedocs.io/en/latest/command_index.html#spack-arch][platform]]
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC sh
+    $ spack arch -f               # frontend
+    $ spack arch -b               # backend
+  #+END_SRC
+- parts of specification of the current platform 
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC sh
+    $ spack arch -b -t            # only the target
+    $ spack arch -b -p            # only platform
+    $ spack arch -b -o            # only the operating system  
+  #+END_SRC
+- list platforms defined in =Spack=
+  #+BEGIN_SRC sh
+    $ spack arch --known-targets  # 
+  #+END_SRC
+
+** Packages
+
+#+ATTR_REVEAL: :code_attribs data-line-numbers
+#+INCLUDE: ./package.py
+# +INCLUDE: ./libosrm/package.py
+
+** Installation with =Spack=: Command =install=
+
+#+ATTR_REVEAL: :code_attribs data-line-numbers
+#+BEGIN_SRC sh
+  $ spack install           python@3.9+optimized # install the package along with all its dependencies
+  $ spack install -f            requirements.yml # install from file (similar to pip -r)
+
+  $ spack install --only package      python@3.9 # install only the package or only the dependencies
+  $ spack install --only dependencies python@3.9 # install only the package or only the dependencies
+
+  $ spack install -j32      python@3.9+optimized # explicitly set 32 parallel jobs
+
+  $ spack install --fail-fast         python@3.9 # stop all builds if any build fails
+  $ spack install -y        python@3.9+optimized # use "yes" to every confirmation request
+
+  $ spack install --overwrite         python@3.9 # reinstall an existing spec
+#+END_SRC
+
+*** Installation with =Spack=: Mirrors, Tests, and Logging
+
+Mirrors
+#+ATTR_REVEAL: :code_attribs data-line-numbers
+#+BEGIN_SRC sh
+  $ spack install -n                   libosrm # do not use checksums to verify downloaded files (unsafe)
+  $ spack install --no-cache           libosrm # do not check for pre-built Spack packages in mirrors (by default =--use-cache=)
+  $ spack install --cache-only         libosrm # only install package from binary mirrors
+  $ spack install --no-check-signature libosrm # do not check signatures of binary packages
+#+END_SRC
+
+Tests 
+#+ATTR_REVEAL: :code_attribs data-line-numbers
+#+BEGIN_SRC sh
+  $ spack install --test root   libosrm # run package tests for top-level packages
+  $ spack install --test all    libosrm # run package tests during installation for all packages
+#+END_SRC
+
+Logs ([[https://www.kitware.com/cdash/project/about.html][CDash]]\(^*\) and [[https://junit.org][junit]] reporters)
+# {{small([[https://docs.nersc.gov/services/cdash/][NERSC on CDash]])}}}
+#+ATTR_REVEAL: :code_attribs data-line-numbers
+#+BEGIN_SRC sh
+  $ spack install --log-format cdash  libosrm # use CDash format to be used for log files
+  $ spack install --log-file osrm.log libosrm # filename for the log file. if not passed a default will be used
+  $ spack install --help-cdash                # show usage instructions for CDash reporting
+#+END_SRC
+
+*** Installation with =Spack=: Debugging options
+
+#+ATTR_REVEAL: :code_attribs data-line-numbers
+#+BEGIN_SRC sh
+  # Debug
+  $ spack install -v                  libosrm # display verbose build output while installing
+  $ spack install --show-log-on-error libosrm # print full build log to stderr if build fails
+  $ spack install --keep-prefix       libosrm # don't remove the install prefix if installation fails
+  $ spack install --dont-restage      libosrm # if a partial install is detected, don't delete prior state
+  $ spack install --source            libosrm # install source files in prefix
+  $ spack install --fake              libosrm # fake install
+  $ spack install --dirty             libosrm # preserve user environment in spack's build environment (danger!)
+#+END_SRC
+** Installation with =Spack=: Installation steps. What can fail?
+
+*Installation steps*
+#+ATTR_REVEAL: :frag (highlight-red highlight-red highlight-blue highlight-green highlight-red highlight-green) :frag_idx (1 1 1 1 1 1)
+1. concretization of spec
+2. installation of dependencies
+3. stage
+4. create build directory
+5. config/build/install
+6. clean up build directory and stage
+
+*** Installation with =Spack=: What can fail? Concretizer
+
+#+ATTR_REVEAL: :code_attribs data-line-numbers
+#+BEGIN_SRC sh
+  $ spack spec -l boost libosrm # show dependency hashes as well as versions
+  $ spack spec -L boost libosrm # show full dependency hashes as well as versions
+  $ spack spec -I boost libosrm # show install status of packages.
+  $ spack spec -N boost libosrm # show fully qualified package names
+  $ spack spec -t boost libosrm # show dependency types
+#+END_SRC
+
+#+BEGIN_SRC sh
+  $ spack --color always spec -lIt libosrm | less -R
+#+END_SRC
+#+ATTR_REVEAL: :code_attribs data-line-numbers=7,15
+#+BEGIN_SRC yaml
+  Input spec
+  --------------------------------
+   -   [    ]  .libosrm
+
+  Concretized
+  --------------------------------
+  [+]  cljend3  [    ]  hidalgo.libosrm@5.24.0%gcc@5.4.0~doxygen~ipo+lib_only~osmium~protozero~shared build_type=Release arch=linux-ubuntu16.04-broadwell
+   -   faipele  [b   ]      ^builtin.binutils@2.35.1%gcc@5.4.0+gold~headers~interwork~ld~libiberty~lto+nls~plugins arch=linux-ubuntu16.04-broadwell
+   -   5lobbsd  [b   ]          ^builtin.diffutils@3.3%gcc@5.4.0 arch=linux-ubuntu16.04-broadwell
+   -   cerl5gx  [bl  ]          ^builtin.gettext@0.21%gcc@5.4.0+bzip2+curses+git~libunistring+libxml2+tar+xz arch=linux-ubuntu16.04-broadwell
+  [+]  44w5m3q  [bl  ]              ^builtin.bzip2@1.0.6%gcc@5.4.0+shared arch=linux-ubuntu16.04-broadwell
+  [+]  2lu3ocr  [bl  ]              ^builtin.libiconv@1.16%gcc@5.4.0 arch=linux-ubuntu16.04-broadwell
+  [+]  qxsf3og  [bl  ]              ^builtin.libxml2@2.9.10%gcc@5.4.0~python arch=linux-ubuntu16.04-broadwell
+  [+]  uqlvynn  [b   ]                  ^builtin.pkg-config@0.29.1%gcc@5.4.0+internal_glib patches=49ffcd644e190dc5efcb2fab491177811ea746c1a526f75d77118c2706574358 arch=linux-ubuntu16.04-broadwell
+  [+]  z4e64mz  [blr ]                  ^builtin.xz@5.1.0alpha%gcc@5.4.0~pic arch=linux-ubuntu16.04-broadwell
+  [+]  lhfrrg2  [bl  ]                  ^builtin.zlib@1.2.11%gcc@5.4.0+optimize+pic+shared arch=linux-ubuntu16.04-broadwell
+  [+]  kmjncy3  [bl  ]              ^builtin.ncurses@6.2%gcc@5.4.0~symlinks+termlib arch=linux-ubuntu16.04-broadwell
+  [+]  j3btfe7  [bl  ]              ^builtin.tar@1.28%gcc@5.4.0 patches=08921fcbd732050c74ddf1de7d8ad95ffdbc09f8b4342456fa2f6a0dd02a957c,125cd6142fac2cc339e9aebfe79e40f90766022b8e8401532b1729e84fc148c2,5c314db58d005043bf407abaf25eb9823b9032a22fd12a0b142d4bf548130fa4,d428578be7fb99b831eb61e53b8d88a859afe08b479a21238180899707d79ce4 arch=linux-ubuntu16.04-broadwell
+  [+]  teztdxn  [bl  ]      ^builtin.boost@1.74.0%gcc@5.4.0+atomic+chrono~clanglibcpp~container~context~coroutine+date_time~debug+exception~fiber+filesystem+graph~icu+iostreams+locale+log+math~mpi+multithreaded~numpy~pic+program_options~python+random+regex+serialization+shared+signals~singlethreaded+system~taggedlayout+test+thread+timer~versionedlayout+wave cxxstd=98 visibility=hidden arch=linux-ubuntu16.04-broadwell
+   -   begrqoj  [b   ]      ^builtin.cmake@3.5.1%gcc@5.4.0~doc+ncurses+openssl+ownlibs~qt arch=linux-ubuntu16.04-broadwell
+  [+]  oytuwse  [bl  ]      ^builtin.intel-tbb@2020.3%gcc@5.4.0+shared+tm cxxstd=default patches=62ba015ebd1819c45bef47411540b789b493e31ca668c4ff4cb2afcbc306b476,ce1fb16fb932ce86a82ca87cf0431d1a8c83652af9f552b264213b2ff2945d73 arch=linux-ubuntu16.04-broadwell
+  [+]  3ctx5ya  [bl  ]      ^builtin.libzip@1.2.0%gcc@5.4.0 arch=linux-ubuntu16.04-broadwell
+  [+]  gaavhbi  [bl  ]      ^builtin.lua@5.3.5%gcc@5.4.0+shared arch=linux-ubuntu16.04-broadwell
+  [+]  sei2v7j  [bl  ]          ^builtin.readline@8.0%gcc@5.4.0 arch=linux-ubuntu16.04-broadwell
+  [+]  svmtcfx  [  r ]          ^builtin.unzip@6.0%gcc@5.4.0 arch=linux-ubuntu16.04-broadwell
+#+END_SRC
+
+=-I= shows by =[+]= packages installed with =Spack=
+
+*** Installation with =Spack=: What can fail? Concretizer
+
+Solutions:
+#+ATTR_REVEAL: :frag (none appear appear none) :frag_idx (- 1 2 -)
+1. depending on error message _change spec_ (e.g., manually define dependency) {{{alert(AND GO TO 4)}}}.
+2. play with _option =-c / --cover=_ (how extensively to traverse the DAG)
+3. try _=clingo= concretizer_ (e.g., see the issue [[https://github.com/spack/spack/issues/19951][#19951]])
+  #+BEGIN_SRC sh
+    $ spack install clingo%aocc+python ^python@2.7.5
+    $ spack load clingo
+    $ python -m pip install --user --upgrade clingo
+    $ spack find -p clingo
+  #+END_SRC
+4. try to _modify =package.py=_
+
+*** Installation with =Spack=: What can fail? Dependency
+
+- Failed dependency can be identified with 
+  #+BEGIN_SRC sh
+    $ spack install --fail-fast --only dependencies python@3.9
+  #+END_SRC
+Solution:
+#+ATTR_REVEAL: :frag (appear) :frag_idx (1)
+- find out how to install failed package 
+
+*** Installation with =Spack=: What can fail? Config/Build/Install of Package
+
+Solution:
+1. install dependencies, stage package and switch there
+   #+BEGIN_SRC sh
+     $ spack clean python@3.9 # clean old builds
+     $ spack stage python@3.9 # stage package (in particular, create build directory)
+     $ spack cd    python@3.9 # switch to build directory
+   #+END_SRC
+2.
+  #+ATTR_REVEAL: :frag (none appear) :frag_idx (- 1)
+  - try to fix issue with config/build/install manually... 
+  - ... in the [[https://spack.readthedocs.io/en/latest/packaging_guide.html#spack-build-env][build environment]]
+    #+BEGIN_SRC sh
+      $ spack build-env python@3.9 bash # use build environment in bash session
+    #+END_SRC
+3. change =package.py= correspondingly
+   - prepare patch if needed
+4. clean up stage
+** Installation with =Spack=: Reproducibility mechanisms
+
+#+ATTR_REVEAL: :frag (none appear appear) :frag_idx (- 1 2)
+- content of folder
+  #+BEGIN_SRC sh
+    ls -a $(spack location -i boost)
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    .  ..  include  lib  .spack
+  #+END_SRC
+- metadata (=.spack=)
+  #+BEGIN_SRC sh
+    $ tree $(spack location -i boost)/.spack
+  #+END_SRC
+  #+ATTR_REVEAL: :code_attribs data-line-numbers=2,3,26,30-32
+  #+BEGIN_SRC yaml
+    ~/spack/opt/spack/linux-ubuntu16.04-broadwell/gcc-5.4.0/boost-1.74.0-teztdxn6e7aqxjlnactwivwoyrza5uan/.spack
+    ├── install_manifest.json           # info about files
+    ├── repos                           # packages from repos required to install package 
+    │   └── builtin
+    │       ├── packages
+    │       │   ├── boost
+    │       │   │   ├── 1.72_boost_process.patch
+    │       │   │   ├── boost_11856.patch
+    │       │   │   ├── boost_154.patch
+    │       │   │   ├── boost_1.63.0_pgi_17.4_workaround.patch
+    │       │   │   ├── boost_1.63.0_pgi.patch
+    │       │   │   ├── boost_1.67.0_pgi.patch
+    │       │   │   ├── bootstrap-path.patch
+    │       │   │   ├── call_once_variadic.patch
+    │       │   │   ├── clang-linux_add_option2.patch
+    │       │   │   ├── clang-linux_add_option.patch
+    │       │   │   ├── darwin_clang_version.patch
+    │       │   │   ├── fujitsu_version_analysis.patch
+    │       │   │   ├── nvhpc.patch
+    │       │   │   ├── package.py
+    │       │   │   ├── python_jam.patch
+    │       │   │   ├── python_jam_pre156.patch
+    │       │   │   ├── system-non-virtual-dtor-include.patch
+    │       │   │   ├── system-non-virtual-dtor-test.patch
+    │       │   │   └── xl_1_62_0_le.patch
+    │       │   └── zlib
+    │       │       ├── package.py
+    │       │       └── w_patch.patch
+    │       └── repo.yaml
+    ├── spack-build-env.txt             # build environment
+    ├── spack-build-out.txt             # output pdoduced during build
+    └── spec.yaml                       # fully concretized specs
+  #+END_SRC
+- see also package [[https://spack.readthedocs.io/en/latest/analyze.html][analyzers]]
+
+** Basic [[https://spack.readthedocs.io/en/latest/command_index.html][commands]]
+
+We met already
+#+ATTR_REVEAL: :code_attribs data-line-numbers
+#+BEGIN_SRC sh
+  $ spack list pyt*   # basic search
+  $ spack list -d MPI # --search-description (also search the description)
+  $ spack list -v mpi # --virtuals (also include virtual packages like ~mpi~)
+
+  $ spack install python@3.9%clang+optimizations ^openssl@1.1
+  $ spack spec python@3.9%clang@3.8+optimizations~debug ^openssl@1.1
+#+END_SRC
+
+*** ~find~: check what can be used?
+# - ~-x~ explicit installs only
+# - ~-X~ implicit installs only
+# - ~-p~ show the path to which a package was installed
+# - ~-d~ show dependency information
+
+#+BEGIN_QUOTE
+Mental model: =module avail=
+#+END_QUOTE
+- spec quiries
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC sh
+    $ spack find ^python@3.7:   # every installed package that depends on mpich
+    $ spack find cppflags="-O3" # built with cppflags="-O3"
+  #+END_SRC
+- many options
+  #+BEGIN_SRC sh
+    $ spack find -vdfpl libosrm # variants; dependencies; compiler flags; path; dependency hashes and versions
+  #+END_SRC
+  #+ATTR_REVEAL: :code_attribs data-line-numbers=1-4,6-7
+  #+BEGIN_SRC yaml
+    ==> 1 installed package
+    -- linux-ubuntu16.04-broadwell / gcc@5.4.0 ----------------------
+    cljend3 libosrm@5.24.0%gcc ~doxygen~ipo+lib_only~osmium~protozero~shared build_type=Release \
+      ~/spack/opt/spack/linux-ubuntu16.04-broadwell/gcc-5.4.0/libosrm-5.24.0-cljend3d5xl67apn443bisynsc2qow5n
+    ...
+    oytuwse     intel-tbb@2020.3%gcc +shared+tm cxxstd=default \
+      patches=62ba015ebd1819c45bef47411540b789b493e31ca668c4ff4cb2afcbc306b476,\
+        ce1fb16fb932ce86a82ca87cf0431d1a8c83652af9f552b264213b2ff2945d73\
+    ~/spack/opt/spack/linux-ubuntu16.04-broadwell/gcc-5.4.0/intel-tbb-2020.3-oytuwsekyhdkpzgr23lpaikphlbi5b7i
+    ...
+  #+END_SRC
+
+*** ~extensions~: check what can be used? Extensible packages
+
+#+BEGIN_QUOTE
+Mental model: =pip freeze=
+#+END_QUOTE
+- same can be used to look for Python extensions
+  #+BEGIN_SRC sh
+    $ spack extensions -s installed -l python@3.9
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    ==> 91 installed:
+    -- linux-ubuntu16.04-broadwell / gcc@5.4.0 ----------------------
+    jfsg4va py-absl-py@0.7.1           uvfpwty py-ipywidgets@7.5.1           wk45srk py-notebook@6.1.4
+    zaheb77 py-argon2-cffi@20.1.0      vb3fqto py-jedi@0.13.3                ia52w5s py-numexpr@2.7.0 
+    6t6bpnu py-astunparse@1.6.3        qyep3ry py-jinja2@2.10.3              kl356sd py-numpy@1.19.4  
+    hx3smrj py-async-generator@1.10    btz2obt py-joblib@0.14.0              vu2hbdd py-pandas@1.1.4  
+    sm57agu py-attrs@20.3.0            zeezzki py-jsonschema@3.2.0           64thtja py-pandocfilters@1.4.2
+    hlkiwaw py-babel@2.7.0             ky5z5w3 py-jupyter@1.0.0              lx7tvvc py-parso@0.6.1        
+    qrtn4qe py-backcall@0.1.0          fuwgb36 py-jupyter-client@6.1.7       lym624m py-pexpect@4.7.0      
+    pfqlasj py-bleach@3.1.0            mivk4ck py-jupyter-console@6.1.0      nm2pvbb py-pickleshare@0.7.5  
+    dqtwtaq py-bottleneck@1.2.1        otvcfqc py-jupyter-core@4.6.3         yhh6l3o py-pillow@8.0.0       
+    xxfvwb3 py-cached-property@1.5.2   touqak7 py-jupyterlab-pygments@0.1.1  yggtq4k py-pip@20.2           
+    cm4lc2e py-certifi@2020.6.20       cbigt3n py-keras@2.2.4                opm6xwx py-pkgconfig@1.5.1        
+    dh6ieic py-cffi@1.14.3             f3eeils py-keras-applications@1.0.8   bmm2pm6 py-prometheus-client@0.7.1
+    loavcnk py-cycler@0.10.0           dq2lhng py-keras-preprocessing@1.1.2  5b22yba py-prompt-toolkit@2.0.9   
+    lljlmpx py-cython@0.29.21          uyfbpmu py-kiwisolver@1.1.0           tm2do3c py-protobuf@3.12.2        
+    qlttezg py-decorator@4.4.2         ecjsden py-markupsafe@1.1.1           6ltbrs4 py-ptyprocess@0.6.0       
+    zet4w5e py-defusedxml@0.6.0        qvpjxp4 py-matplotlib@3.3.3           atkpmfo py-py@1.8.0               
+    4krwyqj py-entrypoints@0.3         o2euz3e py-mistune@0.8.4              uxe5b4t py-pybind11@2.5.0         
+    6jpojou py-gast@0.3.3              6blhip6 py-mpi4py@3.0.3               fypwsnl py-pycparser@2.20         
+    ue4m7zr py-google-pasta@0.1.8      f7zo6x4 py-nbclient@0.5.0             lfpzpfz py-pygments@2.6.1         
+    oqbyjff py-grpcio@1.32.0           fdqc7ms py-nbconvert@6.0.1            vqnjzqp py-pyparsing@2.4.2        
+    mknyf7g py-ipykernel@5.3.4         srd52cl py-nbformat@5.0.7             l55llo6 py-pyrsistent@0.15.7      
+    57ncgy7 py-ipython@7.18.1          vwhb77l py-nest-asyncio@1.4.0         pt74pv5 py-python-dateutil@2.8.0  
+    3etfubk py-ipython-genutils@0.2.0  sra7n3k py-nose@1.3.7                 4wrfs5r py-pytz@2020.1
+  #+END_SRC
+
+*** ~load~ and ~activate~: How to access packages?
+#+BEGIN_QUOTE
+Mental model: =module load=
+#+END_QUOTE
+
+- load package
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC sh
+    $ spack load --first libosrm@5.24.0 # first match if multiple packages match the spec
+    $ spack load --sh    libosrm@5.24.0 # print sh commands to load the package
+    $ spack unload       libosrm@5.24.0
+    $ spack unload -a                   # unload all loaded Spack packages
+  #+END_SRC
+- global activation/deactivation of extensions
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC sh
+    $ spack activate         py-numpy
+    $ spack activate -f      py-numpy # without first activating dependencies
+    $ spack deactivate       py-numpy
+    $ spack deactivate --all python
+  #+END_SRC
+  - [[https://spack.readthedocs.io/en/latest/workflows.html#global-activations][drawbacks]]:
+    - some extensions may still need thier C-dependencies to be loaded manually (e.g, ~spack load openblas~ for ~py-numpy~)
+    - multiple versions of a package cannot be activated side-by-side
+
+*** ~load~ and ~activate~: How to access packages? Check active packages
+
+- can check packages with ~find~
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC sh
+    $ spack load libosrm@5.24.0
+    $ spack find --loaded
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    ==> 13 installed packages
+    -- linux-ubuntu16.04-broadwell / gcc@5.4.0 ----------------------
+    boost@1.74.0  intel-tbb@2020.3  libosrm@5.24.0  libzip@1.2.0  ncurses@6.2   unzip@6.0      zlib@1.2.11
+    bzip2@1.0.6   libiconv@1.16     libxml2@2.9.10  lua@5.3.5     readline@8.0  xz@5.1.0alpha
+  #+END_SRC
+  #+ATTR_REVEAL: :frag (appear) :frag_idx (1)
+  - load package only
+    #+BEGIN_SRC sh
+      $ spack load --only=package libosrm@5.24.0
+    #+END_SRC
+- can check extensions with ~extensions~
+  #+BEGIN_SRC sh
+    $ spack extensions -s activated -l python@3
+  #+END_SRC
+
+*** ~uninstall~
+
+# Do not uninstall packages that are not sufficiently specified
+# - ~-f~ force
+# - ~-R~ remove dependents as well
+# - ~-a~ multiple packages at once
+
+#+BEGIN_SRC sh
+  $ spack uninstall    python@3.9 # 
+  $ spack uninstall -f python@3.9 # remove regardless of whether other packages or environments depend on this one
+  $ spack uninstall -R python@3.9 # also uninstall any packages that depend on the ones given via command line
+  $ spack uninstall -y python@3.9 # assume "yes" is the answer to every confirmation request
+  $ spack uninstall -a python@3.9 # remove all installed packages that match each supplied spec
+#+END_SRC
+
+** Environments
+
+#+BEGIN_QUOTE
+Mental model: Python virtual environments with PyPI
+#+END_QUOTE
+
+Typical work flow for installing environment
+#+BEGIN_SRC sh
+  $ spack env create sna
+  $ spack env activate sna
+
+  # Add specs to the environment
+  $ spack add python@3.9.0+optimizations
+  $ spack add py-numpy ^python@3+optimizations
+  $ spack add py-scipy ^python@3+optimizations
+  $ spack add py-scikit-learn ^python@3+optimizations
+
+  $ spack concretize
+  $ spack install
+
+  despacktivate
+#+END_SRC
+
+*** Content of environment folder
+
+- content of the folder
+  #+BEGIN_SRC yaml
+    $ tree -a $(spack location -e sna)
+    ~/spack/var/spack/environments/sna
+    ├── .spack-env
+    │   └── transaction_lock
+    ├── spack.lock
+    └── spack.yaml
+  #+END_SRC
+- content of =spack.yaml=
+  #+BEGIN_SRC yaml
+    # This is a Spack Environment file.
+    #
+    # It describes a set of packages to be installed, along with
+    # configuration settings.
+    spack:
+      # add package specs to the `specs` list
+      specs: [python@3.9.0+optimizations, py-numpy ^python@3+optimizations, py-scipy ^python@3+optimizations,
+        py-scikit-learn ^python@3+optimizations]
+      view: true  
+  #+END_SRC
+
+*** Editing Environment Config: Matrices and Combinatorial versioning
+- open environment config in editor
+  #+BEGIN_SRC sh
+    $ spack config edit
+  #+END_SRC
+- 1st iteration of improvements: matrices
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC yaml
+    spack:
+      specs:
+      - python@3.9.0+optimizations
+      - matrix:
+        - [py-numpy, py-scipy, py-scikit-learn]
+        - [^python@3.9.0+optimizations]
+      view: true
+  #+END_SRC
+
+*** Editing Config: Definitions
+
+- 2nd iteration of improvements: definitions
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC yaml
+    spack:
+      definitions:
+      - packages:
+        - py-numpy
+        - py-scipy
+        - py-scikit-learn
+      - pythons: [python@3.9.0+optimizations]
+      # - compilers: [gcc@8.1.0]
+      specs:
+      - $pythons
+      - matrix:
+        - [$packages]
+        - [$^pythons]
+        # - [$%compilers]
+      view: true
+  #+END_SRC
+
+*** Editing Config: More features
+
+- 3rd iteration of improvements: containers and concretization together
+  #+ATTR_REVEAL: :code_attribs data-line-numbers=13,15-16
+  #+BEGIN_SRC yaml
+    spack:
+      definitions:
+      - packages:
+        - py-numpy
+        - py-scipy
+        - py-scikit-learn
+      - pythons: [python@3.9.0+optimizations]
+      specs:
+      - $pythons
+      - matrix:
+        - [$packages]
+        - [$^pythons]
+      concretization: together
+      view: true
+      container:
+        format: singularity
+  #+END_SRC
+
+*** Editing Environment Config: Installation preferences
+
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="2-6"
+  #+BEGIN_SRC yaml
+    spack:
+      packages:
+        python:
+          version: [3.9.0, "3.8:"]
+          variants: +optimizations
+          # buildable: true
+      specs:
+      - python
+      - matrix:
+        - [py-numpy, py-scipy, py-scikit-learn]
+        - [^python]
+      view: true
+  #+END_SRC
+
+*** Reproducing environments
+#+ATTR_REVEAL: :frag (none appear) :frag_idx (- 2)
+- create environment from file
+  #+ATTR_REVEAL: :frag (none appear) :frag_idx (- 1)
+  - *logical*: a set of abstract specs (manifest)
+    #+BEGIN_SRC sh
+      $ spack env create sna spack.yaml
+    #+END_SRC
+  - *exact*: a set of all fully concretized specs
+    #+BEGIN_SRC sh
+      $ spack env create sna spack.lock
+    #+END_SRC
+- concretize
+  #+BEGIN_SRC sh
+    $ spack concretize -f
+  #+END_SRC
+
+*** [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_stacks.html][Stacks]]
+
+#+BEGIN_QUOTE
+Allow to define "a set of packages we want to install across a wide range of compilers".
+#+END_QUOTE
+
+- constraints resolution for matrices:
+  - dependencies and variants can be used regardless of whether they apply to every package
+
+- instruments
+  - keywords for environment definitions
+    - ~matrix~: cartesian product for lists of spec parts
+    - ~exclude~: excludes specific combinations from ~matrix~
+  - [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_stacks.html#conditional-definitions][conditional definitions]] (e.g., ~when: arch.satisfies('x86_64:')~)
+  - [[https://spack-tutorial.readthedocs.io/en/latest/tutorial_stacks.html#view-descriptors][view descriptors]]
+
+*** Environment vs. [[https://spack.readthedocs.io/en/latest/build_systems/bundlepackage.html][BundlePackage]]
+
+- basic bundle packages: =opencl-headers=, =fastmath=
+- advanced bundles: =Xsdk=
+- =PythonPackage= bundles: =py-exodus-bundler=, =py-jupyter=
+
+#+ATTR_REVEAL: :code_attribs data-line-numbers
+#+BEGIN_SRC python
+  class Fastmath(BundlePackage):
+      homepage = "https://fastmath-scidac.org/"
+      version('latest')
+
+      depends_on('amrex')  # default is 3 dimensions
+      depends_on('chombo@3.2')
+      depends_on('hypre~internal-superlu')
+      depends_on('mpi')
+      depends_on('arpack-ng')
+      depends_on('petsc')
+      depends_on('phasta')
+      depends_on('pumi')
+      depends_on('sundials')
+      depends_on('superlu-dist')
+      depends_on('trilinos')
+      depends_on('zoltan')
+#+END_SRC
+
+- bundle packages in the context of HiDALGO:
+  - definition of benchmark suites and sets of miniapps (e.g., =Ceed=)

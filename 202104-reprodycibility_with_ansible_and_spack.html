@@ -82,15 +82,15 @@ docker run &#x2013;rm -t -v `pwd`:/slides -v $PWD:/home/user astefanutti/decktap
 </aside>
 
 <section>
-<section id="slide-org251a041" data-background="https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg" data-background-size="75%" data-background-opacity="0.5">
-<h2 id="org251a041">Motivation</h2>
+<section id="slide-orgf71b6f7" data-background="https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg" data-background-size="75%" data-background-opacity="0.5">
+<h2 id="orgf71b6f7">Motivation</h2>
 <p>
 <h3>Novel Conventions in Reporoducbility for HPC Research</h3>
 </p>
 
 </section>
-<section id="slide-orge345276" data-background="https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-a-simpsons-as-a-service-storyboard-3-638.jpg" data-background-size="100%" data-background-opacity="0.25">
-<h3 id="orge345276">Evolution of approaches to reproducible research in HPC</h3>
+<section id="slide-orge0aabe5" data-background="https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-a-simpsons-as-a-service-storyboard-3-638.jpg" data-background-size="100%" data-background-opacity="0.25">
+<h3 id="orge0aabe5">Evolution of approaches to reproducible research in HPC</h3>
 <ul>
 <li data-fragment-index="1" class="fragment appear">attention to the <span class="underline">"Experimental setup"</span> in HPC papers</li>
 <li data-fragment-index="2" class="fragment appear">careful reporting in terms of <span class="underline">statistics</span>: <a href="https://doi.org/10.1145/2807591.2807644">T. Hoefler and R. Belli (2015)</a>
@@ -117,8 +117,8 @@ personal story: <span class="underline">EC cares</span> (2020)
 </ul>
 
 </section>
-<section id="slide-org1641985" data-background="./figs/spack/popper_convention.png" data-background-size="900px" data-background-opacity="0.5">
-<h3 id="org1641985"><a href="https://doi.org/10.1109/IPDPSW.2017.157"> <code>Popper</code> convention</a></h3>
+<section id="slide-org2816a80" data-background="./figs/spack/popper_convention.png" data-background-size="900px" data-background-opacity="0.5">
+<h3 id="org2816a80"><a href="https://doi.org/10.1109/IPDPSW.2017.157"> <code>Popper</code> convention</a></h3>
 <ul>
 <li data-fragment-index="1" class="fragment appear"><blockquote>
 <ul>
@@ -142,8 +142,8 @@ personal story: <span class="underline">EC cares</span> (2020)
 </p>
 
 </section>
-<section id="slide-orgd8bcf38" data-background="https://pypi.org/static/images/logo-large.svg" data-background-size="50%" data-background-opacity="0.5">
-<h3 id="orgd8bcf38">Reproducing Python environment on the local workstation (PyPI)</h3>
+<section id="slide-orgb228598" data-background="https://pypi.org/static/images/logo-large.svg" data-background-size="50%" data-background-opacity="0.5">
+<h3 id="orgb228598">Reproducing Python environment on the local workstation (PyPI)</h3>
 <p>
 If you do not make a performance study, it's as <b>simple as this</b>:
 </p>
@@ -181,70 +181,69 @@ report/store the existing software environment
 </ul>
 
 </section>
-<section id="slide-org69172d1" data-background="https://images.squarespace-cdn.com/content/5be48621f407b46d6a7729ee/1549584229680-J87WH6GI2I1Z1O0BARLK/The+Little+Bit-logo-black.png" data-background-size="60%" data-background-opacity="0.25">
-<h3 id="org69172d1">What about reproducing general software environments on the resources of several HPC centers at once?</h3>
+<section id="slide-orgce09095" data-background="https://images.squarespace-cdn.com/content/5be48621f407b46d6a7729ee/1549584229680-J87WH6GI2I1Z1O0BARLK/The+Little+Bit-logo-black.png" data-background-size="60%" data-background-opacity="0.25">
+<h3 id="orgce09095">What about reproducing general software environments on the resources of several HPC centers at once?</h3>
 <p>
 <p class="fragment fade-in-then-semi-out"> <b>It's like a little bit harder.</br>Like a little...</b> </p>
 <p class="fragment fade-up"> <b>... except a lot?</b></br><img src="https://s3cf.recapguide.com:444/img/tv/117/21x14/The-Simpsons-Season-21-Episode-14-30-5364.jpg" width=60% alt="...except a lot"/> </p>
 </p>
 
 </section>
-<section id="slide-org3d99c4f">
-<h3 id="org3d99c4f">Typical issues</h3>
+<section id="slide-org8a64137">
+<h3 id="org8a64137">Typical issues</h3>
 <ul>
-<li>management of dependencies (versions, etc)</li>
-<li>taking care of site-specific details:
+<li>management of <span class="underline">dependencies</span> (versions, etc)</li>
+<li>taking care of <span class="underline">site- and system-specific details</span>:
 <ul>
 <li>diversity of build systems and compilers</li>
 <li>diversity of recommended setups (compilers, options, libs, etc) for different sysytems/sites</li>
 <li>different stacks of pre-installed ("native") software</li>
 
 </ul></li>
-<li>off-line sites</li>
-<li>maintainance of different installation versions (combinatorial versioning)</li>
-<li>sometimes one need to do an extra work to port codes</li>
+<li><span class="underline">off-line sites</span></li>
+<li>maintainance of different installation versions (<sub>combinatorial</sub> versioning_)</li>
+<li>sometimes one need to do an extra work to <span class="underline">port codes</span> (patching)</li>
 
 </ul>
 
 </section>
-<section id="slide-org45a979e">
-<h3 id="org45a979e">Typical lifecycle of the HPC system user</h3>
+<section id="slide-org3fa33ba">
+<h3 id="org3fa33ba">Typical lifecycle of the HPC system user</h3>
 
 <div class="figure">
-<p><img src="https://static.wikia.nocookie.net/simpsons/images/3/3a/Homer_defined.jpg" alt="Homer_defined.jpg" width="60%" />
+<p><img src="https://static.wikia.nocookie.net/simpsons/images/3/3a/Homer_defined.jpg" alt="&quot;try different options from manuals&quot;" width="60%" />
 </p>
 </div>
 
 </section>
-<section id="slide-org0c56c09" data-visibility="uncounted">
-<h4 id="org0c56c09"></h4>
+<section id="slide-org8bfe19c" data-visibility="uncounted">
+<h4 id="org8bfe19c"></h4>
 
 <div class="figure">
-<p><img src="https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_675,pg_1,q_80,w_1200/qhrtzhpcl7yrq06t3lau.png" alt="qhrtzhpcl7yrq06t3lau.png" width="90%" />
+<p><img src="https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_675,pg_1,q_80,w_1200/qhrtzhpcl7yrq06t3lau.png" alt="&quot;call support&quot;" width="90%" />
 </p>
 </div>
 
 </section>
-<section id="slide-orgf4d0f68" data-visibility="uncounted">
-<h4 id="orgf4d0f68"></h4>
+<section id="slide-orgc8bced3" data-visibility="uncounted">
+<h4 id="orgc8bced3"></h4>
 
 <div class="figure">
-<p><img src="https://wallpaperaccess.com/full/1567145.png" alt="1567145.png" width="75%" />
+<p><img src="https://wallpaperaccess.com/full/1567145.png" alt="&quot;tedious, error-prone and time-consuming process&quot;" width="75%" />
 </p>
 </div>
 
 </section>
-<section id="slide-orgf9bdb54">
-<h3 id="orgf9bdb54">Can we reduce the troubles?</h3>
+<section id="slide-orgf49c0dd">
+<h3 id="orgf49c0dd">Can we reduce the troubles?</h3>
 
 <div class="figure">
-<p><img src="https://y.yarn.co/2d07d6ee-49fc-45c8-81b8-36f74aa60f96_screenshot.jpg" alt="2d07d6ee-49fc-45c8-81b8-36f74aa60f96_screenshot.jpg" width="90%" />
+<p><img src="https://y.yarn.co/2d07d6ee-49fc-45c8-81b8-36f74aa60f96_screenshot.jpg" alt="&quot;yes, we can approach to the level of PyPI simplicity&quot;" width="90%" />
 </p>
 </div>
-
 </section>
-<section id="slide-org4f38f14" data-visibility="hidden">
-<h4 id="org4f38f14"></h4>
+<section id="slide-org76bfe17" data-visibility="hidden">
+<h4 id="org76bfe17"></h4>
 
 <div class="figure">
 <p><img src="https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-a-simpsons-as-a-service-storyboard-6-638.jpg" alt="the-delivery-hero-a-simpsons-as-a-service-storyboard-6-638.jpg" width="100%" />
@@ -252,8 +251,8 @@ report/store the existing software environment
 </div>
 
 </section>
-<section id="slide-orgd101eae" data-visibility="hidden">
-<h4 id="orgd101eae"></h4>
+<section id="slide-org24972bd" data-visibility="hidden">
+<h4 id="org24972bd"></h4>
 
 <div class="figure">
 <p><img src="https://image.slidesharecdn.com/hazelcastmicrosoftmeetup-161222080521/95/distributed-computing-and-caching-in-the-cloud-hazelcast-and-microsoft-7-638.jpg" alt="distributed-computing-and-caching-in-the-cloud-hazelcast-and-microsoft-7-638.jpg" width="100%" />
@@ -261,8 +260,8 @@ report/store the existing software environment
 </div>
 
 </section>
-<section id="slide-org7fa59df" data-visibility="hidden">
-<h4 id="org7fa59df"></h4>
+<section id="slide-org204266e" data-visibility="hidden">
+<h4 id="org204266e"></h4>
 
 <div class="figure">
 <p><img src="https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-a-simpsons-as-a-service-storyboard-11-638.jpg" alt="the-delivery-hero-a-simpsons-as-a-service-storyboard-11-638.jpg" width="100%" />
@@ -270,8 +269,8 @@ report/store the existing software environment
 </div>
 
 </section>
-<section id="slide-org4698969" data-visibility="hidden">
-<h4 id="org4698969"></h4>
+<section id="slide-orgd90fc81" data-visibility="hidden">
+<h4 id="orgd90fc81"></h4>
 
 <div class="figure">
 <p><img src="https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-a-simpsons-as-a-service-storyboard-51-638.jpg" alt="the-delivery-hero-a-simpsons-as-a-service-storyboard-51-638.jpg" width="100%" />
@@ -279,8 +278,8 @@ report/store the existing software environment
 </div>
 
 </section>
-<section id="slide-org3ae64c3" data-visibility="hidden">
-<h4 id="org3ae64c3"></h4>
+<section id="slide-orgeb23c94" data-visibility="hidden">
+<h4 id="orgeb23c94"></h4>
 
 <div class="figure">
 <p><img src="https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-a-simpsons-as-a-service-storyboard-55-638.jpg" alt="the-delivery-hero-a-simpsons-as-a-service-storyboard-55-638.jpg" width="100%" />
@@ -288,8 +287,8 @@ report/store the existing software environment
 </div>
 
 </section>
-<section id="slide-orgc9c1e9c" data-background-iframe="https://github.com/spack/spack" data-background-opacity="0.2" data-background-interactive>
-<h3 id="orgc9c1e9c">Why to use it at the 1st place?</h3>
+<section id="slide-org9e158c9" data-background-iframe="https://github.com/spack/spack" data-background-opacity="0.2" data-background-interactive>
+<h3 id="org9e158c9">Why to use <code>Spack</code> at the 1st place?</h3>
 <ul>
 <li>make it possible to install <span class="underline">off-line on bare metal</span> with a full control on the installation process</li>
 <li>consistent <span class="underline">build customization</span> for each platform</li>
@@ -314,8 +313,8 @@ report/store the existing software environment
 </ul>
 
 </section>
-<section id="slide-org6c131a3">
-<h4 id="org6c131a3">Why <code>rpm</code> / <code>apt</code> / <code>yum</code> or <code>Homebrew</code> / <code>conan</code> are insufficient?</h4>
+<section id="slide-orgec10a7f">
+<h4 id="orgec10a7f">Why <code>rpm</code> / <code>apt</code> / <code>yum</code> or <code>Homebrew</code> / <code>conan</code> are insufficient?</h4>
 <ul>
 <li>binary package managers (<code>rpm</code>, <code>yum</code>, <code>apt</code>, <code>yast</code>, etc.)
 <ul>
@@ -342,8 +341,8 @@ report/store the existing software environment
 </ul>
 
 </section>
-<section id="slide-orgf3bb980">
-<h4 id="orgf3bb980">For Python users</h4>
+<section id="slide-org8a18d3f">
+<h4 id="org8a18d3f">For Python users</h4>
 <ul>
 <li>advanges over <code>PyPI</code> or <a href="https://python-poetry.org/">poetry</a>:
 <ul>
@@ -373,16 +372,17 @@ report/store the existing software environment
 </ul>
 
 </section>
-<section id="slide-orgd060bd3" data-background="https://4.bp.blogspot.com/-De9KGx1TIp0/W_JfKdpCb1I/AAAAAAAAUtk/BZDksgCZcMw8q9RzmWWNbcpE7Y9SquR6QCLcBGAs/s1600/IMG-20170804-WA0011.jpg" data-background-size="50%" data-background-opacity="0.25">
-<h4 id="orgd060bd3">Even more for Data Scientist (and Java in general)</h4>
+<section id="slide-org7574187" data-background="https://4.bp.blogspot.com/-De9KGx1TIp0/W_JfKdpCb1I/AAAAAAAAUtk/BZDksgCZcMw8q9RzmWWNbcpE7Y9SquR6QCLcBGAs/s1600/IMG-20170804-WA0011.jpg" data-background-size="50%" data-background-opacity="0.25">
+<h4 id="org7574187">Even more for Data Scientist (and Java in general)</h4>
 <ul>
-<li>Spark</li>
+<li>Java: ibm-java, jdk, openjdk, icedtea, etc</li>
+<li>Spark/PySpark, Hadoop</li>
 
 </ul>
 
 </section>
-<section id="slide-org48ff8ec" data-visibility="hidden">
-<h4 id="org48ff8ec">Container receipts?</h4>
+<section id="slide-orgc8e20a8" data-visibility="hidden">
+<h4 id="orgc8e20a8">Container receipts?</h4>
 <ul>
 <li>Container receipts look like a valid reproducible software environment for HPC, don't they?</li>
 <li>Formally, yes,&#x2026;</li>
@@ -393,33 +393,32 @@ report/store the existing software environment
 </section>
 </section>
 <section>
-<section id="slide-org648a6e2">
-<h2 id="org648a6e2">Basics of Spack</h2>
-<div class="outline-text-2" id="text-org648a6e2">
-</div>
+<section id="slide-org0425a91" data-background="https://s.abcnews.com/images/Entertainment/ht_homer_simpson_higgs_boson_jc_150304_4x3t_992.jpg" data-background-size="50%" data-background-opacity="0.25">
+<h2 id="org0425a91">Basics of <code>Spack</code></h2>
+
 </section>
-<section id="slide-org9527296">
-<h3 id="org9527296">Core Spack Concepts</h3>
+<section id="slide-orgdd47409">
+<h3 id="orgdd47409">Core Spack Concepts</h3>
 
 <div class="figure">
-<p><object type="image/svg+xml" data="./figs/spack/Spack_concepts.svg" class="org-svg" width="75%">
+<p><object type="image/svg+xml" data="./figs/spack/Spack_concepts.svg" class="org-svg" width="75%" alt="&quot;specs, repos, concretizer&quot;">
 Sorry, your browser does not support SVG.</object>
 </p>
 </div>
 
 </section>
-<section id="slide-orge447d0d">
-<h4 id="orge447d0d"></h4>
+<section id="slide-orgb52f6dc">
+<h4 id="orgb52f6dc"></h4>
 
 <div class="figure">
-<p><object type="image/svg+xml" data="./figs/spack/Spack_workflow.svg" class="org-svg" width="75%">
+<p><object type="image/svg+xml" data="./figs/spack/Spack_workflow.svg" class="org-svg" width="75%" alt="workflow">
 Sorry, your browser does not support SVG.</object>
 </p>
 </div>
 
 </section>
-<section id="slide-orgcf2c13b">
-<h3 id="orgcf2c13b">Spec</h3>
+<section id="slide-orgfd96f79">
+<h3 id="orgfd96f79">Spec</h3>
 <p>
 Syntax of spec (sigils, etc)
 </p>
@@ -459,8 +458,8 @@ sei2v7j readline@8.0  feqfow6 readline@8.0
 </ul>
 
 </section>
-<section id="slide-org5827474">
-<h4 id="org5827474">How to construct spec?</h4>
+<section id="slide-orgb3162c6">
+<h4 id="orgb3162c6">How to construct spec?</h4>
 <ul>
 <li>hash (<code>concretize</code> or <code>find -l</code>)</li>
 <li><p>
@@ -511,8 +510,8 @@ akantu
 </ul>
 
 </section>
-<section id="slide-orgedce80b">
-<h4 id="orgedce80b">How to construct spec?</h4>
+<section id="slide-org4b9888c">
+<h4 id="org4b9888c">How to construct spec?</h4>
 <ul>
 <li><p>
 version
@@ -538,8 +537,8 @@ $ spack compiler info clang           # know better about configs of specific co
 </ul>
 
 </section>
-<section id="slide-orged6613e">
-<h4 id="orged6613e">How to construct spec? Configuration and Options</h4>
+<section id="slide-org0c0a99f">
+<h4 id="org0c0a99f">How to construct spec? Configuration and Options</h4>
 <ul>
 <li>flags (for compilers &amp; linkers -&gt; NOT RECOMMENDED)
 <ul>
@@ -607,15 +606,15 @@ Virtual Packages:
 </ul>
 
 </section>
-<section id="slide-org8024c11">
-<h4 id="org8024c11">How to construct spec? Virtual packages</h4>
+<section id="slide-org3827f80">
+<h4 id="org3827f80">How to construct spec? Virtual packages</h4>
 <ul>
 <li><p>
 list virtual packages
 </p>
 <div class="org-src-container">
 
-<pre><code class="sh" >spack providers
+<pre><code class="sh" >$ spack providers
 </code></pre>
 </div>
 <div class="org-src-container">
@@ -633,7 +632,7 @@ get providers list
 </p>
 <div class="org-src-container">
 
-<pre><code class="sh" >spack providers mpi
+<pre><code class="sh" >$ spack providers mpi
 </code></pre>
 </div>
 <div class="org-src-container">
@@ -650,8 +649,8 @@ mpich                  mpt@1:     mvapich2-gdr   openmpi@1.7.5:
 </ul>
 
 </section>
-<section id="slide-orgac23693">
-<h4 id="orgac23693">How to construct spec? <a href="https://spack.readthedocs.io/en/latest/command_index.html#spack-arch">Platform</a></h4>
+<section id="slide-org0e239d9">
+<h4 id="org0e239d9">How to construct spec? <a href="https://spack.readthedocs.io/en/latest/command_index.html#spack-arch">Platform</a></h4>
 <ul>
 <li><p>
 full specification of the current <a href="https://spack.readthedocs.io/en/latest/command_index.html#spack-arch">platform</a>
@@ -684,8 +683,8 @@ list platforms defined in <code>Spack</code>
 </ul>
 
 </section>
-<section id="slide-org700a6ae">
-<h3 id="org700a6ae">Packages</h3>
+<section id="slide-org2d1f19c">
+<h3 id="org2d1f19c">Packages</h3>
 <div class="org-src-container">
 
 <pre><code class="python" data-line-numbers>from spack import *
@@ -774,8 +773,8 @@ class Libosrm(CMakePackage):
 </div>
 
 </section>
-<section id="slide-org99ef0c2">
-<h3 id="org99ef0c2">Installation with <code>Spack</code>: Command <code>install</code></h3>
+<section id="slide-org5592001">
+<h3 id="org5592001">Installation with <code>Spack</code>: Command <code>install</code></h3>
 <div class="org-src-container">
 
 <pre><code class="sh" data-line-numbers>$ spack install           python@3.9+optimized # install the package along with all its dependencies
@@ -794,8 +793,8 @@ $ spack install --overwrite         python@3.9 # reinstall an existing spec
 </div>
 
 </section>
-<section id="slide-org0fc69bb">
-<h4 id="org0fc69bb">Installation with <code>Spack</code>: Mirrors, Tests, and Logging</h4>
+<section id="slide-org1be9fa2">
+<h4 id="org1be9fa2">Installation with <code>Spack</code>: Mirrors, Tests, and Logging</h4>
 <p>
 Mirrors
 </p>
@@ -831,8 +830,8 @@ $ spack install --help-cdash                # show usage instructions for CDash 
 </div>
 
 </section>
-<section id="slide-orgb63e11a">
-<h4 id="orgb63e11a">Installation with <code>Spack</code>: Debugging options</h4>
+<section id="slide-org6a2c745">
+<h4 id="org6a2c745">Installation with <code>Spack</code>: Debugging options</h4>
 <div class="org-src-container">
 
 <pre><code class="sh" data-line-numbers># Debug
@@ -846,8 +845,8 @@ $ spack install --dirty             libosrm # preserve user environment in spack
 </code></pre>
 </div>
 </section>
-<section id="slide-orgdcd8a51">
-<h3 id="orgdcd8a51">Installation with <code>Spack</code>: Installation steps. What can fail?</h3>
+<section id="slide-org3f3c0b8">
+<h3 id="org3f3c0b8">Installation with <code>Spack</code>: Installation steps. What can fail?</h3>
 <p>
 <b>Installation steps</b>
 </p>
@@ -862,8 +861,8 @@ $ spack install --dirty             libosrm # preserve user environment in spack
 </ol>
 
 </section>
-<section id="slide-org7e2bced">
-<h4 id="org7e2bced">Installation with <code>Spack</code>: What can fail? Concretizer</h4>
+<section id="slide-org273eff4">
+<h4 id="org273eff4">Installation with <code>Spack</code>: What can fail? Concretizer</h4>
 <div class="org-src-container">
 
 <pre><code class="sh" data-line-numbers>$ spack spec -l boost libosrm # show dependency hashes as well as versions
@@ -914,8 +913,8 @@ Concretized
 </p>
 
 </section>
-<section id="slide-org9ae99d4">
-<h4 id="org9ae99d4">Installation with <code>Spack</code>: What can fail? Concretizer</h4>
+<section id="slide-org3207ac2">
+<h4 id="org3207ac2">Installation with <code>Spack</code>: What can fail? Concretizer</h4>
 <p>
 Solutions:
 </p>
@@ -938,8 +937,8 @@ $ spack find -p clingo
 </ol>
 
 </section>
-<section id="slide-org21073e4">
-<h4 id="org21073e4">Installation with <code>Spack</code>: What can fail? Dependency</h4>
+<section id="slide-orga9e7764">
+<h4 id="orga9e7764">Installation with <code>Spack</code>: What can fail? Dependency</h4>
 <ul>
 <li><p>
 Failed dependency can be identified with 
@@ -960,8 +959,8 @@ Solution:
 </ul>
 
 </section>
-<section id="slide-org500dd9a">
-<h4 id="org500dd9a">Installation with <code>Spack</code>: What can fail? Config/Build/Install of Package</h4>
+<section id="slide-org90fab09">
+<h4 id="org90fab09">Installation with <code>Spack</code>: What can fail? Config/Build/Install of Package</h4>
 <p>
 Solution:
 </p>
@@ -971,9 +970,9 @@ install dependencies, stage package and switch there
 </p>
 <div class="org-src-container">
 
-<pre><code class="sh" >spack clean python@3.9 # clean old builds
-spack stage python@3.9 # stage package (in particular, create build directory)
-spack cd    python@3.9 # switch to build directory
+<pre><code class="sh" >$ spack clean python@3.9 # clean old builds
+$ spack stage python@3.9 # stage package (in particular, create build directory)
+$ spack cd    python@3.9 # switch to build directory
 </code></pre>
 </div></li>
 <li><ul>
@@ -997,8 +996,8 @@ spack cd    python@3.9 # switch to build directory
 
 </ol>
 </section>
-<section id="slide-org04e898c">
-<h3 id="org04e898c">Installation with <code>Spack</code>: Reproducibility mechanisms</h3>
+<section id="slide-org89757cd">
+<h3 id="org89757cd">Installation with <code>Spack</code>: Reproducibility mechanisms</h3>
 <ul>
 <li><p>
 content of folder
@@ -1057,12 +1056,13 @@ metadata (<code>.spack</code>)
 └── spec.yaml                       # fully concretized specs
 </code></pre>
 </div></li>
+<li data-fragment-index="2" class="fragment appear">see also package <a href="https://spack.readthedocs.io/en/latest/analyze.html">analyzers</a></li>
 
 </ul>
 
 </section>
-<section id="slide-org0206441">
-<h3 id="org0206441">Basic <a href="https://spack.readthedocs.io/en/latest/command_index.html">commands</a></h3>
+<section id="slide-org02520da">
+<h3 id="org02520da">Basic <a href="https://spack.readthedocs.io/en/latest/command_index.html">commands</a></h3>
 <p>
 We met already
 </p>
@@ -1078,8 +1078,8 @@ $ spack spec python@3.9%clang@3.8+optimizations~debug ^openssl@1.1
 </div>
 
 </section>
-<section id="slide-org16abb37">
-<h4 id="org16abb37"><code>find</code>: check what can be used?</h4>
+<section id="slide-org63c6780">
+<h4 id="org63c6780"><code>find</code>: check what can be used?</h4>
 <blockquote>
 <p>
 Mental model: <code>module avail</code>
@@ -1121,8 +1121,8 @@ oytuwse     intel-tbb@2020.3%gcc +shared+tm cxxstd=default \
 </ul>
 
 </section>
-<section id="slide-org790372c">
-<h4 id="org790372c"><code>extensions</code>: check what can be used? Extensible packages</h4>
+<section id="slide-orgaeccc42">
+<h4 id="orgaeccc42"><code>extensions</code>: check what can be used? Extensible packages</h4>
 <blockquote>
 <p>
 Mental model: <code>pip freeze</code>
@@ -1170,8 +1170,8 @@ mknyf7g py-ipykernel@5.3.4         srd52cl py-nbformat@5.0.7             l55llo6
 </ul>
 
 </section>
-<section id="slide-orge0a6c21">
-<h4 id="orge0a6c21"><code>load</code> and <code>activate</code>: How to access packages?</h4>
+<section id="slide-orge1313cb">
+<h4 id="orge1313cb"><code>load</code> and <code>activate</code>: How to access packages?</h4>
 <blockquote>
 <p>
 Mental model: <code>module load</code>
@@ -1195,10 +1195,10 @@ global activation/deactivation of extensions
 </p>
 <div class="org-src-container">
 
-<pre><code class="sh" data-line-numbers>spack activate         py-numpy
-spack activate -f      py-numpy # without first activating dependencies
-spack deactivate       py-numpy
-spack deactivate --all python
+<pre><code class="sh" data-line-numbers>$ spack activate         py-numpy
+$ spack activate -f      py-numpy # without first activating dependencies
+$ spack deactivate       py-numpy
+$ spack deactivate --all python
 </code></pre>
 </div>
 <ul>
@@ -1214,8 +1214,8 @@ spack deactivate --all python
 </ul>
 
 </section>
-<section id="slide-org3142096">
-<h4 id="org3142096"><code>load</code> and <code>activate</code>: How to access packages? Check active packages</h4>
+<section id="slide-org29bec77">
+<h4 id="org29bec77"><code>load</code> and <code>activate</code>: How to access packages? Check active packages</h4>
 <ul>
 <li><p>
 can check packages with <code>find</code>
@@ -1257,8 +1257,8 @@ can check extensions with <code>extensions</code>
 </ul>
 
 </section>
-<section id="slide-org3d52673">
-<h4 id="org3d52673"><code>uninstall</code></h4>
+<section id="slide-orgbaf2b47">
+<h4 id="orgbaf2b47"><code>uninstall</code></h4>
 <div class="org-src-container">
 
 <pre><code class="sh" >$ spack uninstall    python@3.9 # 
@@ -1270,8 +1270,8 @@ $ spack uninstall -a python@3.9 # remove all installed packages that match each 
 </div>
 
 </section>
-<section id="slide-org6a8db78">
-<h3 id="org6a8db78">Environments</h3>
+<section id="slide-orgcc8a077">
+<h3 id="orgcc8a077">Environments</h3>
 <blockquote>
 <p>
 Mental model: Python virtual environments with PyPI
@@ -1300,8 +1300,8 @@ despacktivate
 </div>
 
 </section>
-<section id="slide-org2fe6c4b">
-<h4 id="org2fe6c4b">Content of environment folder</h4>
+<section id="slide-org3d14374">
+<h4 id="org3d14374">Content of environment folder</h4>
 <ul>
 <li><p>
 content of the folder
@@ -1336,15 +1336,15 @@ spack:
 </ul>
 
 </section>
-<section id="slide-orge93218d">
-<h4 id="orge93218d">Editing Environment Config: Matrices and Combinatorial versioning</h4>
+<section id="slide-orgb5958d2">
+<h4 id="orgb5958d2">Editing Environment Config: Matrices and Combinatorial versioning</h4>
 <ul>
 <li><p>
 open environment config in editor
 </p>
 <div class="org-src-container">
 
-<pre><code class="sh" >spack config edit
+<pre><code class="sh" >$ spack config edit
 </code></pre>
 </div></li>
 <li><p>
@@ -1365,8 +1365,8 @@ open environment config in editor
 </ul>
 
 </section>
-<section id="slide-org9977710">
-<h4 id="org9977710">Editing Config: Definitions</h4>
+<section id="slide-orgbe8b82a">
+<h4 id="orgbe8b82a">Editing Config: Definitions</h4>
 <ul>
 <li><p>
 2nd iteration of improvements: definitions
@@ -1394,8 +1394,8 @@ open environment config in editor
 </ul>
 
 </section>
-<section id="slide-orgbbe14da">
-<h4 id="orgbbe14da">Editing Config: More features</h4>
+<section id="slide-org223940c">
+<h4 id="org223940c">Editing Config: More features</h4>
 <ul>
 <li><p>
 3rd iteration of improvements: containers and concretization together
@@ -1424,8 +1424,8 @@ open environment config in editor
 </ul>
 
 </section>
-<section id="slide-org332af25">
-<h4 id="org332af25">Editing Environment Config: Installation preferences</h4>
+<section id="slide-org14ce82b">
+<h4 id="org14ce82b">Editing Environment Config: Installation preferences</h4>
 <div class="org-src-container">
 
 <pre><code class="yaml" data-line-numbers="2-6">spack:
@@ -1444,8 +1444,8 @@ open environment config in editor
 </div>
 
 </section>
-<section id="slide-org7599c1a">
-<h4 id="org7599c1a">Reproducing environments</h4>
+<section id="slide-org2f883d9">
+<h4 id="org2f883d9">Reproducing environments</h4>
 <ul>
 <li>create environment from file
 <ul>
@@ -1479,8 +1479,8 @@ concretize
 </ul>
 
 </section>
-<section id="slide-orgd51aaec">
-<h4 id="orgd51aaec"><a href="https://spack-tutorial.readthedocs.io/en/latest/tutorial_stacks.html">Stacks</a></h4>
+<section id="slide-org9904ee7">
+<h4 id="org9904ee7"><a href="https://spack-tutorial.readthedocs.io/en/latest/tutorial_stacks.html">Stacks</a></h4>
 <blockquote>
 <p>
 Allow to define "a set of packages we want to install across a wide range of compilers".
@@ -1510,8 +1510,8 @@ Allow to define "a set of packages we want to install across a wide range of com
 </ul>
 
 </section>
-<section id="slide-org0d6c5e1">
-<h4 id="org0d6c5e1">Environment vs. <a href="https://spack.readthedocs.io/en/latest/build_systems/bundlepackage.html">BundlePackage</a></h4>
+<section id="slide-org322f03e">
+<h4 id="org322f03e">Environment vs. <a href="https://spack.readthedocs.io/en/latest/build_systems/bundlepackage.html">BundlePackage</a></h4>
 <ul>
 <li>basic bundle packages: <code>opencl-headers</code>, <code>fastmath</code></li>
 <li>advanced bundles: <code>Xsdk</code></li>
@@ -1551,13 +1551,12 @@ Allow to define "a set of packages we want to install across a wide range of com
 </section>
 </section>
 <section>
-<section id="slide-orgb2970db">
-<h2 id="orgb2970db">Configuring</h2>
-<div class="outline-text-2" id="text-orgb2970db">
-</div>
+<section id="slide-org1c406b8" data-background="https://i.imgur.com/sgu8S2X.png" data-background-size="75%" data-background-opacity="0.25">
+<h2 id="org1c406b8">Configuring <code>Spack</code></h2>
+
 </section>
-<section id="slide-org2973e55">
-<h3 id="org2973e55">Configuration <span class="underline">scopes</span></h3>
+<section id="slide-org0a18734">
+<h3 id="org0a18734">Configuration <span class="underline">scopes</span></h3>
 <ul>
 <li><p>
 <i>common</i> (lower-precedence scopes first):
@@ -1618,8 +1617,8 @@ Allow to define "a set of packages we want to install across a wide range of com
 </ul>
 
 </section>
-<section id="slide-org5a62dc4">
-<h3 id="org5a62dc4">Configuration <span class="underline">sections</span></h3>
+<section id="slide-org920fd38">
+<h3 id="org920fd38">Configuration <span class="underline">sections</span></h3>
 <div class="org-src-container">
 
 <pre><code class="sh" >$ spack config list
@@ -1688,15 +1687,15 @@ Allow to define "a set of packages we want to install across a wide range of com
 </small>
 
 </section>
-<section id="slide-orgadad4cf">
-<h3 id="orgadad4cf">Commands</h3>
+<section id="slide-org499b995">
+<h3 id="org499b995">Commands</h3>
 <ul>
 <li><p>
 browsing and editing
 </p>
 <div class="org-src-container">
 
-<pre><code class="sh" >spack config get upstreams
+<pre><code class="sh" >$ spack config get upstreams
 EDITOR=emacsclient spack config edit packages &amp;
 </code></pre>
 </div></li>
@@ -1705,8 +1704,8 @@ check end result for the superposition of scopes
 </p>
 <div class="org-src-container">
 
-<pre><code class="sh" >spack config blame config
-spack --insecure -C /path/to/first/scope -C /path/to/second/scope config blame config
+<pre><code class="sh" >$ spack config blame config
+$ spack --insecure -C /path/to/first/scope -C /path/to/second/scope config blame config
 </code></pre>
 </div></li>
 <li><p>
@@ -1714,8 +1713,8 @@ update to the latest format (for the given <code>Spack</code> version)
 </p>
 <div class="org-src-container">
 
-<pre><code class="sh" >spack config update config
-spack config revert config  
+<pre><code class="sh" >$ spack config update config
+$ spack config revert config  
 </code></pre>
 </div></li>
 
@@ -1723,8 +1722,8 @@ spack config revert config
 
 
 </section>
-<section id="slide-org14e8025">
-<h3 id="org14e8025"><a href="https://spack.readthedocs.io/en/latest/config_yaml.html">config</a></h3>
+<section id="slide-org465997a">
+<h3 id="org465997a"><a href="https://spack.readthedocs.io/en/latest/config_yaml.html">config</a></h3>
 <div class="org-src-container">
 
 <pre><code class="yaml" data-line-numbers>config:
@@ -1746,8 +1745,8 @@ spack config revert config
 </div>
 
 </section>
-<section id="slide-org3d3e3c6">
-<h3 id="org3d3e3c6"><a href="https://spack.readthedocs.io/en/latest/build_settings.html">packages</a></h3>
+<section id="slide-org57cef62">
+<h3 id="org57cef62"><a href="https://spack.readthedocs.io/en/latest/build_settings.html">packages</a></h3>
 <ul>
 <li><p>
 permissions
@@ -1786,8 +1785,8 @@ concretization preferences (for packages and virtual packages)
 </ul>
 
 </section>
-<section id="slide-orgd812a53">
-<h4 id="orgd812a53">External packages</h4>
+<section id="slide-org8995687">
+<h4 id="org8995687">External packages</h4>
 <ul>
 <li><p>
 specification of external packages
@@ -1821,11 +1820,11 @@ better to make MPI non-buildable for everything
 </ul>
 
 </section>
-<section id="slide-orgbc584c6">
-<h4 id="orgbc584c6">Automatic search for externals</h4>
+<section id="slide-org38d61a2">
+<h4 id="org38d61a2">Automatic search for externals</h4>
 <div class="org-src-container">
 
-<pre><code class="sh" >spack external find --not-buildable cmake 
+<pre><code class="sh" >$ spack external find --not-buildable cmake 
 </code></pre>
 </div>
 <ul>
@@ -1863,8 +1862,8 @@ Repository: builtin
 </ul>
 
 </section>
-<section id="slide-org74fbebf">
-<h3 id="org74fbebf">compilers</h3>
+<section id="slide-orgf248442">
+<h3 id="orgf248442"><a href="https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config">compilers</a></h3>
 <ul>
 <li><p>
 definition of compiler
@@ -1890,8 +1889,8 @@ definition of compiler
 </ul>
 
 </section>
-<section id="slide-org00ae2e6">
-<h4 id="org00ae2e6">Mixing compilers</h4>
+<section id="slide-org799b67f">
+<h4 id="org799b67f">Mixing compilers</h4>
 <ul>
 <li><p>
 example of mixing (C/C++ from <code>clang@8.0.0</code> with <code>gfortran</code>)
@@ -1918,8 +1917,8 @@ example of mixing (C/C++ from <code>clang@8.0.0</code> with <code>gfortran</code
 </ul>
 
 </section>
-<section id="slide-orgbfd55f1">
-<h4 id="orgbfd55f1">Automatic search and registration of compilers</h4>
+<section id="slide-orgf61775e">
+<h4 id="orgf61775e">Automatic search and registration of compilers</h4>
 <ul>
 <li>register one if absend
 <ul>
@@ -1955,8 +1954,8 @@ $ spack -C $SPACK_ROOT/etc/spack compiler add $(spack location -i clang@8.0.0)
 </ul>
 
 </section>
-<section id="slide-org581d2f7">
-<h3 id="org581d2f7"><a href="https://spack.readthedocs.io/en/latest/mirrors.html">mirrors</a></h3>
+<section id="slide-orgf2a1441">
+<h3 id="orgf2a1441"><a href="https://spack.readthedocs.io/en/latest/mirrors.html">mirrors</a></h3>
 <ul>
 <li><p>
 <code>mirrors.yaml</code> from default scope
@@ -1980,8 +1979,8 @@ specification of off-line mirror
 </ul>
 
 </section>
-<section id="slide-org942737b">
-<h3 id="org942737b">repos</h3>
+<section id="slide-org23ad069">
+<h3 id="org23ad069"><a href="https://spack.readthedocs.io/en/latest/repositories.html">repos</a></h3>
 <ul>
 <li><p>
 <code>repos.yaml</code> from default scope
@@ -2007,8 +2006,8 @@ $ spack -C defaults rm           builtin # remove from Spack's configuration
 </ul>
 
 </section>
-<section id="slide-orgce8574e">
-<h3 id="orgce8574e"><a href="https://spack.readthedocs.io/en/latest/chain.html">upstreams</a></h3>
+<section id="slide-org50e2a2d">
+<h3 id="org50e2a2d"><a href="https://spack.readthedocs.io/en/latest/chain.html">upstreams</a></h3>
 <ul>
 <li><p>
 default location of <code>Spack</code> installations at Hawk
@@ -2047,7 +2046,7 @@ check packages compiled for the given microarchitecture
 </p>
 <div class="org-src-container">
 
-<pre><code class="sh" >spack find target=zen2
+<pre><code class="sh" >$ spack find target=zen2
 </code></pre>
 </div></li>
 
@@ -2055,8 +2054,8 @@ check packages compiled for the given microarchitecture
 
 
 </section>
-<section id="slide-org6b900c6">
-<h3 id="org6b900c6">Ideally sites must provide their configs</h3>
+<section id="slide-org0f678a3">
+<h3 id="org0f678a3">Ideally sites must provide their configs</h3>
 <ul>
 <li>official examples: <a href="https://github.com/spack/spack-configs">https://github.com/spack/spack-configs</a></li>
 
@@ -2064,8 +2063,8 @@ check packages compiled for the given microarchitecture
 </section>
 </section>
 <section>
-<section id="slide-org7e234cc">
-<h2 id="org7e234cc">Ansible</h2>
+<section id="slide-org26b4360">
+<h2 id="org26b4360">Ansible</h2>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="./figs/spack/Ansible_concepts.svg" class="org-svg" width="75%">
@@ -2073,8 +2072,8 @@ Sorry, your browser does not support SVG.</object>
 </p>
 </div>
 </section>
-<section id="slide-org9a555f7">
-<h4 id="org9a555f7"></h4>
+<section id="slide-org9931f0b">
+<h4 id="org9931f0b"></h4>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="./figs/spack/Ansible_local_remote.svg" class="org-svg" width="75%">
@@ -2083,8 +2082,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 </section>
-<section id="slide-orgde8b7a2">
-<h3 id="orgde8b7a2">Prerquisites</h3>
+<section id="slide-org77e7940">
+<h3 id="org77e7940">Prerquisites</h3>
 <table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
 
 
@@ -2160,8 +2159,8 @@ Sorry, your browser does not support SVG.</object>
 </table>
 
 </section>
-<section id="slide-org40b32ff">
-<h3 id="org40b32ff">Inventory files</h3>
+<section id="slide-org9e224a9">
+<h3 id="org9e224a9">Inventory files</h3>
 <ul>
 <li><p>
 inventory folder structure
@@ -2207,8 +2206,8 @@ hidalgo:
 </ul>
 
 </section>
-<section id="slide-org4097045">
-<h4 id="org4097045">Inventory: Check Setup</h4>
+<section id="slide-org29e1b5f">
+<h4 id="org29e1b5f">Inventory: Check Setup</h4>
 <ul>
 <li><p>
 check what variables Ansible set up in inventory for each host
@@ -2251,8 +2250,8 @@ check what variables Ansible set up in inventory for each host
 </ul>
 
 </section>
-<section id="slide-orge6596fd">
-<h4 id="orge6596fd">Inventory: Check Accessibility</h4>
+<section id="slide-org4e997fe">
+<h4 id="org4e997fe">Inventory: Check Accessibility</h4>
 <ul>
 <li><p>
 check accessibility of HiDALGO HPC infrastructure
@@ -2280,8 +2279,8 @@ vulcan                     : ok=1    changed=0    unreachable=0    failed=0    s
 
 </ul>
 </section>
-<section id="slide-org85bec56">
-<h3 id="org85bec56">Simple Playbook</h3>
+<section id="slide-org9a9469c">
+<h3 id="org9a9469c">Simple Playbook</h3>
 <ul>
 <li><p>
 simple playbook: download locally and distribute
@@ -2331,8 +2330,8 @@ launch
 </ul>
 
 </section>
-<section id="slide-org36c7cca">
-<h4 id="org36c7cca">Assembling configs</h4>
+<section id="slide-orgb46a52e">
+<h4 id="orgb46a52e">Assembling configs</h4>
 <ul>
 <li><p>
 task for creating configs from variables
@@ -2366,21 +2365,21 @@ result
 </ul>
 
 </section>
-<section id="slide-org1681e8d" data-background="./figs/spack/happy_homer.png" data-background-size="30%" data-background-opacity="0.9">
-<h4 id="org1681e8d"><div style="font-size: 4em; color:#171;"> So we've done it! </div></h4>
+<section id="slide-orgcfed9d6" data-background="./figs/spack/happy_homer.png" data-background-size="30%" data-background-opacity="0.9">
+<h4 id="orgcfed9d6"><div style="font-size: 4em; color:#171;"> So we've done it! </div></h4>
 <p>
 <p class="fragment fade-up" style="font-size: 5em; color:#a11;"> <b>Not really...</b></p>
 </p>
 </section>
-<section id="slide-orgd1328b9" data-background="https://i.pinimg.com/474x/6d/17/54/6d1754aecc594e7a7fa442719e4e4678--homer-simpson-the-simpsons.jpg" data-background-size="65%" data-background-opacity="0.9">
-<h4 id="orgd1328b9"></h4>
+<section id="slide-orgd01676c" data-background="https://i.pinimg.com/474x/6d/17/54/6d1754aecc594e7a7fa442719e4e4678--homer-simpson-the-simpsons.jpg" data-background-size="65%" data-background-opacity="0.9">
+<h4 id="orgd01676c"></h4>
 <p>
 <p class="fragment" style="font-size: 3em; color:#ffe;"> <b>What about "off-line" clusters?!</br>mirror</b></p>
 </p>
 
 </section>
-<section id="slide-org260919b">
-<h3 id="org260919b">Workflow: Spack deployment with "cluster agnostic" mirror</h3>
+<section id="slide-orgd4201ba">
+<h3 id="orgd4201ba">Workflow: Spack deployment with "cluster agnostic" mirror</h3>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="./figs/spack/Spack_deployment_workflow_common_mirror.svg" class="org-svg" width="75%">
@@ -2389,8 +2388,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 </section>
-<section id="slide-orgabba21b">
-<h4 id="orgabba21b">Mirror for spec list</h4>
+<section id="slide-org4f438bd">
+<h4 id="org4f438bd">Mirror for spec list</h4>
 <ul>
 <li><p>
 mirror for individual specs
@@ -2416,8 +2415,8 @@ mirror for individual specs
 </ul>
 
 </section>
-<section id="slide-org69b1a89">
-<h4 id="org69b1a89">Mirror for spec list: Interference of <code>~/.spack</code></h4>
+<section id="slide-orgd947086">
+<h4 id="orgd947086">Mirror for spec list: Interference of <code>~/.spack</code></h4>
 <ul>
 <li data-fragment-index="1" class="fragment appear"><div class="org-src-container">
 
@@ -2450,8 +2449,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 </section>
-<section id="slide-org4501331">
-<h4 id="org4501331">Mirror for spec list: corrected</h4>
+<section id="slide-org259cdbb">
+<h4 id="org259cdbb">Mirror for spec list: corrected</h4>
 <ul>
 <li><p>
 mirror for individual specs
@@ -2484,8 +2483,8 @@ tempting solution: put the following text to <code>packages.yaml</code>
 </ul>
 
 </section>
-<section id="slide-org269a2fa">
-<h4 id="org269a2fa">Mirror for environments</h4>
+<section id="slide-org0306f51">
+<h4 id="org0306f51">Mirror for environments</h4>
 <div class="org-src-container">
 
 <pre><code class="yaml" data-line-numbers=4-12>- name: Mirror environments
@@ -2507,8 +2506,8 @@ tempting solution: put the following text to <code>packages.yaml</code>
 </div>
 
 </section>
-<section id="slide-org19f26b3">
-<h3 id="org19f26b3">Workflow: Spack deployment with "cluster aware" mirror</h3>
+<section id="slide-org42c7997">
+<h3 id="org42c7997">Workflow: Spack deployment with "cluster aware" mirror</h3>
 
 <div class="figure">
 <p><object type="image/svg+xml" data="./figs/spack/Spack_deployment_workflow_specific_mirror.svg" class="org-svg" width="75%">
@@ -2517,8 +2516,8 @@ Sorry, your browser does not support SVG.</object>
 </div>
 
 </section>
-<section id="slide-org960414c" data-background="https://spack.io/assets/images/spack-logo.svg" data-background-size="40%" data-background-opacity="0.5">
-<h3 id="org960414c">Summary: Reproducing general software environments on the resources of several HPC centers at once</h3>
+<section id="slide-org75fe48a" data-background="https://spack.io/assets/images/spack-logo.svg" data-background-size="40%" data-background-opacity="0.5">
+<h3 id="org75fe48a">Summary: Reproducing general software environments on the resources of several HPC centers at once</h3>
 <p>
 If <code>Ansible</code> inventory is available,
 </p>
@@ -2559,8 +2558,8 @@ launch <code>Spack</code> command for installing environment
 </ul>
 
 </section>
-<section id="slide-org6050513" data-visibility="hidden">
-<h3 id="org6050513">Spack Deployment: Summary</h3>
+<section id="slide-org798837f" data-visibility="hidden">
+<h3 id="org798837f">Spack Deployment: Summary</h3>
 <p>
 <b>Highlights</b>
 </p>
@@ -2585,8 +2584,8 @@ launch <code>Spack</code> command for installing environment
 </ul>
 
 </section>
-<section id="slide-orgdb5ef9d" data-background="https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg" data-background-size="75%" data-background-opacity="0.5">
-<h3 id="orgdb5ef9d">Reporting hardware and software with <code>Ansible</code></h3>
+<section id="slide-org3f0c0b3" data-background="https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg" data-background-size="75%" data-background-opacity="0.5">
+<h3 id="org3f0c0b3">Reporting hardware and software with <code>Ansible</code></h3>
 <ul>
 <li><p>
 platform (hardware, OS): variable <code>'{{ ansible_facts }}'</code>
@@ -2614,8 +2613,8 @@ platform (hardware, OS): variable <code>'{{ ansible_facts }}'</code>
 </ul>
 
 </section>
-<section id="slide-orgc3feb59" data-background="https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg" data-background-size="75%" data-background-opacity="0.5">
-<h4 id="orgc3feb59">Reporting hardware and software with <code>Ansible</code>: Alternative for reporing soft</h4>
+<section id="slide-org05eb0bb" data-background="https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg" data-background-size="75%" data-background-opacity="0.5">
+<h4 id="org05eb0bb">Reporting hardware and software with <code>Ansible</code>: Alternative for reporing soft</h4>
 <ul>
 <li><p>
 "exact" software: options <code>--yaml</code> and <code>--json</code>
@@ -2676,8 +2675,8 @@ spack spec -y libosrm
 </ul>
 
 </section>
-<section id="slide-org80b30c5" data-background="https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg" data-background-size="75%" data-background-opacity="0.5">
-<h4 id="org80b30c5">Reporting hardware and software with <code>Ansible</code>: From compute node</h4>
+<section id="slide-orgdb13ff4" data-background="https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg" data-background-size="75%" data-background-opacity="0.5">
+<h4 id="orgdb13ff4">Reporting hardware and software with <code>Ansible</code>: From compute node</h4>
 <ul>
 <li><p>
 run from Eagle compute node
@@ -2745,27 +2744,28 @@ known issues
 </section>
 </section>
 <section>
-<section id="slide-orga08ddcd" data-background="https://glasbergen.b-cdn.net/wp-content/gallery/education-technology/toon-1821.gif" data-background-size="35%" data-background-opacity="0.25">
-<h2 id="orga08ddcd">Further topics</h2>
+<section id="slide-org800e452" data-background="https://glasbergen.b-cdn.net/wp-content/gallery/education-technology/toon-1821.gif" data-background-size="35%" data-background-opacity="0.25">
+<h2 id="org800e452">Further topics</h2>
 <p>
 <b>Spack</b>
 </p>
 <ul>
 <li>speed up time-consuming installation:
 <ul>
-<li>binary caches and binaries distribution (builds sharing)</li>
-<li>parallel builts</li>
-<li><code>Singularity</code> and <code>Docker</code> containers</li>
+<li><a href="https://spack.readthedocs.io/en/latest/binary_caches.html">build caches</a> and binaries distribution (builds sharing)</li>
+<li><a href="https://spack.readthedocs.io/en/latest/packaging_guide.html#parallel-builds">parallel builds</a></li>
+<li><code>Singularity</code> and <code>Docker</code> <a href="https://spack.readthedocs.io/en/latest/containers.html">containers</a></li>
 
 </ul></li>
-<li data-fragment-index="1" class="fragment appear">modulefiles generation</li>
-<li data-fragment-index="2" class="fragment appear"><code>GitLabCI</code> and <code>CDash</code> support</li>
+<li data-fragment-index="1" class="fragment appear"><a href="https://spack.readthedocs.io/en/latest/module_file_support.html">modulefiles</a> generation</li>
+<li data-fragment-index="2" class="fragment appear"><code>CDash</code> support and <code>GitLabCI</code> <a href="https://spack.readthedocs.io/en/latest/pipelines.html">pipelines</a></li>
+<li data-fragment-index="3" class="fragment appear">package <a href="https://spack.readthedocs.io/en/latest/analyze.html">analyzers</a></li>
 
 </ul>
 
 </section>
-<section id="slide-orgef0f9f1">
-<h3 id="orgef0f9f1">Resources (readings, videos)</h3>
+<section id="slide-org2c217a7">
+<h3 id="org2c217a7">Resources (readings, videos)</h3>
 <ul>
 <li>Videos
 <ul>
@@ -2787,8 +2787,8 @@ known issues
 </section>
 </section>
 <section>
-<section id="slide-org4e8fd9a">
-<h2 id="org4e8fd9a">Thanks to</h2>
+<section id="slide-orga0aa76e">
+<h2 id="orga0aa76e">Thanks to</h2>
 <ul>
 <li>LLNL team led by Todd Gamblin, Adam Stewart from UIUC, and Spack community</li>
 <li>Ansible team</li>

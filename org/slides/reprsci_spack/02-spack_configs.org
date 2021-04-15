@@ -1,0 +1,287 @@
+* Configuring =Spack=
+  :PROPERTIES:
+  :reveal_background: https://i.imgur.com/sgu8S2X.png
+  :reveal_background_size: 75%
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+** Configuration _scopes_ 
+  - /common/ (lower-precedence scopes first):
+    #+REVEAL_HTML: <small>
+    | Scope        | Locationn                                         | Description                       |
+    |--------------+---------------------------------------------------+-----------------------------------|
+    | *=defaults=* | =$SPACK_ROOT/etc/spack/defaults=                  | "factory" settings                |
+    | *=system=*   | =/etc/spack=                                      | settings for this machine         |
+    | *=site=*     | =$SPACK_ROOT/etc/spack=                           | settings for =Spack= instance     |
+    | *=user=*     | =~/.spack=                                        | all instances of =Spack= for user |
+    | *custom*     | options ~--config-scope~ or ~-C </path/to/scope>~ | custom location                   |
+    #+REVEAL_HTML: </small>
+  - /platform-specific/: =<base-scope>/<platform>)= (~darwin~, ~linux~,...)
+
+** Configuration _sections_
+
+  #+BEGIN_SRC sh
+    $ spack config list
+  #+END_SRC
+  #+BEGIN_SRC yaml
+    compilers mirrors repos packages modules config upstreams
+  #+END_SRC
+
+#+REVEAL_HTML: <small>
+| Section   | Description                                      |
+|-----------+--------------------------------------------------|
+| [[https://spack.readthedocs.io/en/latest/config_yaml.html][config]]    | basic configuration options                      |
+| [[https://spack.readthedocs.io/en/latest/build_settings.html][packages]]  | build customization                              |
+| compilers | compiler definitions                             |
+|-----------+--------------------------------------------------|
+| mirrors   | list of local and remote mirrors                 |
+| repos     | list of repos with build instructions            |
+| upstreams | installation trees of external =Spack= instances |
+|-----------+--------------------------------------------------|
+| modules   | set up for mudulefile generation                 |
+#+REVEAL_HTML: </small>
+
+** Commands
+
+- browsing and editing
+  #+BEGIN_SRC sh
+    $ spack config get upstreams
+    EDITOR=emacsclient spack config edit packages &
+  #+END_SRC
+- check end result for the superposition of scopes
+  #+BEGIN_SRC sh
+    $ spack config blame config
+    $ spack --insecure -C /path/to/first/scope -C /path/to/second/scope config blame config
+  #+END_SRC
+- update to the latest format (for the given =Spack= version)
+  #+BEGIN_SRC sh
+    $ spack config update config
+    $ spack config revert config  
+  #+END_SRC
+
+
+** [[https://spack.readthedocs.io/en/latest/config_yaml.html][config]]
+
+#+ATTR_REVEAL: :code_attribs data-line-numbers
+#+BEGIN_SRC yaml
+  config:
+    # Directories
+    install_tree:         # path to the root of the Spack install tree.
+      root: $spack/opt/spack
+    build_stage::         # temporary locations Spack can try to use for builds.
+      - $spack/var/spack/stage
+    test_stage: $spack/tmp/$user/test     # directory to run tests and store test results.
+    source_cache: $spack/var/spack/cache  # cache directory for tarballs and archived repositories.
+    misc_cache: $spack/var/$user/cache    # cache directory for miscellaneous files.
+
+    # Options
+    install_missing_compilers: false      # Spack will not build unavailable compiler in specs.
+    checksum: true                        # always check checksums after downloading archives.
+    ccache: false                         # do not use ccache to cache C compiles.
+    build_jobs: 32                        # the maximum number of jobs in `make`
+#+END_SRC
+
+** [[https://spack.readthedocs.io/en/latest/build_settings.html][packages]] 
+# ***  [[https://spack.readthedocs.io/en/latest/build_settings.html][=packages=]] : permissions and concretization preferences
+- permissions
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC yaml
+    all:
+      permissions:
+        read: world # read-world is default, can remove
+        write: group
+        group: spack
+    uap_simulator:
+      permissions:
+        read: group
+        group: hid_uap
+  #+END_SRC
+- concretization preferences (for packages and virtual packages)
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC yaml
+    packages:
+      python:
+        compiler: [gcc@10.2.0]
+        variants: +optimization
+        version: [3.6, 3.9.0, 3.7]
+      all:
+        compiler: [gcc@10.2.0, 'clang@10:', 'gcc', intel]
+        target: [zen2]
+        providers:
+          mpi: [mpe, openmpi]
+  #+END_SRC
+  # all providers can be found in the [[https://github.com/spack/spack/blob/develop/etc/spack/defaults/packages.yaml][defaults]] scope
+
+*** External packages
+
+#+ATTR_REVEAL: :frag (none appear) :frag_idx (- 1)
+- specification of external packages
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="2,10,12"
+  #+BEGIN_SRC yaml
+    mpt:
+      buildable: False
+      externals:
+      - spec: mpt@2.23
+        modules:
+        - mpt/2.23
+    openmpi:
+      externals:
+      - spec: openmpi@4.0.5
+        modules: [openmpi/4.0.5]
+      - spec: openmpi@4.0.4%gcc@9.2.0 arch=linux-centos8-zen2
+        prefix: /opt/hlrs/non-spack/mpi/openmpi/4.0.4-gcc-9.2.0
+  #+END_SRC
+- better to make MPI non-buildable for everything
+  #+BEGIN_SRC yaml
+        mpi:
+          buildable: False
+  #+END_SRC
+
+*** Automatic search for externals
+
+#+BEGIN_SRC sh
+  $ spack external find --not-buildable cmake 
+#+END_SRC
+- limited to finding a **subset of common _build-only_ dependencies** ([[https://spack.readthedocs.io/en/latest/packaging_guide.html#making-a-package-discoverable-with-spack-external-find][discoverable]] packages)
+  #+BEGIN_SRC sh
+    $ spack external list
+  #+END_SRC
+  #+ATTR_REVEAL: :code_attribs data-line-numbers
+  #+BEGIN_SRC yaml
+    ==> Detectable packages per repository
+    Repository: builtin
+        python    jdk        gcc          gpgme    meson     openssl
+        autoconf  cpio       gdal         hugo     mpich     perl
+        automake  cuda       ruby         intel    mvapich2  pkg-config
+        bash      diffutils  ghostscript  krb5     nag       pkgconf
+        bazel     findutils  git          libtool  ncurses   spectrum-mpi
+        bison     fish       git-lfs      llvm     ninja     tar
+        bzip2     fj         gmake        lustre   opengl    texinfo
+        ccache    flex       gmt          m4       openjdk   xz
+        cmake     fzf        go           maven    openmpi
+  #+END_SRC
+- =Spack= does not 
+  - collects and examines /beyond executable files/
+  - search through /module files/
+  - /overwrite existing entries/ in the package configuration
+
+** [[https://spack.readthedocs.io/en/latest/getting_started.html#compiler-config][compilers]]
+- definition of compiler
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="10,11"
+  #+BEGIN_SRC yaml
+    - compiler:
+        spec: clang@10.0.0
+        paths:
+          cc: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-clang
+          cxx: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-clang++
+          f77: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-flang
+          fc: /opt/hlrs/non-spack/compiler/aocc/2.2.0/bin/aocc-flang
+        flags: {}
+        operating_system: centos8
+        target: x86_64
+        modules: [aocc/2.2.0]
+        environment: {}
+        extra_rpaths: []
+  #+END_SRC
+
+*** Mixing compilers
+
+- example of mixing (C/C++ from =clang@8.0.0= with =gfortran=)
+  #+ATTR_REVEAL: :code_attribs data-line-numbers="6-7,9-10"
+  #+BEGIN_SRC yaml
+    - compiler:
+        spec: clang-gfortran@3.8.0
+        paths:
+          cc: /usr/bin/clang-3.8
+          cxx: /usr/bin/clang++-3.8
+          f77: /usr/bin/gfortran
+          fc: /usr/bin/gfortran
+        operating_system: ubuntu16.04
+        flags:
+          cflags: -O3 -fPIC
+        target: x86_64
+        modules: []
+        environment: {}
+        extra_rpaths: []
+  #+END_SRC
+
+*** Automatic search and registration of compilers
+
+#+ATTR_REVEAL: :frag (none appear) :frag_idx (- 2)
+- register one if absend
+  #+ATTR_REVEAL: :frag (none appear) :frag_idx (- 1)
+  - automatic
+    #+BEGIN_SRC sh
+      $ module load gcc
+      $ spack compiler find gcc
+    #+END_SRC
+  - by default it goes to =~/.spack/<os>/compilers.yaml=
+    #+BEGIN_SRC sh
+      $ spack -C $SPACK_ROOT/etc/spack compiler find gcc    
+    #+END_SRC
+- use =Spack=-installed compilers
+  #+BEGIN_SRC sh
+    $ spack install clang@8.0.0
+    $ spack -C $SPACK_ROOT/etc/spack compiler add $(spack location -i clang@8.0.0)
+  #+END_SRC
+
+** [[https://spack.readthedocs.io/en/latest/mirrors.html][mirrors]]
+- =mirrors.yaml= from default scope
+  #+BEGIN_SRC yaml
+    mirrors:
+      spack-public: https://spack-llnl-mirror.s3-us-west-2.amazonaws.com/
+  #+END_SRC
+- specification of off-line mirror
+  #+BEGIN_SRC yaml
+    mirrors::
+      hidalgo: file:///path/to/hidalgo/mirror
+  #+END_SRC
+
+** [[https://spack.readthedocs.io/en/latest/repositories.html][repos]]
+
+- =repos.yaml= from default scope
+  #+BEGIN_SRC yaml
+    repos:
+      - $spack/var/spack/repos/builtin
+  #+END_SRC
+- commands
+  #+BEGIN_SRC sh
+    $ spack create /path/to/new/repo hidalgo # create a new
+    $ spack list                             # show registered
+    $ spack add                /path/to/repo # add to Spack's configuration
+    $ spack -C defaults rm           builtin # remove from Spack's configuration
+  #+END_SRC
+
+** [[https://spack.readthedocs.io/en/latest/chain.html][upstreams]]
+
+- default location of =Spack= installations at Hawk
+  #+BEGIN_SRC sh
+    ll /opt/hlrs/spack/current
+    # lrwxrwxrwx 1 hpcoft28 hpc43203 18 Jul  3  2020 /opt/hlrs/spack/current -> rev-004_2020-06-17
+  #+END_SRC
+- more installations
+  #+BEGIN_SRC sh
+    ll /opt/hlrs/spack/rev*
+    # rev-008_2020-10-03
+  #+END_SRC
+- register it as an upstream
+  #+BEGIN_SRC yaml
+    upstreams:
+      spack-hawk-new:
+        install_tree:
+          /opt/hlrs/spack/rev-008_2020-10-03
+      spack-hawk-default:
+        install_tree:
+          /opt/hlrs/spack/current
+  #+END_SRC
+- check packages compiled for the given microarchitecture
+  #+BEGIN_SRC sh
+    $ spack find target=zen2
+  #+END_SRC
+# ** modules
+
+
+** Ideally sites must provide their configs
+
+- official examples: https://github.com/spack/spack-configs
+
