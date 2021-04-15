@@ -258,7 +258,7 @@ How to distinguish between 2 installations with the same version but different s
     spack spec python@3.9%clang@3.8+optimizations~debug ^openssl@1.1
   #+END_SRC
   - it is also a way to estimate efforts for installation
-* Basic commands
+* Basic [[https://spack.readthedocs.io/en/latest/command_index.html][commands]]
 ** We met already
 
 #+BEGIN_SRC sh
@@ -317,7 +317,27 @@ Do not uninstall packages that are not sufficiently specified
   #+BEGIN_SRC sh
     spack extensions python
   #+END_SRC
+- global activation/deactivation of extensions
+  #+BEGIN_SRC sh
+    spack activate py-numpy
+    spack deactivate py-numpy
+    spack deactivate --all python
+  #+END_SRC
+  - [[https://spack.readthedocs.io/en/latest/workflows.html#global-activations][drawbacks]]:
+    - some extensions may still need thier C-dependencies to be loaded manually (e.g, ~spack load openblas~ might be for required ~py-numpy~)
+    - multiple versions of a package cannot be activated side-by-side only (cannot run two different environments but the same basic Python: one with py-numpy@1.7 and one with py-numpy@1.8)
 
+
+** ~providers~: check out providers of virtual packages
+
+- list virtual packages
+  #+BEGIN_SRC 
+    spack providers
+  #+END_SRC
+- get providers list
+  #+BEGIN_SRC sh
+    spack providers mpi
+  #+END_SRC
 
 ** Summary
 * Externals
@@ -664,7 +684,7 @@ Do not uninstall packages that are not sufficiently specified
   #+END_SRC
 
   #+BEGIN_SRC sh
-       46    /home/hpcgogol/dev/spack/lib/spack/env/gcc/gcc -std=gnu99 -fPIC -o luac  -L/home/hpcgogol/dev/spack/opt/spack/linux-ubuntu16.04-broad
+       46    ~/dev/spack/lib/spack/env/gcc/gcc -std=gnu99 -fPIC -o luac  -L~/dev/spack/opt/spack/linux-ubuntu16.04-broad
              well/gcc-5.4.0/readline-8.0-feqfow6hrrf5blkasduwuwnuap6s5h7n/lib -L/usr/lib luac.o liblua.a -lm -Wl,-E -ldl -lreadline -lncursesw -lt
              infow
     >> 47    /usr/bin/ld: cannot find -ltinfow
@@ -724,4 +744,6 @@ Do not uninstall packages that are not sufficiently specified
 - Videos
   - [[https://youtu.be/edpgwyOD79E][ ~Spack~ tutorial]] by Todd Gamblin
   - [[https://youtu.be/z7ZdnCkaPCY][Managing with ~Spack~ ]]by Gregory Blum Becker
-- Documentation: [[https://spack.readthedocs.io/en/latest/chain.html][manual]], [[https://spack-tutorial.readthedocs.io/en/latest/][tutorial]], [[https://spack.readthedocs.io/en/latest/getting_started.html#system-packages][quick start]]
+- Documentation: [[https://spack.readthedocs.io/en/latest/chain.html][manual]], [[https://spack-tutorial.readthedocs.io/en/latest/][tutorial]], [[https://spack.readthedocs.io/en/latest/getting_started.html#system-packages][quick start]], [[https://spack.readthedocs.io/en/latest/command_index.html][commands]]
+- HiDALGO configs and environments at [[https://gitlab.com/eu_hidalgo][GitLab]]:
+  - https://gitlab.com/eu_hidalgo/hidalgo_integration/-/tree/master/spack-configs

@@ -18,7 +18,7 @@
 #+REVEAL_EXTRA_CSS: ./hidalgo-style/extra.css
 # +REVEAL_EXTRA_CSS: ./hidalgo-style/extra-images.scss
 
-#+REVEAL_PLUGINS: (highlight)
+#+REVEAL_PLUGINS: (highlight math)
 #+REVEAL_EXTRA_CSS: ./reveal.js/plugin/highlight/monokai.css
 
 #+REVEAL_TITLE_SLIDE: <h1><br><small>%t<br><sup><sup>%s</sup></sup></small></h1><h2><a href='mailto:%e'>%a</a></h2><h4>%A</h4><h3>%c&compfn;%d</h3>

@@ -357,7 +357,7 @@
 
 - one-liner
   #+BEGIN_SRC python
-    spack config blame config | python -c \
+    spack config blame packages | python2 -c \
         "from sys import stdin, stdout; i=stdin.readline().rfind(' '); map(lambda _: stdout.write(_[i:]), stdin)"
   #+END_SRC
 - more careful script with filtering configs for the given file
@@ -799,7 +799,7 @@ Allow to define "a set of packages we want to install across a wide range of com
   | ~spack load --only package libosrm~ | ~module load libosrm~   |
   | ~spack unload libosrm~              | ~module unload libosrm~ |
   | ~spack find --loaded~               | ~module av~             |
-  | ~spack find -lp libosrm~            | ~module show libosrm~   |
+  | ~spack find -lpv libosrm~           | ~module show libosrm~   |
   | ~spack load --sh libosrm~           | -//-                    |
   | ~spack load -r libosrm~             | -//-                    |
   | ~spack info libosrm~                | ~module whatis libosrm~ |
@@ -824,8 +824,7 @@ Allow to define "a set of packages we want to install across a wide range of com
 - Videos
   - [[https://youtu.be/edpgwyOD79E][ ~Spack~ tutorial]] by Todd Gamblin
   - [[https://youtu.be/z7ZdnCkaPCY][Managing with ~Spack~ ]]by Gregory Blum Becker
-- Documentation: [[https://spack.readthedocs.io/en/latest/chain.html][manual]], [[https://spack-tutorial.readthedocs.io/en/latest/][tutorial]], [[https://spack.readthedocs.io/en/latest/getting_started.html#system-packages][quick start]]
+- Documentation: [[https://spack.readthedocs.io/en/latest/chain.html][manual]], [[https://spack-tutorial.readthedocs.io/en/latest/][tutorial]], [[https://spack.readthedocs.io/en/latest/getting_started.html#system-packages][quick start]], [[https://spack.readthedocs.io/en/latest/command_index.html][commands]]
 - [[https://spack.readthedocs.io/en/latest/contribution_guide.html][Contribution guide]]
-
-
-
+- HiDALGO configs and environments at [[https://gitlab.com/eu_hidalgo][GitLab]]:
+  - https://gitlab.com/eu_hidalgo/hidalgo_integration/-/tree/master/spack-configs

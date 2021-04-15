@@ -9,3 +9,4 @@
 - local presentations
   - *[[http://sgo-go.github.io/hidalgo-presentations/20210203-HiDALGO_integration_toolchain.html][HiDALGO integration toolchain]]*
   - *Introduction to Spack for HiDALGO Software Developers*: [[http://sgo-go.github.io/hidalgo-presentations/20210203-spack_basics.html][Basics]], [[http://sgo-go.github.io/hidalgo-presentations/20210217-spack_on_clusters.html][On Clusters]]
+  - *[[http://sgo-go.github.io/hidalgo-presentations/202104-reprodycibility_with_ansible_and_spack.html][Reproducible Software Environments & Benchmarks with Ansible and Spack]]*
