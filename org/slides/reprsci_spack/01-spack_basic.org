@@ -193,11 +193,19 @@ Syntax of spec (sigils, etc)
     $ spack arch --known-targets  # 
   #+END_SRC
 
-** Packages
+** [[https://spack.readthedocs.io/en/latest/packaging_guide.html][Packages]]
 
 #+ATTR_REVEAL: :code_attribs data-line-numbers
 #+INCLUDE: ./package.py
 # +INCLUDE: ./libosrm/package.py
+
+Supported [[https://spack.readthedocs.io/en/latest/build_systems.html][build systems]]:
+#+ATTR_REVEAL: :frag (none none none none appear) :frag_idx (- - - - 1)
+- [[https://spack.readthedocs.io/en/latest/build_systems/makefilepackage.html][GNU =Make=]], [[https://spack.readthedocs.io/en/latest/build_systems/Mavenpackage.html][=Maven=]], [[https://spack.readthedocs.io/en/latest/build_systems/SConspackage.html][=SCons=]], [[https://spack.readthedocs.io/en/latest/build_systems/Wafpackage.html][=Waf=]]
+- [[https://spack.readthedocs.io/en/latest/build_systems/Autotoolspackage.html][=Autotools=]], [[https://spack.readthedocs.io/en/latest/build_systems/CMakepackage.html][=CMake=]], [[https://spack.readthedocs.io/en/latest/build_systems/Mesonpackage.html][=Meson=]], [[https://spack.readthedocs.io/en/latest/build_systems/QMakepackage.html][=QMake=]], [[https://spack.readthedocs.io/en/latest/build_systems/SIPpackage.html][=SIP=]]
+- [[https://spack.readthedocs.io/en/latest/build_systems/Octavepackage.html][=Octave=]], [[https://spack.readthedocs.io/en/latest/build_systems/Perlpackage.html][=Perl=]], [[https://spack.readthedocs.io/en/latest/build_systems/Pythonpackage.html][=Python=]], [[https://spack.readthedocs.io/en/latest/build_systems/Rpackage.html][=R=]], [[https://spack.readthedocs.io/en/latest/build_systems/Rubypackage.html][=Ruby=]]
+- [[https://spack.readthedocs.io/en/latest/build_systems/Cudapackage.html][=Cuda=]] and [[https://spack.readthedocs.io/en/latest/build_systems/ROCmpackage.html][=ROCm=]], [[https://spack.readthedocs.io/en/latest/build_systems/IntelOneapipackage.html][=IntelOneapi=]] and [[https://spack.readthedocs.io/en/latest/build_systems/Intelpackage.html][=Intel=]], 
+- [[https://spack.readthedocs.io/en/latest/build_systems/custompackage.html][custom builds]] and [[https://spack.readthedocs.io/en/latest/build_systems/bundlepackage.html][bundles]]
 
 ** Installation with =Spack=: Command =install=
 
@@ -263,7 +271,7 @@ Logs ([[https://www.kitware.com/cdash/project/about.html][CDash]]\(^*\) and [[ht
 #+ATTR_REVEAL: :frag (highlight-red highlight-red highlight-blue highlight-green highlight-red highlight-green) :frag_idx (1 1 1 1 1 1)
 1. concretization of spec
 2. installation of dependencies
-3. stage
+3. fetch and stage
 4. create build directory
 5. config/build/install
 6. clean up build directory and stage
@@ -354,7 +362,7 @@ Solution:
     #+BEGIN_SRC sh
       $ spack build-env python@3.9 bash # use build environment in bash session
     #+END_SRC
-3. change =package.py= correspondingly
+3. [[https://spack.readthedocs.io/en/latest/packaging_guide.html#packaging-workflow-commands][change =package.py=]] correspondingly
    - prepare patch if needed
 4. clean up stage
 ** Installation with =Spack=: Reproducibility mechanisms

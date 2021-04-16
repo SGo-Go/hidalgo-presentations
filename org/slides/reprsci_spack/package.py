@@ -11,6 +11,7 @@ class Libosrm(CMakePackage):
 
     maintainers = ['sgo-go']
 
+    # To add checksums for more versions, one can use =spack checksum libosrm=
     version('master', branch='master')
     version('5.24.0',                   sha256='a66b20e7ffe83e5e5fe12324980320e12a6ec2b05f2befd157de5c60c665613c')
     version('5.23.0-rc.2',              sha256='bc1f6024bbfd491bddaf02ac9a15fc7786274e22fd1097014a4590430fd41199')
