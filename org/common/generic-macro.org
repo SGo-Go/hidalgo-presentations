@@ -13,12 +13,12 @@
 
 #+MACRO: done @@html:<font color="green">&check;</font>@@ @@odt:<text:span text:style-name="HighlightGreen">✔</text:span>@@
 #+MACRO: ongoing @@html:<font color="gold">&circlearrowleft;</font>@@ @@odt:<text:span text:style-name="HighlightYellow">↺</text:span>@@
-#+MACRO: pending @@html:<font color="red">&Cross;</font>@@ @@odt:<text:span text:style-name="HighlightRed">✘</text:span>@@
-#+MACRO: cancel @@html:<font color="red">&Cross;</font>@@
+#+MACRO: pending @@html:<font color="#700">&Cross;</font>@@ @@odt:<text:span text:style-name="HighlightRed">✘</text:span>@@
+#+MACRO: cancel @@html:<font color="#700">&Cross;</font>@@
 #+MACRO: euro @@html:&euro;@@
 
-#+MACRO: to_clarify @@html:<font color="red">&#x2753;&#x2757;</font>@@ @@odt:<text:span text:style-name="HighlightRed">‽</text:span>@@
-#+MACRO: alert @@html:<font color="red"><b>$1</b></font>@@
+#+MACRO: to_clarify @@html:<font color="#700">&#x2753;&#x2757;</font>@@ @@odt:<text:span text:style-name="HighlightRed">‽</text:span>@@
+#+MACRO: alert @@html:<font color="#700"><b>$1</b></font>@@
 #+MACRO: small @@html:<small>$1</small>@@
 
 #+MACRO: begin_column #+REVEAL_HTML: <div class="column" style="float:$1; width:$2">

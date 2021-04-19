@@ -23,25 +23,43 @@
   :PROPERTIES:
   :reveal_background: https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-a-simpsons-as-a-service-storyboard-3-638.jpg
   :reveal_background_size: 100%
-  :reveal_extra_attr: data-background-opacity="0.25"
+  :reveal_extra_attr: data-background-opacity="0.15"
   :END:
 
-#+ATTR_REVEAL: :frag (appear appear appear appear) :frag_idx (1 2 3 4)
-- attention to the _"Experimental setup"_ in HPC papers
-- careful reporting in terms of _statistics_: [[https://doi.org/10.1145/2807591.2807644][T. Hoefler and R. Belli (2015)]]
-  {{{small("Scientific Benchmarking of Parallel Computing Systems: Twelve Ways to Tell the Masses when Reporting Performance Results". SC15)}}}
-- _conventions_ for reproducible experiments
-  - e.g, [[https://doi.org/10.1109/IPDPSW.2017.157][ ~popper~ convention]]: I. Jimenez et al (2017)
-    {{{small("The Popper Convention: Making Reproducible Systems Evaluation Practical". IPDPS17)}}}
-    # Ivo 
+#+ATTR_REVEAL: :frag (appear appear) :frag_idx (1 2)
+- _"Experimental setup"_ section in HPC papers
+- "{{{alert(Measurement bias)}}} is *significant*, *commonplace*, and *unpredictable*". [[https://scholar.google.com/citations?user=Z4y_Z3sAAAAJ&hl=de&oi=sra][T.Mytkowicz]] et al. ([[https://doi.org/10.1145/1508284.1508275][2009]])
+  {{{small("Producing wrong data without doing anything obviously wrong!" ACM SIGPLAN)}}}
+  #+ATTR_REVEAL: :frag (appear appear) :frag_idx (3 4)
+  - "Program performance is /sensitive to the experimental setup/."
+    # - {{{small("Program performance is /sensitive to the experimental setup/... an insignificant and seemingly irrelevant change can dramatically affect the performance."
+    #   \(\implies\) we must try to reproduce experimental setups as close as possible)}}}
+    # computer systems are sensitive: an insignificant and seemingly irrelevant change can dramatically affect the performance of the system.
+    #+ATTR_REVEAL: :frag (grow) :frag_idx (5)
+    - @@html:<div style="color:#700">@@ _conventions_ for repr. experiments. @@html:</div>@@ E.g.: I.Jimenez et al ([[https://doi.org/10.1109/IPDPSW.2017.157][2017]])
+      {{{small("The Popper Convention: Making Reproducible Systems Evaluation Practical". IPDPS17)}}}
+  - /statistics can help/ to detect (causal analysis) and avoid (setup randomization) bias
+    # - {{{small(common /statistical methods can help/ "for detecting (causal analysis) and for avoiding (setup randomization) measurement bias")}}}
+    #+ATTR_REVEAL: :frag (shrink) :frag_idx (5)
+    - @@html:<div style="color:#700">@@ careful reporting in terms of _statistics_. @@html:</div>@@ E.g.: [[https://scholar.google.com/citations?user=DdBvcBEAAAAJ&hl=de&oi=sra][T.Hoefler]] and R.Belli ([[https://doi.org/10.1145/2807591.2807644][2015]])
+      {{{small("Scientific Benchmarking of Parallel Computing Systems: Twelve Ways to Tell the Masses when Reporting Performance Results". SC15)}}}
+      # careful reporting in terms of _statistics_. E.g.: [[https://scholar.google.com/citations?user=DdBvcBEAAAAJ&hl=de&oi=sra][T. Hoefler]] and R. Belli ([[https://doi.org/10.1145/2807591.2807644][2015]])
+
+*** Evolution of approaches to reproducible research in HPC
+  :PROPERTIES:
+  :reveal_background: https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-a-simpsons-as-a-service-storyboard-3-638.jpg
+  :reveal_background_size: 100%
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+
 - personal story: _EC cares_ (2020)
   #+BEGIN_QUOTE
     ... to have a *_reproducible_ benchmarking, optimisations, and visualisations*.
 
     ... to provide how to *_reproduce the experiments_* in line with *open science and open data standards*.
-  #+END_QUOTE
 
-# - {{{alert(homogeneous)}}} and {{{alert(scientifically rigorous reporting)}}} results
+    ... *scientifically rigorous reporting* results
+  #+END_QUOTE
 
 ** [[https://doi.org/10.1109/IPDPSW.2017.157][ ~Popper~ convention]]
   :PROPERTIES:
@@ -53,12 +71,12 @@
 #+ATTR_REVEAL: :frag (appear) :frag_idx (1)
 -
   #+BEGIN_QUOTE
-    - _verbal instructions_ are _NOT_ particularly _safe_ and/or _"rigorous"_
-    - instead, must provide a set of _precise configs_ and _scripts_ that describe
+    - _verbal instructions_ are _NOT_ _safe_ and/or _"rigorous"_
+    - instead, provide a set of _precise configs_ and _scripts_ that describe
       - available packages and default preferences 
       - how to deploy the software
       - how to produce plots
-    - must report metadata
+    - must report _metadata_
   #+END_QUOTE
 
 # +ATTR_HTML: :width 100%
@@ -291,6 +309,10 @@ https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-
 # AI
 # https://i.ytimg.com/vi/fILG1J6gMBs/maxresdefault.jpg
 
+*** Package number
+  :PROPERTIES:
+  :reveal_extra_attr: data-background-iframe="./figs/spack/spack_numpkg_vs_release.html"
+  :END:
 *** Container receipts?
   :PROPERTIES:
   :reveal_extra_attr: data-visibility="hidden"
