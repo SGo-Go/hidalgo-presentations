@@ -1,0 +1,409 @@
+# -*- mode: org -*-
+#+INCLUDE: ./org/common/hlrs-style.org
+
+#+TITLE: Reproducible Software Environments for Performance Benchmarks with Ansible and Spack
+# +SUBTITLE: HiDALGO approach
+#+AUTHOR: Sergiy Gogolenko 
+# +REVEAL_ACADEMIC_TITLE: High-Performance Computing Center, Stuttgart, DE
+#+EMAIL: gogolenko@hlrs.de
+#+CREATOR: Bosch interview
+#+DATE: 2021-11-09
+#+OPTIONS: author:t date:t num:nil toc:nil created:nill email:t tex:t reveal_title_slide:nil
+#+REVEAL_TALK_URL: http://sgo-go.github.io/hidalgo-presentations/202104-reprodycibility_with_ansible_and_spack.html
+# file:///home/hpcgogol/dev/hidalgo-presentations/202104-reprodycibility_with_ansible_and_spack.html
+#+TIME: 15min
+
+* Reporoducbility of Experiments in Science and Engineering
+  :PROPERTIES:
+  :reveal_background: https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg
+  :reveal_background_size: 75%
+  :reveal_extra_attr: data-background-opacity="0.5"
+  :END:
+
+# Novel convention in reporoducbility: not only reporting of set up, but also providing software with automated installation
+
+# https://absolutelymaybe.plos.org/wp-content/uploads/sites/8/2020/05/Self-correcting-1.jpg
+# https://i.pinimg.com/originals/b4/d5/0d/b4d50de671ecdf63aea9cff806629668.png
+# http://2.bp.blogspot.com/-oO_lAo5MofU/UNSPmeMzF3I/AAAAAAAAB2w/O2dyKWZ0dZs/s400/thinker2.jpg
+
+# The Simpsons, Season 26, Episode 15 "43 is missing again."
+# https://www.arcintermedia.com/media/homer-clones.jpg
+# https://coub-anubis-a.akamaized.net/coub_storage/coub/simple/cw_image/7bfe73c4290/a976f59a11dd49b028a9f/1410968101_1393138197_00032.jpg
+# https://i.pinimg.com/originals/b8/75/76/b875765cf467f122ea7e22b6e6b8a765.jpg
+# https://tvline.com/wp-content/uploads/2017/03/the-simpsons-trump-university-video-1.jpg
+
+** Evolution of approaches to reproducible research in performance studies
+  :PROPERTIES:
+  :reveal_background: https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-a-simpsons-as-a-service-storyboard-3-638.jpg
+  :reveal_background_size: 100%
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+
+#+ATTR_REVEAL: :frag (appear appear) :frag_idx (1 2)
+- Verbal descriptions of _"Experimental setup"_
+- "{{{alert(Measurement bias)}}} is *significant*, *commonplace*, and *unpredictable*". [[https://scholar.google.com/citations?user=Z4y_Z3sAAAAJ&hl=de&oi=sra][T.Mytkowicz]] et al. ([[https://doi.org/10.1145/1508284.1508275][2009]])
+  {{{small("Producing wrong data without doing anything obviously wrong!" ACM SIGPLAN)}}}
+  #+ATTR_REVEAL: :frag (appear appear) :frag_idx (3 4)
+  - "Program performance is /sensitive to the experimental setup/."
+    # - {{{small("Program performance is /sensitive to the experimental setup/... an insignificant and seemingly irrelevant change can dramatically affect the performance."
+    #   \(\implies\) we must try to reproduce experimental setups as close as possible)}}}
+    # computer systems are sensitive: an insignificant and seemingly irrelevant change can dramatically affect the performance of the system.
+    #+ATTR_REVEAL: :frag (grow) :frag_idx (5)
+    - @@html:<div style="color:#700">@@ _conventions_ for repr. experiments. @@html:</div>@@ E.g.: I.Jimenez et al ([[https://doi.org/10.1109/IPDPSW.2017.157][2017]])
+      {{{small("The Popper Convention: Making Reproducible Systems Evaluation Practical". IPDPS17)}}}
+  - /statistics can help/ to detect (causal analysis) and avoid (setup randomization) bias
+    # - {{{small(common /statistical methods can help/ "for detecting (causal analysis) and for avoiding (setup randomization) measurement bias")}}}
+    #+ATTR_REVEAL: :frag (shrink) :frag_idx (5)
+    - @@html:<div style="color:#700">@@ careful reporting in terms of _statistics_. @@html:</div>@@ E.g.: [[https://scholar.google.com/citations?user=DdBvcBEAAAAJ&hl=de&oi=sra][T.Hoefler]] and R.Belli ([[https://doi.org/10.1145/2807591.2807644][2015]])
+      {{{small("Scientific Benchmarking of Parallel Computing Systems: Twelve Ways to Tell the Masses when Reporting Performance Results". SC15)}}}
+      # careful reporting in terms of _statistics_. E.g.: [[https://scholar.google.com/citations?user=DdBvcBEAAAAJ&hl=de&oi=sra][T. Hoefler]] and R. Belli ([[https://doi.org/10.1145/2807591.2807644][2015]])
+
+** 
+  :PROPERTIES:
+  :reveal_background: https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/7964630/7965008/7965226/7965226-fig-1-source-large.gif
+  :reveal_background_size: 1200px
+  :END:
+  # :reveal_background: ./figs/spack/popper_convention.png
+  # :reveal_extra_attr: data-background-opacity="0.5"
+
+#+ATTR_REVEAL: :frag (fade-out)
+-
+  #+BEGIN_QUOTE
+    [[https://doi.org/10.1109/IPDPSW.2017.157][ *~Popper~ convention* ]]
+     # @@html:<hr/>@@
+    - _verbal instructions_ are _NOT_ _safe_ and/or _"rigorous"_
+    - instead, provide a set of _precise configs_ and _scripts_ that describe
+      - available packages and default preferences
+      - how to deploy the software
+      - how to produce plots
+    - must report _metadata_
+  #+END_QUOTE
+
+** Containers
+  :PROPERTIES:
+  :reveal_background: https://miro.medium.com/max/1400/0*ZxjHjtmq-66RrsEB.jpg
+  :reveal_background_size: 60%
+  :reveal_extra_attr: data-background-opacity="0.3"
+  :END:
+  # https://www.docker.com/sites/default/files/social/docker_facebook_share.png
+  # :reveal_background: https://upload.wikimedia.org/wikipedia/commons/4/4e/Docker_(container_engine)_logo.svg
+  # Isolate software environments, not more
+  - DOES NOT solve *portability* issue
+    - dependencies on optimized software
+  - small overhead
+  - security aspects (sometimes)
+
+** Virtual Machines
+  :PROPERTIES:
+  :reveal_background: https://upload.wikimedia.org/wikipedia/commons/8/87/Vagrant.png
+  :reveal_background_size: 35%
+  :reveal_extra_attr: data-background-opacity="0.5"
+  :END:
+
+  - *overhead*
+  - optimizations
+
+** Package managers: Reproducing Python environment with PyPI
+  :PROPERTIES:
+  :reveal_background: https://upload.wikimedia.org/wikipedia/commons/6/64/PyPI_logo.svg
+  :reveal_background_size: 50%
+  :reveal_extra_attr: data-background-opacity="0.5"
+  :END:
+
+If you do not care about performance, it's as *simple as this*:
+#+ATTR_REVEAL: :frag (appear appear appear appear) :frag_idx (1 1 2 3)
+- take/create a list of required packages
+  #+BEGIN_SRC yaml
+    numpy==1.18.2
+    scipy>=1.1.0
+    pandas
+    mpi4py
+    profilehooks
+  #+END_SRC
+- and run =pip=
+  #+BEGIN_SRC sh
+    pip install -r requirements.txt
+  #+END_SRC
+- report/store the existing software environment
+  #+BEGIN_SRC sh
+    pip freeze > requirements.txt
+  #+END_SRC
+- ... but in performance studies we care!!!
+
+** What about reproducing general software environments on several testbeds at once for performance study?
+  :PROPERTIES:
+  :reveal_background: https://images.squarespace-cdn.com/content/5be48621f407b46d6a7729ee/1549584229680-J87WH6GI2I1Z1O0BARLK/The+Little+Bit-logo-black.png
+  :reveal_background_size: 60%
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+@@html:<p class="fragment fade-in-then-semi-out"> <b>It's like a little bit harder.</br>Like a little...</b> </p>@@
+@@html:<p class="fragment fade-up"> <b>... except a lot? (install from sources)</b></br><img src="https://s3cf.recapguide.com:444/img/tv/117/21x14/The-Simpsons-Season-21-Episode-14-30-5364.jpg" width=60% alt="...except a lot"/> </p>@@
+
+** Typical challenges
+  :PROPERTIES:
+  :reveal_background: https://s3cf.recapguide.com:444/img/tv/117/21x14/The-Simpsons-Season-21-Episode-14-30-5364.jpg
+  :reveal_background_size: 80%
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+
+# - installation from *sources*
+- management of *dependencies* (versions, etc)
+- *multi-lingual environments*
+- *off-line testbeds*
+- *testbed-specific details*:
+  - build systems and compilers
+  - recommended setups (compilers, options, libs, etc)
+  - pre-installed ("native") software
+- *combinatorial versioning*
+- *porting* (patching)
+
+** Typical lifecycle of the HPC system user
+  :PROPERTIES:
+  :reveal_extra_attr: data-visibility="hidden"
+  :END:
+
+# Try different options
+#+ATTR_HTML: :width 60% :alt "try different options from manuals"
+https://static.wikia.nocookie.net/simpsons/images/3/3a/Homer_defined.jpg
+
+*** 
+  :PROPERTIES:
+  :reveal_extra_attr: data-visibility="uncounted"
+  :reveal_extra_attr: data-visibility="hidden"
+  :END:
+
+# consult numerous tutorials and wikies, finally sometimes give up and call support
+#+ATTR_HTML: :width 90% :alt "call support"
+https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_675,pg_1,q_80,w_1200/qhrtzhpcl7yrq06t3lau.png
+
+*** 
+  :PROPERTIES:
+  :reveal_extra_attr: data-visibility="uncounted"
+  :reveal_extra_attr: data-visibility="hidden"
+  :END:
+
+#+ATTR_HTML: :width 75% :alt "tedious, error-prone and time-consuming process"
+https://wallpaperaccess.com/full/1567145.png
+
+** Can we make the life easier? @@html:<br/>@@Can we help the users and automate this job?
+  :PROPERTIES:
+  :reveal_background: https://y.yarn.co/2d07d6ee-49fc-45c8-81b8-36f74aa60f96_screenshot.jpg
+  :reveal_background_size: 80%
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :END:
+
+* What is Spack?
+
+ #+ATTR_HTML: :width 75% :alt "specs, repos, concretizer"
+ [[./figs/spack/Spack_concepts.svg]]
+
+*** 
+ #+ATTR_HTML: :width 75% :alt workflow
+ [[./figs/spack/Spack_workflow.svg]]
+
+** Configuring =Spack=: _scopes_ 
+  :PROPERTIES:
+  :reveal_background: https://i.imgur.com/sgu8S2X.png
+  :reveal_background_size: 75%
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :reveal_background: https://spack.io/assets/images/spack-logo.svg
+  :reveal_background_size: 40%
+  :END:
+
+  - /common/ (lower-precedence scopes first):
+    #+REVEAL_HTML: <small>
+    | Scope        | Location                                          | Description                       |
+    |--------------+---------------------------------------------------+-----------------------------------|
+    | *=defaults=* | =$SPACK_ROOT/etc/spack/defaults=                  | "factory" settings                |
+    | *=system=*   | =/etc/spack=                                      | settings for this machine         |
+    | *=site=*     | =$SPACK_ROOT/etc/spack=                           | settings for =Spack= instance     |
+    | *=user=*     | =~/.spack=                                        | all instances of =Spack= for user |
+    | *custom*     | options ~--config-scope~ or ~-C </path/to/scope>~ | custom location                   |
+    #+REVEAL_HTML: </small>
+  - /platform-specific/: =<base-scope>/<platform>)= (~darwin~, ~linux~,...)
+
+** Configuring =Spack=: _sections_
+  :PROPERTIES:
+  :reveal_background: https://i.imgur.com/sgu8S2X.png
+  :reveal_background_size: 75%
+  :reveal_extra_attr: data-background-opacity="0.25"
+  :reveal_background: https://spack.io/assets/images/spack-logo.svg
+  :reveal_background_size: 40%
+  :END:
+
+  # #+BEGIN_SRC sh
+  #   $ spack config list
+  # #+END_SRC
+  # #+BEGIN_SRC yaml
+  #   compilers mirrors repos packages modules config upstreams
+  # #+END_SRC
+
+#+REVEAL_HTML: <small>
+| Section   | Description                                      |
+|-----------+--------------------------------------------------|
+| [[https://spack.readthedocs.io/en/latest/config_yaml.html][config]]    | basic configuration options                      |
+| [[https://spack.readthedocs.io/en/latest/build_settings.html][packages]]  | build customization                              |
+| compilers | compiler definitions                             |
+|-----------+--------------------------------------------------|
+| mirrors   | list of local and remote mirrors                 |
+| repos     | list of repos with build instructions            |
+| upstreams | installation trees of external =Spack= instances |
+|-----------+--------------------------------------------------|
+| modules   | set up for mudulefile generation                 |
+#+REVEAL_HTML: </small>
+
+** Typical challenges: How does =Spack= map?
+  :PROPERTIES:
+  :reveal_background: https://s3cf.recapguide.com:444/img/tv/117/21x14/The-Simpsons-Season-21-Episode-14-30-5364.jpg
+  :reveal_background_size: 80%
+  :reveal_extra_attr: data-background-opacity="0.15"
+  :END:
+
+- management of *dependencies* (versions, etc) \(\to\) *concretizer*
+- *multi-lingual environments* \(\to\) *repos* with packages & extensions
+- *off-line sites* \(\to\) off-line *mirrors*
+- *site- and system-specific details*:
+  - build systems and compilers \(\to\) =compilers.yaml=
+  - recommended setups \(\to\) =config.yaml=, =compilers.yaml=
+  - pre-installed ("native") software \(\to\) =packages.yaml=
+- *combinatorial versioning* \(\to\) installation *matrices*
+- *porting* (patching) \(\to\) *repos*
+- reproducible software *environments* \(\to\) *lock-files* (exact envs)
+   # - 1-to-1 /lock-files/
+   # - manifests
+# - provides almost _for granted_ such _features_ as:
+#    - /[[https://spack.readthedocs.io/en/latest/containers.html][containerization]]/ of environments (Docker & Singularity)
+#    - GitLabCI-/[[https://spack.readthedocs.io/en/latest/pipelines.html][pipelines]]/
+#    - /documentation/ for the installation process
+
+*** Package number
+  :PROPERTIES:
+  :reveal_extra_attr: data-background-iframe="./figs/spack/spack_numpkg_vs_release.html"
+  :reveal_extra_attr: data-visibility="hidden"
+  :END:
+
+
+
+* Ansible
+
+  #+ATTR_HTML: :width 75%
+  [[./figs/spack/Ansible_concepts.svg]]
+
+# https://www.ansible.com/hs-fs/hub/330046/file-481209752.png?width=1484&name=file-481209752.png
+# https://1.cms.s81c.com/sites/default/files/2018-11-22/Ansible_ov.png
+# https://www.guruadvisor.net/images/numero20/ansible_1/ansible_sketch.gif
+# https://thepracticaldev.s3.amazonaws.com/i/skvvt051gys64k62ez0h.png
+# logo: https://upload.wikimedia.org/wikipedia/commons/2/24/Ansible_logo.svg
+# - [[https://www.ansible.com/use-cases/configuration-management][Configuration Management]]
+*** 
+
+  #+ATTR_HTML: :width 75%
+  [[./figs/spack/Ansible_local_remote.svg]]
+
+** Prerquisites 
+  :PROPERTIES:
+  :reveal_extra_attr: data-visibility="hidden"
+  :END:
+
+# - [[https://spack.readthedocs.io/en/latest/getting_started.html#prerequisites][Spack]]
+| Local | Remote | Dependencies                          |
+|-------+--------+---------------------------------------|
+| AS    | S      | Python 2.6+ or 3.5+                   |
+| A     |        | Extra modules of Python               |
+|       | A      | =bash=                                |
+| A     |        | =ssh=                                 |
+|       | S      | A C/C++ compiler for building         |
+|       | AS     | =make=                                |
+| A     | S      | =tar=, =gzip=, =unzip=, =bzip2=, =xz= |
+|       | S      | =patch=                               |
+| S     |        | =git= and =curl= for fetching         |
+
+** Spack deployment with "cluster agnostic" mirror
+  :PROPERTIES:
+  :reveal_extra_attr: data-visibility="hidden"
+  :END:
+
+  #+ATTR_HTML: :width 75%
+  [[./figs/spack/Spack_deployment_workflow_common_mirror.svg]]
+
+** Mirror for spec list
+  :PROPERTIES:
+  :reveal_extra_attr: data-visibility="hidden"
+  :END:
+
+#+REVEAL_HTML: <div style="display: flex;">
+#+REVEAL_HTML: <div style="flex: 1;">
+#+ATTR_HTML: :width 75%
+[[./figs/spack/spack_libosrm_default.svg]]
+
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: <div style="flex: 1;">
+#+ATTR_HTML: :width 75%
+[[./figs/spack/spack_libosrm_full.svg]]
+#+REVEAL_HTML: </div>
+#+REVEAL_HTML: </div>
+
+** Spack deployment with "cluster aware" mirror
+
+   #+ATTR_HTML: :width 75%
+   [[./figs/spack/Spack_deployment_workflow_specific_mirror.svg]]
+
+# * Summary: Reproducing software environments on several testbeds with Ansible+Spack
+* Summary: Reproducing envs with Ansible & Spack
+  :PROPERTIES:
+  :reveal_background: https://spack.io/assets/images/spack-logo.svg
+  :reveal_background_size: 40%
+  :reveal_extra_attr: data-background-opacity="0.5"
+  :END:
+If =Ansible= inventory is available,
+#+ATTR_REVEAL: :frag (appear appear appear) :frag_idx (1 2 2)
+- take exact or prepare logical =Spack= environment. E.g.,
+  #+BEGIN_SRC yaml
+        spack:
+          specs:
+          - python@3.9.0+optimizations
+          - matrix:
+            - [py-numpy, py-scipy, py-scikit-learn]
+            - [^python@3.9.0+optimizations]
+          view: true
+  #+END_SRC
+- run =Spack= deployment playbook
+  #+BEGIN_SRC sh
+    ansible-playbook -i inventory install_spack.yml    
+  #+END_SRC
+- launch =Spack= command for installing environment
+  #+BEGIN_SRC sh
+    ansible hidalgo -i inventory -m shell -a \
+      'cmd=". {{ spack_prefix }}/share/spack/setup-env.sh \
+        && spactivate sna && spack install"'
+  #+END_SRC
+
+** Spack Deployment: Summary
+  :PROPERTIES:
+  :reveal_extra_attr: data-visibility="hidden"
+  :END:
+*Highlights*
+- decouple =Spack= config variables from deployment rules in =Ansible=
+- have 2 strategies for creating mirrors:
+  - unsafe: download single generic mirror for all systems
+  - safe: download mirrors for each target system separately
+
+*Result*
+- deploy reproducible software environments (and specs)
+- deploy simultaneously on several hosts
+
+* Thanks for your time and attention!!!
+  :PROPERTIES:
+  :reveal_background: https://memegenerator.net/img/instances/84421678/woo-hoo-presentation-over-any-questions.jpg
+  :reveal_background_size: 55%
+  :reveal_extra_attr: data-background-opacity="0.5"
+  :END:
+
+# #+ATTR_REVEAL: :frag (none none appear appear appear appear) :frag_idx (- - 1 2 3 4)
+# - LLNL team led by Todd Gamblin, Adam Stewart from UIUC, and Spack community
+# - Ansible team
+# - users: =oshch= (Oleksandr) and =ktokm= (Kamil)
+# - EC for HiDALGO project
+# - @@html:<img src="https://upload.wikimedia.org/wikipedia/commons/e/eb/Matt_Groening_Signature.svg" width=250px alt="Matt Groening"/>@@
+# - ... and you for your attention!

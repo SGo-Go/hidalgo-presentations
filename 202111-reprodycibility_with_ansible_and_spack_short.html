@@ -1,0 +1,628 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>Reproducible Software Environments for Performance Benchmarks with Ansible and Spack</title>
+<meta name="author" content="Sergiy Gogolenko"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/beige.css" id="theme"/>
+
+<link rel="stylesheet" href="./hidalgo-style/extra.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/monokai.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="header-x"><div class="left"><img src="./hidalgo-style/hlrs-logo.png"><hr style="color: gray; background-color: gray;"></div><div class="center" style="color: #555;font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;">High Performance Computing Center<b>|</b>Stuttgart</div><div class="right"><hr style="color: gray; background-color: gray;"></div></div> <div class="footer-x"><div class="left">2021-11-09</div><div class="center"><b>Sergiy Gogolenko</b><br><i><small>Reproducible Software Environments for Performance Benchmarks with Ansible and Spack</small></i></div> <div class="right"><img src="https://upload.wikimedia.org/wikipedia/de/3/31/Bosch-logotype.svg" alt="HiDALGO"></div></div>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-background="./hidalgo-style/hlrs-bg-title.jpg" data-background-size="100%" data-background-position="top">
+<h1><br><small>Reproducible Software Environments for Performance Benchmarks with Ansible and Spack<br><sup><sup></sup></sup></small></h1><h2><a href='mailto:<a href="mailto:gogolenko@hlrs.de">gogolenko@hlrs.de</a>'>Sergiy Gogolenko</a></h2><h4></h4><h3>Bosch interview&compfn;2021-11-09</h3>
+</section>
+
+<section>
+<section id="slide-org7d714c9" data-background="https://pbs.twimg.com/media/CB_zkhZWYAQprlG.jpg" data-background-size="75%" data-background-opacity="0.5">
+<h2 id="org7d714c9">Reporoducbility of Experiments in Science and Engineering</h2>
+
+</section>
+<section id="slide-org1a08c15" data-background="https://image.slidesharecdn.com/delivery-hero-161216080529/95/the-delivery-hero-a-simpsons-as-a-service-storyboard-3-638.jpg" data-background-size="100%" data-background-opacity="0.15">
+<h3 id="org1a08c15">Evolution of approaches to reproducible research in performance studies</h3>
+<ul>
+<li data-fragment-index="1" class="fragment appear">Verbal descriptions of <span class="underline">"Experimental setup"</span></li>
+<li data-fragment-index="2" class="fragment appear">"<font color="#700"><b>Measurement bias</b></font> is <b>significant</b>, <b>commonplace</b>, and <b>unpredictable</b>". <a href="https://scholar.google.com/citations?user=Z4y_Z3sAAAAJ&amp;hl=de&amp;oi=sra">T.Mytkowicz</a> et al. (<a href="https://doi.org/10.1145/1508284.1508275">2009</a>)
+<small>"Producing wrong data without doing anything obviously wrong!" ACM SIGPLAN</small>
+<ul>
+<li data-fragment-index="3" class="fragment appear">"Program performance is <i>sensitive to the experimental setup</i>."
+
+<ul>
+<li data-fragment-index="5" class="fragment grow"><div style="color:#700"> <span class="underline">conventions</span> for repr. experiments. </div> E.g.: I.Jimenez et al (<a href="https://doi.org/10.1109/IPDPSW.2017.157">2017</a>)
+<small>"The Popper Convention: Making Reproducible Systems Evaluation Practical". IPDPS17</small></li>
+
+</ul></li>
+<li data-fragment-index="4" class="fragment appear"><i>statistics can help</i> to detect (causal analysis) and avoid (setup randomization) bias
+
+<ul>
+<li data-fragment-index="5" class="fragment shrink"><div style="color:#700"> careful reporting in terms of <span class="underline">statistics</span>. </div> E.g.: <a href="https://scholar.google.com/citations?user=DdBvcBEAAAAJ&amp;hl=de&amp;oi=sra">T.Hoefler</a> and R.Belli (<a href="https://doi.org/10.1145/2807591.2807644">2015</a>)
+<small>"Scientific Benchmarking of Parallel Computing Systems: Twelve Ways to Tell the Masses when Reporting Performance Results". SC15</small></li>
+
+</ul></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-org5e0cb43" data-background="https://ieeexplore.ieee.org/mediastore_new/IEEE/content/media/7964630/7965008/7965226/7965226-fig-1-source-large.gif" data-background-size="1200px">
+<h3 id="org5e0cb43"></h3>
+<ul>
+<li class="fragment fade-out"><blockquote>
+<p>
+<a href="https://doi.org/10.1109/IPDPSW.2017.157"> <b><code>Popper</code> convention</b> </a>
+</p>
+
+<ul>
+<li><span class="underline">verbal instructions</span> are <span class="underline">NOT</span> <span class="underline">safe</span> and/or <span class="underline">"rigorous"</span></li>
+<li>instead, provide a set of <span class="underline">precise configs</span> and <span class="underline">scripts</span> that describe
+<ul>
+<li>available packages and default preferences</li>
+<li>how to deploy the software</li>
+<li>how to produce plots</li>
+
+</ul></li>
+<li>must report <span class="underline">metadata</span></li>
+
+</ul>
+</blockquote></li>
+
+</ul>
+
+</section>
+<section id="slide-orgfa2385f" data-background="https://miro.medium.com/max/1400/0*ZxjHjtmq-66RrsEB.jpg" data-background-size="60%" data-background-opacity="0.3">
+<h3 id="orgfa2385f">Containers</h3>
+<ul>
+<li>DOES NOT solve <b>portability</b> issue
+<ul>
+<li>dependencies on optimized software</li>
+
+</ul></li>
+<li>small overhead</li>
+<li>security aspects (sometimes)</li>
+
+</ul>
+
+</section>
+<section id="slide-orga1929c0" data-background="https://upload.wikimedia.org/wikipedia/commons/8/87/Vagrant.png" data-background-size="35%" data-background-opacity="0.5">
+<h3 id="orga1929c0">Virtual Machines</h3>
+<ul>
+<li><b>overhead</b></li>
+<li>optimizations</li>
+
+</ul>
+
+</section>
+<section id="slide-org1f3b3e5" data-background="https://upload.wikimedia.org/wikipedia/commons/6/64/PyPI_logo.svg" data-background-size="50%" data-background-opacity="0.5">
+<h3 id="org1f3b3e5">Package managers: Reproducing Python environment with PyPI</h3>
+<p>
+If you do not care about performance, it's as <b>simple as this</b>:
+</p>
+<ul>
+<li data-fragment-index="1" class="fragment appear"><p>
+take/create a list of required packages
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >numpy==1.18.2
+scipy&gt;=1.1.0
+pandas
+mpi4py
+profilehooks
+</code></pre>
+</div></li>
+<li data-fragment-index="1" class="fragment appear"><p>
+and run <code>pip</code>
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >pip install -r requirements.txt
+</code></pre>
+</div></li>
+<li data-fragment-index="2" class="fragment appear"><p>
+report/store the existing software environment
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >pip freeze &gt; requirements.txt
+</code></pre>
+</div></li>
+<li data-fragment-index="3" class="fragment appear">&#x2026; but in performance studies we care!!!</li>
+
+</ul>
+
+</section>
+<section id="slide-orgd6dc73d" data-background="https://images.squarespace-cdn.com/content/5be48621f407b46d6a7729ee/1549584229680-J87WH6GI2I1Z1O0BARLK/The+Little+Bit-logo-black.png" data-background-size="60%" data-background-opacity="0.25">
+<h3 id="orgd6dc73d">What about reproducing general software environments on several testbeds at once for performance study?</h3>
+<p>
+<p class="fragment fade-in-then-semi-out"> <b>It's like a little bit harder.</br>Like a little...</b> </p>
+<p class="fragment fade-up"> <b>... except a lot? (install from sources)</b></br><img src="https://s3cf.recapguide.com:444/img/tv/117/21x14/The-Simpsons-Season-21-Episode-14-30-5364.jpg" width=60% alt="...except a lot"/> </p>
+</p>
+
+</section>
+<section id="slide-org300a3ea" data-background="https://s3cf.recapguide.com:444/img/tv/117/21x14/The-Simpsons-Season-21-Episode-14-30-5364.jpg" data-background-size="80%" data-background-opacity="0.15">
+<h3 id="org300a3ea">Typical challenges</h3>
+<ul>
+<li>management of <b>dependencies</b> (versions, etc)</li>
+<li><b>multi-lingual environments</b></li>
+<li><b>off-line testbeds</b></li>
+<li><b>testbed-specific details</b>:
+<ul>
+<li>build systems and compilers</li>
+<li>recommended setups (compilers, options, libs, etc)</li>
+<li>pre-installed ("native") software</li>
+
+</ul></li>
+<li><b>combinatorial versioning</b></li>
+<li><b>porting</b> (patching)</li>
+
+</ul>
+
+</section>
+<section id="slide-orgcc6d408" data-visibility="hidden">
+<h3 id="orgcc6d408">Typical lifecycle of the HPC system user</h3>
+
+<div id="org66e44fb" class="figure">
+<p><img src="https://static.wikia.nocookie.net/simpsons/images/3/3a/Homer_defined.jpg" alt="&quot;try different options from manuals&quot;" width="60%" />
+</p>
+</div>
+
+</section>
+<section id="slide-org4d461b4" data-visibility="hidden">
+<h4 id="org4d461b4"></h4>
+
+<div id="orgda28c27" class="figure">
+<p><img src="https://i.kinja-img.com/gawker-media/image/upload/c_fill,f_auto,fl_progressive,g_center,h_675,pg_1,q_80,w_1200/qhrtzhpcl7yrq06t3lau.png" alt="&quot;call support&quot;" width="90%" />
+</p>
+</div>
+
+</section>
+<section id="slide-org3f3d499" data-visibility="hidden">
+<h4 id="org3f3d499"></h4>
+
+<div id="org32aec02" class="figure">
+<p><img src="https://wallpaperaccess.com/full/1567145.png" alt="&quot;tedious, error-prone and time-consuming process&quot;" width="75%" />
+</p>
+</div>
+
+</section>
+<section id="slide-orgc3aaab4" data-background="https://y.yarn.co/2d07d6ee-49fc-45c8-81b8-36f74aa60f96_screenshot.jpg" data-background-size="80%" data-background-opacity="0.25">
+<h3 id="orgc3aaab4">Can we make the life easier? <br/>Can we help the users and automate this job?</h3>
+
+</section>
+</section>
+<section>
+<section id="slide-org232769d">
+<h2 id="org232769d">What is Spack?</h2>
+
+<div id="org8a1a29c" class="figure">
+<p><object type="image/svg+xml" data="./figs/spack/Spack_concepts.svg" class="org-svg" width="75%" alt="&quot;specs, repos, concretizer&quot;">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section id="slide-orgd19bd11">
+<h4 id="orgd19bd11"></h4>
+
+<div id="org4edfccd" class="figure">
+<p><object type="image/svg+xml" data="./figs/spack/Spack_workflow.svg" class="org-svg" width="75%" alt="workflow">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section id="slide-org7274178" data-background="https://spack.io/assets/images/spack-logo.svg" data-background-size="40%" data-background-opacity="0.25">
+<h3 id="org7274178">Configuring <code>Spack</code>: <span class="underline">scopes</span></h3>
+<ul>
+<li><p>
+<i>common</i> (lower-precedence scopes first):
+</p>
+<small>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Scope</th>
+<th scope="col" class="org-left">Location</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><b><code>defaults</code></b></td>
+<td class="org-left"><code>$SPACK_ROOT/etc/spack/defaults</code></td>
+<td class="org-left">"factory" settings</td>
+</tr>
+
+<tr>
+<td class="org-left"><b><code>system</code></b></td>
+<td class="org-left"><code>/etc/spack</code></td>
+<td class="org-left">settings for this machine</td>
+</tr>
+
+<tr>
+<td class="org-left"><b><code>site</code></b></td>
+<td class="org-left"><code>$SPACK_ROOT/etc/spack</code></td>
+<td class="org-left">settings for <code>Spack</code> instance</td>
+</tr>
+
+<tr>
+<td class="org-left"><b><code>user</code></b></td>
+<td class="org-left"><code>~/.spack</code></td>
+<td class="org-left">all instances of <code>Spack</code> for user</td>
+</tr>
+
+<tr>
+<td class="org-left"><b>custom</b></td>
+<td class="org-left">options <code>--config-scope</code> or <code>-C &lt;/path/to/scope&gt;</code></td>
+<td class="org-left">custom location</td>
+</tr>
+</tbody>
+</table>
+</small></li>
+<li><i>platform-specific</i>: <code>&lt;base-scope&gt;/&lt;platform&gt;)</code> (<code>darwin</code>, <code>linux</code>,&#x2026;)</li>
+
+</ul>
+
+</section>
+<section id="slide-orgfc87281" data-background="https://spack.io/assets/images/spack-logo.svg" data-background-size="40%" data-background-opacity="0.25">
+<h3 id="orgfc87281">Configuring <code>Spack</code>: <span class="underline">sections</span></h3>
+<small>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Section</th>
+<th scope="col" class="org-left">Description</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><a href="https://spack.readthedocs.io/en/latest/config_yaml.html">config</a></td>
+<td class="org-left">basic configuration options</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://spack.readthedocs.io/en/latest/build_settings.html">packages</a></td>
+<td class="org-left">build customization</td>
+</tr>
+
+<tr>
+<td class="org-left">compilers</td>
+<td class="org-left">compiler definitions</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">mirrors</td>
+<td class="org-left">list of local and remote mirrors</td>
+</tr>
+
+<tr>
+<td class="org-left">repos</td>
+<td class="org-left">list of repos with build instructions</td>
+</tr>
+
+<tr>
+<td class="org-left">upstreams</td>
+<td class="org-left">installation trees of external <code>Spack</code> instances</td>
+</tr>
+</tbody>
+<tbody>
+<tr>
+<td class="org-left">modules</td>
+<td class="org-left">set up for mudulefile generation</td>
+</tr>
+</tbody>
+</table>
+</small>
+
+</section>
+<section id="slide-orga515b01" data-background="https://s3cf.recapguide.com:444/img/tv/117/21x14/The-Simpsons-Season-21-Episode-14-30-5364.jpg" data-background-size="80%" data-background-opacity="0.15">
+<h3 id="orga515b01">Typical challenges: How does <code>Spack</code> maps?</h3>
+<ul>
+<li>management of <b>dependencies</b> (versions, etc) \(\to\) <b>concretizer</b></li>
+<li><b>multi-lingual environments</b> \(\to\) <b>repos</b> with packages &amp; extensions</li>
+<li><b>off-line sites</b> \(\to\) off-line <b>mirrors</b></li>
+<li><b>site- and system-specific details</b>:
+<ul>
+<li>build systems and compilers \(\to\) <code>compilers.yaml</code></li>
+<li>recommended setups \(\to\) <code>config.yaml</code>, <code>compilers.yaml</code></li>
+<li>pre-installed ("native") software \(\to\) <code>packages.yaml</code></li>
+
+</ul></li>
+<li><b>combinatorial versioning</b> \(\to\) installation <b>matrices</b></li>
+<li><b>porting</b> (patching) \(\to\) <b>repos</b></li>
+<li>reproducible software <b>environments</b> \(\to\) lock-files</li>
+
+</ul>
+
+</section>
+<section id="slide-org61e6aad" data-visibility="hidden">
+<h4 id="org61e6aad">Package number</h4>
+
+
+
+</section>
+</section>
+<section>
+<section id="slide-orgd0dbe91">
+<h2 id="orgd0dbe91">Ansible</h2>
+
+<div id="orgf661863" class="figure">
+<p><object type="image/svg+xml" data="./figs/spack/Ansible_concepts.svg" class="org-svg" width="75%">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</section>
+<section id="slide-orgf9aeb6d">
+<h4 id="orgf9aeb6d"></h4>
+
+<div id="org168bc3d" class="figure">
+<p><object type="image/svg+xml" data="./figs/spack/Ansible_local_remote.svg" class="org-svg" width="75%">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section id="slide-org8f1bc88" data-visibility="hidden">
+<h3 id="org8f1bc88">Prerquisites</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Local</th>
+<th scope="col" class="org-left">Remote</th>
+<th scope="col" class="org-left">Dependencies</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">AS</td>
+<td class="org-left">S</td>
+<td class="org-left">Python 2.6+ or 3.5+</td>
+</tr>
+
+<tr>
+<td class="org-left">A</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">Extra modules of Python</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">A</td>
+<td class="org-left"><code>bash</code></td>
+</tr>
+
+<tr>
+<td class="org-left">A</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>ssh</code></td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">S</td>
+<td class="org-left">A C/C++ compiler for building</td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">AS</td>
+<td class="org-left"><code>make</code></td>
+</tr>
+
+<tr>
+<td class="org-left">A</td>
+<td class="org-left">S</td>
+<td class="org-left"><code>tar</code>, <code>gzip</code>, <code>unzip</code>, <code>bzip2</code>, <code>xz</code></td>
+</tr>
+
+<tr>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">S</td>
+<td class="org-left"><code>patch</code></td>
+</tr>
+
+<tr>
+<td class="org-left">S</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left"><code>git</code> and <code>curl</code> for fetching</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org34d9f79" data-visibility="hidden">
+<h3 id="org34d9f79">Spack deployment with "cluster agnostic" mirror</h3>
+
+<div id="org7cbfde0" class="figure">
+<p><object type="image/svg+xml" data="./figs/spack/Spack_deployment_workflow_common_mirror.svg" class="org-svg" width="75%">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section id="slide-orgd411bd2" data-visibility="hidden">
+<h3 id="orgd411bd2">Mirror for spec list</h3>
+<div style="display: flex;">
+<div style="flex: 1;">
+
+<div id="org198fb09" class="figure">
+<p><object type="image/svg+xml" data="./figs/spack/spack_libosrm_default.svg" class="org-svg" width="75%">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</div>
+<div style="flex: 1;">
+
+<div id="orgf558c40" class="figure">
+<p><object type="image/svg+xml" data="./figs/spack/spack_libosrm_full.svg" class="org-svg" width="75%">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</div>
+</div>
+
+</section>
+<section id="slide-org2471d11">
+<h3 id="org2471d11">Spack deployment with "cluster aware" mirror</h3>
+
+<div id="org6c995d3" class="figure">
+<p><object type="image/svg+xml" data="./figs/spack/Spack_deployment_workflow_specific_mirror.svg" class="org-svg" width="75%">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+</section>
+</section>
+<section>
+<section id="slide-orgfe59154" data-background="https://spack.io/assets/images/spack-logo.svg" data-background-size="40%" data-background-opacity="0.5">
+<h2 id="orgfe59154">Summary: Reproducing envs with Ansible &amp; Spack</h2>
+<p>
+If <code>Ansible</code> inventory is available,
+</p>
+<ul>
+<li data-fragment-index="1" class="fragment appear"><p>
+take exact or prepare logical <code>Spack</code> environment. E.g.,
+</p>
+<div class="org-src-container">
+
+<pre><code class="yaml" >spack:
+  specs:
+  - python@3.9.0+optimizations
+  - matrix:
+    - [py-numpy, py-scipy, py-scikit-learn]
+    - [^python@3.9.0+optimizations]
+  view: true
+</code></pre>
+</div></li>
+<li data-fragment-index="2" class="fragment appear"><p>
+run <code>Spack</code> deployment playbook
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >ansible-playbook -i inventory install_spack.yml    
+</code></pre>
+</div></li>
+<li data-fragment-index="2" class="fragment appear"><p>
+launch <code>Spack</code> command for installing environment
+</p>
+<div class="org-src-container">
+
+<pre><code class="sh" >ansible hidalgo -i inventory -m shell -a \
+  'cmd=". {{ spack_prefix }}/share/spack/setup-env.sh \
+    &amp;&amp; spactivate sna &amp;&amp; spack install"'
+</code></pre>
+</div></li>
+
+</ul>
+
+</section>
+<section id="slide-org8028cbf" data-visibility="hidden">
+<h3 id="org8028cbf">Spack Deployment: Summary</h3>
+<p>
+<b>Highlights</b>
+</p>
+<ul>
+<li>decouple <code>Spack</code> config variables from deployment rules in <code>Ansible</code></li>
+<li>have 2 strategies for creating mirrors:
+<ul>
+<li>unsafe: download single generic mirror for all systems</li>
+<li>safe: download mirrors for each target system separately</li>
+
+</ul></li>
+
+</ul>
+
+<p>
+<b>Result</b>
+</p>
+<ul>
+<li>deploy reproducible software environments (and specs)</li>
+<li>deploy simultaneously on several hosts</li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org2f1cab6" data-background="https://memegenerator.net/img/instances/84421678/woo-hoo-presentation-over-any-questions.jpg" data-background-size="55%" data-background-opacity="0.5">
+<h2 id="org2f1cab6">Thanks for your time and attention!!!</h2>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script src="./reveal.js/plugin/math/math.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+overview: true,
+width: 1400,
+height: 1000,
+
+transition: 'convex',
+transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealHighlight, RevealMath ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>

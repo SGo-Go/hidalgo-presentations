@@ -22,9 +22,10 @@
 #+REVEAL_EXTRA_CSS: ./reveal.js/plugin/highlight/monokai.css
 
 #+REVEAL_TITLE_SLIDE: <h1><br><small>%t<br><sup><sup>%s</sup></sup></small></h1><h2><a href='mailto:%e'>%a</a></h2><h4>%A</h4><h3>%c&compfn;%d</h3>
-#+REVEAL_PREAMBLE: <div class="header-x"><div class="left"><img src="./hidalgo-style/hidalgo-logo.png"><hr/></div><div class="center"><b>H</b>PC and B<b>i</b>g <b>Da</b>ta Techno<b>l</b>ogies for <b>G</b>l<b>o</b>bal Challenges</div><div class="right"><hr/></div></div> <div class="footer-x"><div class="left">%d</div><div class="center"><b>%a</b><br><i><small>%t</small></i></div> <div class="right"><img src="./hidalgo-style/Flag_of_Europe.svg" alt="HiDALGO"><b>EU</b> <small>funded project</small><br><b>&aleph;824115</b><br><sup><sup><sup><sup><sup><sup><sup><b><code>@OITTTIO</code><b></sup></sup></sup></sup></sup></sup></sup></div></div>
+#+REVEAL_PREAMBLE: <div class="header-x"><div class="left"><img src="./hidalgo-style/hlrs-logo.png"><hr style="color: gray; background-color: gray;"></div><div class="center" style="color: #555;font-family: Courier New,Courier,Lucida Sans Typewriter,Lucida Typewriter,monospace;">High Performance Computing Center<b>|</b>Stuttgart</div><div class="right"><hr style="color: gray; background-color: gray;"></div></div> <div class="footer-x"><div class="left">%d</div><div class="center"><b>%a</b><br><i><small>%t</small></i></div> <div class="right"><img src="https://upload.wikimedia.org/wikipedia/de/3/31/Bosch-logotype.svg" alt="HiDALGO"></div></div>
 
-#+REVEAL_TITLE_SLIDE_BACKGROUND: ./hidalgo-style/hidalgo-bg-title.jpg
+
+#+REVEAL_TITLE_SLIDE_BACKGROUND: ./hidalgo-style/hlrs-bg-title.jpg
 #+REVEAL_TITLE_SLIDE_BACKGROUND_POSITION: top
 #+REVEAL_TITLE_SLIDE_BACKGROUND_SIZE: 100%
 
