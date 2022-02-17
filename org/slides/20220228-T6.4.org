@@ -1,0 +1,286 @@
+# -*- mode: org -*-
+#+INCLUDE: ./org/common/hidalgo-style.org
+
+#+TITLE: T6.4 -- Component and data integration
+#+SUBTITLE: WP6: Requirements Evolution and Component Integration 
+#+AUTHOR: Sergiy Gogolenko 
+# +REVEAL_ACADEMIC_TITLE: High-Performance Computing Center, Stuttgart, DE
+#+EMAIL: gogolenko@hlrs.de
+#+CREATOR: HiDALGO call
+#+DATE: 2022-02-28
+#+OPTIONS: author:t date:t num:nil toc:nil created:nill email:t tex:t
+#+REVEAL_TALK_URL: http://sgo-go.github.io/hidalgo-presentations/20210602-T6.4.html
+#+TIME: 20min
+
+* T6.4: Component and data integration
+** General
+
+- _*Purpose*_: integration of the tools/components/applications into an entire solution
+- _*Ultimate Goal*_: provide stable, mature, usable software to the users
+- _*Measuring*_: trace 4 core [[https://newrepository.atosresearch.eu/index.php/apps/onlyoffice/1047622?filePath=%2FHiDALGO%2FAdministrative%20documents%2Fmisc%2FKPIs%2FHiDALGO-KPI-list-for-reporting-q2_3%26q2_4.xlsx][KPIs]]
+- _*Timeline*_: /M10-M37/ 
+- _*Deliverables*_: {{{color(green, D6.4 (M12))}}}, {{{color(green, D6.5 (M24))}}}, {{{color(green, D6.6 (M37))}}}
+
+** Description of Work
+
+- /develop/ component *{{{color(red, testing mechanisms)}}}*
+- /set up/ an *integration environment*
+- /{{{color(red, define)}}}/ and /implement/ *solid API*
+- /integrate/ *{{{color(gold, data)}}}* with the HPC and HPDA systems
+  - step 1: *static data*
+  - step 2: *streaming (live) data*
+
+* Hosting Codes
+
+*Official GitLab page*: https://gitlab.com/eu_hidalgo
+# - List of GitLab repos:
+
+| Name                | Hosting | Core WP | Content                         |
+|---------------------+---------+---------+---------------------------------|
+| [[https://gitlab.com/eu_hidalgo/use_cases][use-cases]]           | GitLab  | WP4     | /Use cases/: software and  data |
+| [[https://gitlab.com/eu_hidalgo/hidalgo_integration][hidalgo-integration]] | GitLab  | WP6     | /Components integration/        |
+| [[https://gitlab.com/eu_hidalgo/hidalgo_bench_suite][hidalgo-bench-suite]] | GitLab  | WP5     | HiDALGO benchmark suite         |
+| [[https://gitlab.com/eu_hidalgo/benchmarking][benchmarking]]        | GitLab  | WP3/WP5 | Benchmark reports               |
+| -                   | GitLab  | WP7     | Trainings                       |
+| -                   | HLRS/SF | WP5     | Portal                          |
+
+** Hosting Codes: Use cases repo
+
+*Location*: https://gitlab.com/eu_hidalgo/use_cases
+
+*Content*:
+- software \(\to\) submodules (except UAP as it is close sourced)
+- data sources \(\to\) CKAN or direct links
+  - data sources documentation at [[https://wiki.hidalgo-project.eu/workpackages/wp6/tasks/task_6_4/data_formats_group][Wiki]]
+- Gitlab-CI [[https://gitlab.com/eu_hidalgo/use_cases/-/blob/master/.gitlab-ci.yml][pipeline]]
+
+# | Name                | Content                                                               |
+# |---------------------+-----------------------------------------------------------------------|
+# | [[https://gitlab.com/eu_hidalgo/use_cases][use-cases]]           | /[[https://gitlab.com/eu_hidalgo/use_cases][Use cases]]/: software \(\to\) submodules, data \(\to\) CKAN or direct |
+# | [[https://gitlab.com/eu_hidalgo/hidalgo_integration][hidalgo-integration]] | /Components integration/:  [[https://gitlab.com/eu_hidalgo/hidalgo_integration][AD/SCM with Spack and Ansible]], GitLab-CI   |
+# | [[https://gitlab.com/eu_hidalgo/hidalgo_bench_suite][hidalgo-bench-suite]] | HiDALGO benchmark suite                                               |
+# | [[https://gitlab.com/eu_hidalgo/benchmarking][benchmarking]]        | Benchmark reports                                                     |
+
+* System Workflow
+[[./figs/HiDALGO-System-Workflow.svg]]
+
+* Software Components Integration
+
+- WP3/WP4/WP6 components (pilots software)
+- WP5 components (including portal)
+
+** Pilot Software (WP3/WP4/WP6)
+
+*3Dims*
+- automated deployment and software configuration management
+- testing and CI/CD
+- portal
+# - documentation
+
+*** Pilot Software (WP3/WP4/WP6): AD/SCM
+
+- *Core tools*: Spack, Ansible
+- GitLab repo: [[https://gitlab.com/eu_hidalgo/hidalgo_integration/-/tree/master/ansible][hidalgo-integration/ansible]]
+- [[https://gitlab.com/eu_hidalgo/hidalgo_integration/-/tree/master/spack-configs/site-scopes][infrastructure]]:
+  - HPC/HPDA clusters: Hawk, Vulcan, Eagle/Altair
+  - WP5 testbeds 
+- documentation:
+  - README's, D6.6
+  - 1.5 hour training ([[https://moodle.hidalgo-project.eu/course/view.php?id=11][Moodle]], [[https://www.youtube.com/playlist?list=PL6eJJqXlr6mU1CqatXs-VKlX5Z25zQ9pe][youtube]], [[https://sgo-go.github.io/hidalgo-presentations/202104-reprodycibility_with_ansible_and_spack.html][slides]])
+
+|                      | Mig        | UAP           | SNA        |
+|----------------------+------------+---------------+------------|
+| ~Spack~ environments | {{{done}}} | {{{ongoing}}} | {{{done}}} |
+| ~Spack~ packages     | {{{done}}} | -             | -          |
+# | ~Singularity~ recipes | {{{ongoing}}} | {{{ongoing}}} | {{{done}}} |
+
+*** Pilot Software (WP3/WP4/WP6): AD/SCM (prerequisites)
+
+| Dependencies                          | Local workstation | Target HPC/HPDA system |
+|---------------------------------------+-------------------+------------------------|
+| Python 2.6+ or 3.5+                   | AS                | S                      |
+| Extra modules of Python               | A                 |                        |
+| =bash=                                |                   | AS                     |
+| =ssh=                                 | A                 |                        |
+| A C/C++ compiler for building         |                   | S                      |
+| =make=                                |                   | S                      |
+| =tar=, =gzip=, =unzip=, =bzip2=, =xz= | A                 | S                      |
+| =patch=                               |                   | S                      |
+| =git= and =curl=                      | S                 |                        |
+
+*** Pilot Software (WP3/WP4/WP6): AD/SCM (implementation)
+
+ [[./figs/spack/Spack_deployment_workflow_specific_mirror.svg]]
+
+*** Pilot Software (WP3/WP4/WP6): CI/CD 
+
+- _*Core tool*_: GitLab-CI, Action-CI
+#   - available examples: [[https://gitlab.com/eu_hidalgo/Flee][Flee]]
+# - instructions: [[https://docs.gitlab.com/ee/ci/quick_start/index.html][get started]], [[https://gitlab.com/projects/new#cicd_for_external_repo][external repositories]] (e.g., [[https://docs.gitlab.com/ee/user/project/integrations/github.html][GitHub]]), tools([[https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/Python.gitlab-ci.yml][Py]], [[https://gitlab.com/gitlab-org/gitlab/-/blob/master/lib/gitlab/ci/templates/C++.gitlab-ci.yml][C++]], [[https://beenje.github.io/blog/posts/gitlab-ci-and-conda/][Conda]])
+
+|                   | Mig                  | UAP        | SNA                  |
+|-------------------+----------------------+------------+----------------------|
+| Unit tests        | {{{done}}}           | {{{done}}} | {{{done}}}           |
+| Integration tests | {{{done}}}           | {{{done}}} | -                    |
+| CI/CD             | {{{done}}} [[https://gitlab.com/eu_hidalgo/use_cases/-/blob/master/.gitlab-ci.yml][Github-CI]] | -          | {{{done}}} [[https://github.com/sarming/propagation/blob/master/.github/workflows/tests.yml][Action-CI]] |
+
+*** Pilot Software (WP3/WP4/WP6): Portal and Documentation
+
+|                       | Mig         | UAP        | SNA        | COV         |
+|-----------------------+-------------+------------+------------+-------------|
+| ~Cloudify~ blueprints | {{{done}}}  | {{{done}}} | {{{done}}} | {{{done}}}  |
+| Documentation         | ReadTheDocs | {{{done}}} | {{{done}}} | ReadTheDocs |
+
+*** Pilot Software (WP3/WP4/WP6): Core tools
+
+ | Tool            | Pilot | Repository | Tests          | Documentation |
+ |-----------------+-------+------------+----------------+---------------|
+ | Flee            | MIG   | [[https://github.com/djgroen/flee][GitHub]]     | tox, [[https://github.com/djgroen/flee/tree/master/.github/workflows][Action-CI]] | [[https://flee.readthedocs.io/][ReadTheDocs]]   |
+ | FabSim3         | MIG   | [[https://github.com/djgroen/FabSim3][GitHub]]     | tox, [[https://github.com/djgroen/FabSim3/blob/master/.github/workflows/Pytests.yml][Action-CI]] | [[https://fabsim3.readthedocs.io/en/latest/][ReadTheDocs]]   |
+ | KPM (EigenHist) | SNA   | [[https://github.com/sarming/kpm][GitHub]]     | unit           | [[https://github.com/sarming/kpm/blob/master/README.md][README]]        |
+ | SNAsim          | SNA   | [[https://github.com/sarming/propagation][GitHub]]     | tox, [[https://github.com/sarming/propagation/blob/master/.github/workflows/tests.yml][Action-CI]] | [[https://github.com/sarming/propagation/blob/master/README.md][README]]        |
+ | Croupier        | All   | [[https://github.com/ari-apc-lab/croupier][GitHub]]     | tox, [[https://github.com/ari-apc-lab/croupier/blob/master/.gitlab-ci.yml][GitLab-CI]] | [[https://croupier.readthedocs.io/en/latest/plugin.html][ReadTheDocs]]   |
+
+** WP5 components
+
+- automated deployment and software configuration management
+- testing and CI/CD
+- portal and authentification
+
+*** WP5 components: AD/SCM and CI/CD
+
+|                     | Portal        | ~Ansible~     | ~Jenkins~     |
+|---------------------+---------------+---------------+---------------|
+| ~Moodle~            | {{{ongoing}}} | {{{done}}}    | {{{done}}}    |
+| ~Cloudify~          | {{{done}}}    | {{{done}}}    | {{{done}}}    |
+| ~Zammad~            | {{{ongoing}}} | {{{done}}}    | {{{done}}}    |
+| ~Matchmaking~       | {{{ongoing}}} | {{{done}}}    | {{{done}}}    |
+| ~Wiki~              | -             | {{{done}}}    | {{{done}}}    |
+| ~CKAN~              | {{{ongoing}}} | -             | -             |
+| ~Askbot~            | {{{ongoing}}} | {{{done}}}    | {{{done}}}    |
+| ~JupyterHub~        | {{{ongoing}}} | {{{done}}}    | {{{ongoing}}} |
+| ~Visualizer/COVISE~ | {{{ongoing}}} | {{{done}}}    | {{{pending}}} |
+| ~Keycloak~ IDM      | {{{ongoing}}} | -             | -             |
+# | ~Zabbix/Jankins~    | {{{ongoing}}} | {{{pending}}} | --            |
+# | Portal frontend/backend | {{{done}}}    | {{{pending}}} | {{{pending}}} |
+
+*** WP5 components: Authentification and Portal Integration
+
+|                     | SSO Support   | Supported Protocol |
+|---------------------+---------------+--------------------|
+| ~Cloudify~          | {{{pending}}} | Vault & OpenIDC    |
+| ~Visualizer/COVISE~ | {{{done}}}    | OAuth2             |
+| ~Moodle~            | {{{done}}}    | OAuth2             |
+| ~Askbot~            | {{{done}}}    | OAuth2             |
+| ~Zammad~            | {{{done}}}    | OAuth2             |
+| ~JupyterHub~        | {{{done}}}    | OAuth2             |
+| ~Matchmaking~       | {{{done}}}    | OpenIDC            |
+| ~Wikie~             | {{{done}}}    | OpenIDC            |
+| ~CKAN~              | {{{done}}}    | OAuth2             |
+
+* Data Integration
+
+** Data Integration: Static Datasets
+
+**Technology**: ~CKAN~
+
+| Dataset Name                              | Pilot         | Technology | Data Provider                             | Access     |
+|-------------------------------------------+---------------+------------+-------------------------------------------+------------|
+| Food security data                        | MIG           | CKAN       | https://www.ipcinfo.org/                  | open       |
+| Conflict data                             | MIG           | CKAN       | https://acleddata.com/                    | open       |
+| GIS (OpenStreetMap)                       | MIG, UAP, COV | CKAN       | https://download.geofabrik.de/            | open       |
+| Stanford Large Network Dataset Collection | SN            | CKAN       | https://snap.stanford.edu/data/           | open       |
+| Telecommunication data (CDR)              | MIG, SN       | REST API   | MOON                                      | consortium |
+| Traffic and air quality sensory data      | UAP           | CKAN       | ARH, MK                                   | consortium |
+| Twitter                                   | SN            | CKAN       | Twitter Inc.                              | open       |
+| UN conflict and refugee data              | MIG           | CKAN       | https://www.unhcr.org/refugee-statistics/ | open       |
+| Climate and environmental data            | MIG, UAP      | REST API   | Copernicus                                | open       |
+| Weather and climate data                  | MIG, UAP      | REST API   | ECMWF                                     | open       |
+
+** Data Integration: Streaming and Hybrid Approaches
+
+| Dataset Name                         | Pilot    | Technology     | Data Provider    | Access     |
+|--------------------------------------+----------+----------------+------------------+------------|
+| Traffic and air quality sensory data | UAP      | CKAN           | ARH, MK          | consortium |
+| Twitter                              | SN       | CKAN + monitor | Twitter Inc.     | open       |
+| Weather forecast data                | UAP      | REST, Cloudify | ECMWF            | consortium |
+| Climate and environmental data       | MIG, UAP | REST           | ECMWF Copernicus | open       |
+
+** Data Integration: Data Providers in Consortium
+   
+- {{{done}}} [ECMWF\(\to\)MIG,UAP] weather and climate data: RESTful API
+  - {{{ongoing}}} integration with Cloudify
+- {{{done}}} [ARH/MK\(\to\)UAP] [[https://hidalgo-wiki.hlrs.de/workpackages/wp6/tasks/task_6_4/data_formats_group][traffic and air quality data]] (static): CKAN
+  - {{{ongoing}}} integration with HiDALGO CKAN
+- {{{done}}} [MOON\(\to\)MIG,SNA] [[https://hidalgo-wiki.hlrs.de/workpackages/wp6/tasks/task_6_4/data_formats_group/telecommunication_data][telecommunication data]]: RESTful API
+  - {{{ongoing}}} improve current version of RESTful API for new pilot requests
+
+*** Weather and Climate Data
+
+**Technology**: REST API (concept of DaaS), Cloudify
+- *CDS* (Climate Data Store)
+  - sync file-based
+  - historical data
+- [[https://git.ecmwf.int/projects/LEX/repos/polytope-client/browse][~polytope~]] (REST API)
+  - async Python API and CLI  
+
+**Integration status**:
+  - pilots: {{{done}}} Mig, {{{done}}} UAP
+  - infrastructures: {{{done}}} PSNC, {{{done}}} HLRS
+  - {{{done}}} Cloudify integration
+
+*** Traffic and Air Quality Data
+
+**Technology**: CKAN
+
+**Integration status**:
+  - pilots: {{{done}}} UAP
+  - infrastructures: {{{done}}} PSNC, {{{ongoing}}} HLRS
+  - {{{done}}} access from SZE CKAN (data is proprietary and requires NDA)
+  # - {{{ongoing}}} Cloudify integration (under analysis)
+
+*** Telecommunication Data
+
+**Technology**: REST API
+
+**Integration status**:
+- pilots:  {{{done}}}{{{ongoing}}} Mig, {{{done}}}{{{ongoing}}} SNA
+  - {{{done}}} first implementation and example
+  - {{{ongoing}}} fit to pilot needs
+  - {{{done}}} access by API key, contact MOON if need it (data is proprietary)
+# - {{{pending}}} monitor (in discussion)
+
+# Other projects: Flume, ZeroMQ, Kinesis
+
+
+* API and Documentation
+
+# *Documented tools*:
+- **Manuals** and API: ~Croupier~ (for ~Cloudify~), ~polytope~, ~Flee/FACS~, ~FabSim3~, ~MUSCLE3~
+- **Tutorials and trainings**:
+  - [[https://moodle.hidalgo-project.eu/course/view.php?id=9][HiDALGO Training Video Series]]
+  - WCDA tutorial from [[https://moodle.hidalgo-project.eu/course/view.php?id=12][ENCCS/HiDALGO workshop]]
+  - [[https://moodle.hidalgo-project.eu/course/view.php?id=6][Webinar on FabSim3 and MUCSLE3]]
+  - UAP tutorials from [[https://moodle.hidalgo-project.eu/course/view.php?id=2][HiPEAK 2020]] and [[https://moodle.hidalgo-project.eu/course/view.php?id=12][ENCCS/HiDALGO workshop]]
+  - [[https://moodle.hidalgo-project.eu/course/view.php?id=11][Integration and reproducibility with Ansible and Spack]]
+- documented **notebooks** for AI methods:
+  - location graph extraction
+# - _~Ansible~ scripts, [[https://docs.docker.com/engine/reference/builder/][~Docker~ files]], and [[https://singularity.lbl.gov/quickstart#singularity-recipes][~Singularity~ recipes]]_ are deployment/installation documentation itself
+# - _*deliverables*_ (we should though reuse these materials in "official" documentation)
+#   - portal (e.g., see CoeGSS documentation as inspiration)
+
+# ** Open Questions
+
+# #+ATTR_REVEAL: :frag (appear)
+# - design for integration of *sensors and telecommunications data*
+# - Simulation {{{to}}} *HPDA* {{{to}}} { DMS/DS | Visualization } :
+#   - /data transfer/: slicing or compression?
+#   - /HPDA/: seamless/in-situ or with intermediate files (=.h5/.ncd=)?
+#   - I *must* establish a call for the roadmap
+# - other businesses
+#   - ~CKAN~ and ~Cloudify~ in HLRS
+#   - Integrating interactive jobs and notebooks
+#   - *fill in ~CKAN~* storage with static datasets
+
+
+

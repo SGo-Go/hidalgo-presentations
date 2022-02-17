@@ -1,0 +1,1022 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="utf-8"/>
+<title>T6.4 &#x2013; Component and data integration</title>
+<meta name="author" content="Sergiy Gogolenko"/>
+<style type="text/css">
+.underline { text-decoration: underline; }
+</style>
+<link rel="stylesheet" href="./reveal.js/dist/reveal.css"/>
+
+<link rel="stylesheet" href="./reveal.js/dist/theme/beige.css" id="theme"/>
+
+<link rel="stylesheet" href="./hidalgo-style/extra.css"/>
+
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/monokai.css"/>
+<link rel="stylesheet" href="./reveal.js/plugin/highlight/zenburn.css"/>
+<script type="text/javascript" src="https://cdnjs.cloudflare.com/ajax/libs/mathjax/2.7.5/MathJax.js?config=TeX-AMS-MML_HTMLorMML"></script>
+</head>
+<body>
+<div class="header-x"><div class="left"><img src="./hidalgo-style/hidalgo-logo.png"><hr/></div><div class="center"><b>H</b>PC and B<b>i</b>g <b>Da</b>ta Techno<b>l</b>ogies for <b>G</b>l<b>o</b>bal Challenges</div><div class="right"><hr/></div></div> <div class="footer-x"><div class="left">2022-02-28</div><div class="center"><b>Sergiy Gogolenko</b><br><i><small>T6.4 &#x2013; Component and data integration</small></i></div> <div class="right"><img src="./hidalgo-style/Flag_of_Europe.svg" alt="HiDALGO"><b>EU</b> <small>funded project</small><br><b>&aleph;824115</b><br><sup><sup><sup><sup><sup><sup><sup><b><code>@OITTTIO</code><b></sup></sup></sup></sup></sup></sup></sup></div></div>
+<div class="reveal">
+<div class="slides">
+<section id="sec-title-slide" data-background="./hidalgo-style/hidalgo-bg-title.jpg" data-background-size="100%" data-background-position="top">
+<h1><br><small>T6.4 &#x2013; Component and data integration<br><sup><sup>WP6: Requirements Evolution and Component Integration</sup></sup></small></h1><h2><a href='mailto:<a href="mailto:gogolenko@hlrs.de">gogolenko@hlrs.de</a>'>Sergiy Gogolenko</a></h2><h4></h4><h3>HiDALGO call&compfn;2022-02-28</h3>
+</section>
+
+<section>
+<section id="slide-org248da00">
+<h2 id="org248da00">T6.4: Component and data integration</h2>
+<div class="outline-text-2" id="text-org248da00">
+</div>
+</section>
+<section id="slide-org28e1d3e">
+<h3 id="org28e1d3e">General</h3>
+<ul>
+<li><span class="underline"><b>Purpose</b></span>: integration of the tools/components/applications into an entire solution</li>
+<li><span class="underline"><b>Ultimate Goal</b></span>: provide stable, mature, usable software to the users</li>
+<li><span class="underline"><b>Measuring</b></span>: trace 4 core <a href="https://newrepository.atosresearch.eu/index.php/apps/onlyoffice/1047622?filePath=%2FHiDALGO%2FAdministrative%20documents%2Fmisc%2FKPIs%2FHiDALGO-KPI-list-for-reporting-q2_3%26q2_4.xlsx">KPIs</a></li>
+<li><span class="underline"><b>Timeline</b></span>: <i>M10-M37</i></li>
+<li><span class="underline"><b>Deliverables</b></span>: <font color="green"> D6.4 (M12)</font>, <font color="green"> D6.5 (M24)</font>, <font color="green"> D6.6 (M37)</font></li>
+
+</ul>
+
+</section>
+<section id="slide-org4aeef81">
+<h3 id="org4aeef81">Description of Work</h3>
+<ul>
+<li><i>develop</i> component <b><font color="red"> testing mechanisms</font></b></li>
+<li><i>set up</i> an <b>integration environment</b></li>
+<li><i><font color="red"> define</font></i> and <i>implement</i> <b>solid API</b></li>
+<li><i>integrate</i> <b><font color="gold"> data</font></b> with the HPC and HPDA systems
+<ul>
+<li>step 1: <b>static data</b></li>
+<li>step 2: <b>streaming (live) data</b></li>
+
+</ul></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-orgc72f0b4">
+<h2 id="orgc72f0b4">Hosting Codes</h2>
+<p>
+<b>Official GitLab page</b>: <a href="https://gitlab.com/eu_hidalgo">https://gitlab.com/eu_hidalgo</a>
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Name</th>
+<th scope="col" class="org-left">Hosting</th>
+<th scope="col" class="org-left">Core WP</th>
+<th scope="col" class="org-left">Content</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><a href="https://gitlab.com/eu_hidalgo/use_cases">use-cases</a></td>
+<td class="org-left">GitLab</td>
+<td class="org-left">WP4</td>
+<td class="org-left"><i>Use cases</i>: software and  data</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://gitlab.com/eu_hidalgo/hidalgo_integration">hidalgo-integration</a></td>
+<td class="org-left">GitLab</td>
+<td class="org-left">WP6</td>
+<td class="org-left"><i>Components integration</i></td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://gitlab.com/eu_hidalgo/hidalgo_bench_suite">hidalgo-bench-suite</a></td>
+<td class="org-left">GitLab</td>
+<td class="org-left">WP5</td>
+<td class="org-left">HiDALGO benchmark suite</td>
+</tr>
+
+<tr>
+<td class="org-left"><a href="https://gitlab.com/eu_hidalgo/benchmarking">benchmarking</a></td>
+<td class="org-left">GitLab</td>
+<td class="org-left">WP3/WP5</td>
+<td class="org-left">Benchmark reports</td>
+</tr>
+
+<tr>
+<td class="org-left">-</td>
+<td class="org-left">GitLab</td>
+<td class="org-left">WP7</td>
+<td class="org-left">Trainings</td>
+</tr>
+
+<tr>
+<td class="org-left">-</td>
+<td class="org-left">HLRS/SF</td>
+<td class="org-left">WP5</td>
+<td class="org-left">Portal</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-orgdd29f65">
+<h3 id="orgdd29f65">Hosting Codes: Use cases repo</h3>
+<p>
+<b>Location</b>: <a href="https://gitlab.com/eu_hidalgo/use_cases">https://gitlab.com/eu_hidalgo/use_cases</a>
+</p>
+
+<p>
+<b>Content</b>:
+</p>
+<ul>
+<li>software \(\to\) submodules (except UAP as it is close sourced)</li>
+<li>data sources \(\to\) CKAN or direct links
+<ul>
+<li>data sources documentation at <a href="https://wiki.hidalgo-project.eu/workpackages/wp6/tasks/task_6_4/data_formats_group">Wiki</a></li>
+
+</ul></li>
+<li>Gitlab-CI <a href="https://gitlab.com/eu_hidalgo/use_cases/-/blob/master/.gitlab-ci.yml">pipeline</a></li>
+
+</ul>
+
+</section>
+</section>
+<section>
+<section id="slide-org579c31a">
+<h2 id="org579c31a">System Workflow</h2>
+
+<div id="orgccc5fee" class="figure">
+<p><object type="image/svg+xml" data="./figs/HiDALGO-System-Workflow.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+</section>
+<section>
+<section id="slide-org0024e3a">
+<h2 id="org0024e3a">Software Components Integration</h2>
+<ul>
+<li>WP3/WP4/WP6 components (pilots software)</li>
+<li>WP5 components (including portal)</li>
+
+</ul>
+
+</section>
+<section id="slide-orgd21d960">
+<h3 id="orgd21d960">Pilot Software (WP3/WP4/WP6)</h3>
+<p>
+<b>3Dims</b>
+</p>
+<ul>
+<li>automated deployment and software configuration management</li>
+<li>testing and CI/CD</li>
+<li>portal</li>
+
+</ul>
+
+</section>
+<section id="slide-orgcb268ea">
+<h4 id="orgcb268ea">Pilot Software (WP3/WP4/WP6): AD/SCM</h4>
+<ul>
+<li><b>Core tools</b>: Spack, Ansible</li>
+<li>GitLab repo: <a href="https://gitlab.com/eu_hidalgo/hidalgo_integration/-/tree/master/ansible">hidalgo-integration/ansible</a></li>
+<li><a href="https://gitlab.com/eu_hidalgo/hidalgo_integration/-/tree/master/spack-configs/site-scopes">infrastructure</a>:
+<ul>
+<li>HPC/HPDA clusters: Hawk, Vulcan, Eagle/Altair</li>
+<li>WP5 testbeds</li>
+
+</ul></li>
+<li>documentation:
+<ul>
+<li>README's, D6.6</li>
+<li>1.5 hour training (<a href="https://moodle.hidalgo-project.eu/course/view.php?id=11">Moodle</a>, <a href="https://www.youtube.com/playlist?list=PL6eJJqXlr6mU1CqatXs-VKlX5Z25zQ9pe">youtube</a>, <a href="https://sgo-go.github.io/hidalgo-presentations/202104-reprodycibility_with_ansible_and_spack.html">slides</a>)</li>
+
+</ul></li>
+
+</ul>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">Mig</th>
+<th scope="col" class="org-left">UAP</th>
+<th scope="col" class="org-left">SNA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>Spack</code> environments</td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="gold">&circlearrowleft;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Spack</code> packages</td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left">-</td>
+<td class="org-left">-</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org589f892">
+<h4 id="org589f892">Pilot Software (WP3/WP4/WP6): AD/SCM (prerequisites)</h4>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Dependencies</th>
+<th scope="col" class="org-left">Local workstation</th>
+<th scope="col" class="org-left">Target HPC/HPDA system</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Python 2.6+ or 3.5+</td>
+<td class="org-left">AS</td>
+<td class="org-left">S</td>
+</tr>
+
+<tr>
+<td class="org-left">Extra modules of Python</td>
+<td class="org-left">A</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>bash</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">AS</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>ssh</code></td>
+<td class="org-left">A</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+
+<tr>
+<td class="org-left">A C/C++ compiler for building</td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">S</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>make</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">S</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>tar</code>, <code>gzip</code>, <code>unzip</code>, <code>bzip2</code>, <code>xz</code></td>
+<td class="org-left">A</td>
+<td class="org-left">S</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>patch</code></td>
+<td class="org-left">&#xa0;</td>
+<td class="org-left">S</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>git</code> and <code>curl</code></td>
+<td class="org-left">S</td>
+<td class="org-left">&#xa0;</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org818dc50">
+<h4 id="org818dc50">Pilot Software (WP3/WP4/WP6): AD/SCM (implementation)</h4>
+
+<div id="org3eff5c2" class="figure">
+<p><object type="image/svg+xml" data="./figs/spack/Spack_deployment_workflow_specific_mirror.svg" class="org-svg">
+Sorry, your browser does not support SVG.</object>
+</p>
+</div>
+
+</section>
+<section id="slide-org986d8e5">
+<h4 id="org986d8e5">Pilot Software (WP3/WP4/WP6): CI/CD</h4>
+<ul>
+<li><span class="underline"><b>Core tool</b></span>: GitLab-CI, Action-CI</li>
+
+</ul>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">Mig</th>
+<th scope="col" class="org-left">UAP</th>
+<th scope="col" class="org-left">SNA</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Unit tests</td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+</tr>
+
+<tr>
+<td class="org-left">Integration tests</td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left">-</td>
+</tr>
+
+<tr>
+<td class="org-left">CI/CD</td>
+<td class="org-left"><font color="green">&check;</font>  <a href="https://gitlab.com/eu_hidalgo/use_cases/-/blob/master/.gitlab-ci.yml">Github-CI</a></td>
+<td class="org-left">-</td>
+<td class="org-left"><font color="green">&check;</font>  <a href="https://github.com/sarming/propagation/blob/master/.github/workflows/tests.yml">Action-CI</a></td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org159c097">
+<h4 id="org159c097">Pilot Software (WP3/WP4/WP6): Portal and Documentation</h4>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">Mig</th>
+<th scope="col" class="org-left">UAP</th>
+<th scope="col" class="org-left">SNA</th>
+<th scope="col" class="org-left">COV</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>Cloudify</code> blueprints</td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+</tr>
+
+<tr>
+<td class="org-left">Documentation</td>
+<td class="org-left">ReadTheDocs</td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left">ReadTheDocs</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org6f661a2">
+<h4 id="org6f661a2">Pilot Software (WP3/WP4/WP6): Core tools</h4>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Tool</th>
+<th scope="col" class="org-left">Pilot</th>
+<th scope="col" class="org-left">Repository</th>
+<th scope="col" class="org-left">Tests</th>
+<th scope="col" class="org-left">Documentation</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Flee</td>
+<td class="org-left">MIG</td>
+<td class="org-left"><a href="https://github.com/djgroen/flee">GitHub</a></td>
+<td class="org-left">tox, <a href="https://github.com/djgroen/flee/tree/master/.github/workflows">Action-CI</a></td>
+<td class="org-left"><a href="https://flee.readthedocs.io/">ReadTheDocs</a></td>
+</tr>
+
+<tr>
+<td class="org-left">FabSim3</td>
+<td class="org-left">MIG</td>
+<td class="org-left"><a href="https://github.com/djgroen/FabSim3">GitHub</a></td>
+<td class="org-left">tox, <a href="https://github.com/djgroen/FabSim3/blob/master/.github/workflows/Pytests.yml">Action-CI</a></td>
+<td class="org-left"><a href="https://fabsim3.readthedocs.io/en/latest/">ReadTheDocs</a></td>
+</tr>
+
+<tr>
+<td class="org-left">KPM (EigenHist)</td>
+<td class="org-left">SNA</td>
+<td class="org-left"><a href="https://github.com/sarming/kpm">GitHub</a></td>
+<td class="org-left">unit</td>
+<td class="org-left"><a href="https://github.com/sarming/kpm/blob/master/README.md">README</a></td>
+</tr>
+
+<tr>
+<td class="org-left">SNAsim</td>
+<td class="org-left">SNA</td>
+<td class="org-left"><a href="https://github.com/sarming/propagation">GitHub</a></td>
+<td class="org-left">tox, <a href="https://github.com/sarming/propagation/blob/master/.github/workflows/tests.yml">Action-CI</a></td>
+<td class="org-left"><a href="https://github.com/sarming/propagation/blob/master/README.md">README</a></td>
+</tr>
+
+<tr>
+<td class="org-left">Croupier</td>
+<td class="org-left">All</td>
+<td class="org-left"><a href="https://github.com/ari-apc-lab/croupier">GitHub</a></td>
+<td class="org-left">tox, <a href="https://github.com/ari-apc-lab/croupier/blob/master/.gitlab-ci.yml">GitLab-CI</a></td>
+<td class="org-left"><a href="https://croupier.readthedocs.io/en/latest/plugin.html">ReadTheDocs</a></td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-orgedf5f79">
+<h3 id="orgedf5f79">WP5 components</h3>
+<ul>
+<li>automated deployment and software configuration management</li>
+<li>testing and CI/CD</li>
+<li>portal and authentification</li>
+
+</ul>
+
+</section>
+<section id="slide-orgcb24fdd">
+<h4 id="orgcb24fdd">WP5 components: AD/SCM and CI/CD</h4>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">Portal</th>
+<th scope="col" class="org-left"><code>Ansible</code></th>
+<th scope="col" class="org-left"><code>Jenkins</code></th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>Moodle</code></td>
+<td class="org-left"><font color="gold">&circlearrowleft;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Cloudify</code></td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Zammad</code></td>
+<td class="org-left"><font color="gold">&circlearrowleft;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Matchmaking</code></td>
+<td class="org-left"><font color="gold">&circlearrowleft;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Wiki</code></td>
+<td class="org-left">-</td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+</tr>
+
+<tr>
+<td class="org-left"><code>CKAN</code></td>
+<td class="org-left"><font color="gold">&circlearrowleft;</font> </td>
+<td class="org-left">-</td>
+<td class="org-left">-</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Askbot</code></td>
+<td class="org-left"><font color="gold">&circlearrowleft;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+</tr>
+
+<tr>
+<td class="org-left"><code>JupyterHub</code></td>
+<td class="org-left"><font color="gold">&circlearrowleft;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="gold">&circlearrowleft;</font> </td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Visualizer/COVISE</code></td>
+<td class="org-left"><font color="gold">&circlearrowleft;</font> </td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left"><font color="#700">&Cross;</font> </td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Keycloak</code> IDM</td>
+<td class="org-left"><font color="gold">&circlearrowleft;</font> </td>
+<td class="org-left">-</td>
+<td class="org-left">-</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org71d1430">
+<h4 id="org71d1430">WP5 components: Authentification and Portal Integration</h4>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">&#xa0;</th>
+<th scope="col" class="org-left">SSO Support</th>
+<th scope="col" class="org-left">Supported Protocol</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left"><code>Cloudify</code></td>
+<td class="org-left"><font color="#700">&Cross;</font> </td>
+<td class="org-left">Vault &amp; OpenIDC</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Visualizer/COVISE</code></td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left">OAuth2</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Moodle</code></td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left">OAuth2</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Askbot</code></td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left">OAuth2</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Zammad</code></td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left">OAuth2</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>JupyterHub</code></td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left">OAuth2</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Matchmaking</code></td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left">OpenIDC</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>Wikie</code></td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left">OpenIDC</td>
+</tr>
+
+<tr>
+<td class="org-left"><code>CKAN</code></td>
+<td class="org-left"><font color="green">&check;</font> </td>
+<td class="org-left">OAuth2</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+</section>
+<section>
+<section id="slide-org0cce5e7">
+<h2 id="org0cce5e7">Data Integration</h2>
+<div class="outline-text-2" id="text-org0cce5e7">
+</div>
+</section>
+<section id="slide-orgaac4906">
+<h3 id="orgaac4906">Data Integration: Static Datasets</h3>
+<p>
+<b><b>Technology</b></b>: <code>CKAN</code>
+</p>
+
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Dataset Name</th>
+<th scope="col" class="org-left">Pilot</th>
+<th scope="col" class="org-left">Technology</th>
+<th scope="col" class="org-left">Data Provider</th>
+<th scope="col" class="org-left">Access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Food security data</td>
+<td class="org-left">MIG</td>
+<td class="org-left">CKAN</td>
+<td class="org-left"><a href="https://www.ipcinfo.org/">https://www.ipcinfo.org/</a></td>
+<td class="org-left">open</td>
+</tr>
+
+<tr>
+<td class="org-left">Conflict data</td>
+<td class="org-left">MIG</td>
+<td class="org-left">CKAN</td>
+<td class="org-left"><a href="https://acleddata.com/">https://acleddata.com/</a></td>
+<td class="org-left">open</td>
+</tr>
+
+<tr>
+<td class="org-left">GIS (OpenStreetMap)</td>
+<td class="org-left">MIG, UAP, COV</td>
+<td class="org-left">CKAN</td>
+<td class="org-left"><a href="https://download.geofabrik.de/">https://download.geofabrik.de/</a></td>
+<td class="org-left">open</td>
+</tr>
+
+<tr>
+<td class="org-left">Stanford Large Network Dataset Collection</td>
+<td class="org-left">SN</td>
+<td class="org-left">CKAN</td>
+<td class="org-left"><a href="https://snap.stanford.edu/data/">https://snap.stanford.edu/data/</a></td>
+<td class="org-left">open</td>
+</tr>
+
+<tr>
+<td class="org-left">Telecommunication data (CDR)</td>
+<td class="org-left">MIG, SN</td>
+<td class="org-left">REST API</td>
+<td class="org-left">MOON</td>
+<td class="org-left">consortium</td>
+</tr>
+
+<tr>
+<td class="org-left">Traffic and air quality sensory data</td>
+<td class="org-left">UAP</td>
+<td class="org-left">CKAN</td>
+<td class="org-left">ARH, MK</td>
+<td class="org-left">consortium</td>
+</tr>
+
+<tr>
+<td class="org-left">Twitter</td>
+<td class="org-left">SN</td>
+<td class="org-left">CKAN</td>
+<td class="org-left">Twitter Inc.</td>
+<td class="org-left">open</td>
+</tr>
+
+<tr>
+<td class="org-left">UN conflict and refugee data</td>
+<td class="org-left">MIG</td>
+<td class="org-left">CKAN</td>
+<td class="org-left"><a href="https://www.unhcr.org/refugee-statistics/">https://www.unhcr.org/refugee-statistics/</a></td>
+<td class="org-left">open</td>
+</tr>
+
+<tr>
+<td class="org-left">Climate and environmental data</td>
+<td class="org-left">MIG, UAP</td>
+<td class="org-left">REST API</td>
+<td class="org-left">Copernicus</td>
+<td class="org-left">open</td>
+</tr>
+
+<tr>
+<td class="org-left">Weather and climate data</td>
+<td class="org-left">MIG, UAP</td>
+<td class="org-left">REST API</td>
+<td class="org-left">ECMWF</td>
+<td class="org-left">open</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org022776e">
+<h3 id="org022776e">Data Integration: Streaming and Hybrid Approaches</h3>
+<table border="2" cellspacing="0" cellpadding="6" rules="groups" frame="hsides">
+
+
+<colgroup>
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+
+<col  class="org-left" />
+</colgroup>
+<thead>
+<tr>
+<th scope="col" class="org-left">Dataset Name</th>
+<th scope="col" class="org-left">Pilot</th>
+<th scope="col" class="org-left">Technology</th>
+<th scope="col" class="org-left">Data Provider</th>
+<th scope="col" class="org-left">Access</th>
+</tr>
+</thead>
+<tbody>
+<tr>
+<td class="org-left">Traffic and air quality sensory data</td>
+<td class="org-left">UAP</td>
+<td class="org-left">CKAN</td>
+<td class="org-left">ARH, MK</td>
+<td class="org-left">consortium</td>
+</tr>
+
+<tr>
+<td class="org-left">Twitter</td>
+<td class="org-left">SN</td>
+<td class="org-left">CKAN + monitor</td>
+<td class="org-left">Twitter Inc.</td>
+<td class="org-left">open</td>
+</tr>
+
+<tr>
+<td class="org-left">Weather forecast data</td>
+<td class="org-left">UAP</td>
+<td class="org-left">REST, Cloudify</td>
+<td class="org-left">ECMWF</td>
+<td class="org-left">consortium</td>
+</tr>
+
+<tr>
+<td class="org-left">Climate and environmental data</td>
+<td class="org-left">MIG, UAP</td>
+<td class="org-left">REST</td>
+<td class="org-left">ECMWF Copernicus</td>
+<td class="org-left">open</td>
+</tr>
+</tbody>
+</table>
+
+</section>
+<section id="slide-org312f082">
+<h3 id="org312f082">Data Integration: Data Providers in Consortium</h3>
+<ul>
+<li><font color="green">&check;</font>  [ECMWF\(\to\)MIG,UAP] weather and climate data: RESTful API
+<ul>
+<li><font color="gold">&circlearrowleft;</font>  integration with Cloudify</li>
+
+</ul></li>
+<li><font color="green">&check;</font>  [ARH/MK\(\to\)UAP] <a href="https://hidalgo-wiki.hlrs.de/workpackages/wp6/tasks/task_6_4/data_formats_group">traffic and air quality data</a> (static): CKAN
+<ul>
+<li><font color="gold">&circlearrowleft;</font>  integration with HiDALGO CKAN</li>
+
+</ul></li>
+<li><font color="green">&check;</font>  [MOON\(\to\)MIG,SNA] <a href="https://hidalgo-wiki.hlrs.de/workpackages/wp6/tasks/task_6_4/data_formats_group/telecommunication_data">telecommunication data</a>: RESTful API
+<ul>
+<li><font color="gold">&circlearrowleft;</font>  improve current version of RESTful API for new pilot requests</li>
+
+</ul></li>
+
+</ul>
+
+</section>
+<section id="slide-orgf2409dd">
+<h4 id="orgf2409dd">Weather and Climate Data</h4>
+<p>
+<b><b>Technology</b></b>: REST API (concept of DaaS), Cloudify
+</p>
+<ul>
+<li><b>CDS</b> (Climate Data Store)
+<ul>
+<li>sync file-based</li>
+<li>historical data</li>
+
+</ul></li>
+<li><a href="https://git.ecmwf.int/projects/LEX/repos/polytope-client/browse"><code>polytope</code></a> (REST API)
+<ul>
+<li>async Python API and CLI</li>
+
+</ul></li>
+
+</ul>
+
+<p>
+<b><b>Integration status</b></b>:
+</p>
+<ul>
+<li>pilots: <font color="green">&check;</font>  Mig, <font color="green">&check;</font>  UAP</li>
+<li>infrastructures: <font color="green">&check;</font>  PSNC, <font color="green">&check;</font>  HLRS</li>
+<li><font color="green">&check;</font>  Cloudify integration</li>
+
+</ul>
+
+</section>
+<section id="slide-orgfb70550">
+<h4 id="orgfb70550">Traffic and Air Quality Data</h4>
+<p>
+<b><b>Technology</b></b>: CKAN
+</p>
+
+<p>
+<b><b>Integration status</b></b>:
+</p>
+<ul>
+<li>pilots: <font color="green">&check;</font>  UAP</li>
+<li>infrastructures: <font color="green">&check;</font>  PSNC, <font color="gold">&circlearrowleft;</font>  HLRS</li>
+<li><font color="green">&check;</font>  access from SZE CKAN (data is proprietary and requires NDA)</li>
+
+</ul>
+
+</section>
+<section id="slide-org48d092f">
+<h4 id="org48d092f">Telecommunication Data</h4>
+<p>
+<b><b>Technology</b></b>: REST API
+</p>
+
+<p>
+<b><b>Integration status</b></b>:
+</p>
+<ul>
+<li>pilots:  <font color="green">&check;</font> <font color="gold">&circlearrowleft;</font>  Mig, <font color="green">&check;</font> <font color="gold">&circlearrowleft;</font>  SNA
+<ul>
+<li><font color="green">&check;</font>  first implementation and example</li>
+<li><font color="gold">&circlearrowleft;</font>  fit to pilot needs</li>
+<li><font color="green">&check;</font>  access by API key, contact MOON if need it (data is proprietary)</li>
+
+</ul></li>
+
+</ul>
+
+
+</section>
+</section>
+<section>
+<section id="slide-org917f7b2">
+<h2 id="org917f7b2">API and Documentation</h2>
+<ul>
+<li><b><b>Manuals</b></b> and API: <code>Croupier</code> (for <code>Cloudify</code>), <code>polytope</code>, <code>Flee/FACS</code>, <code>FabSim3</code>, <code>MUSCLE3</code></li>
+<li><b><b>Tutorials and trainings</b></b>:
+<ul>
+<li><a href="https://moodle.hidalgo-project.eu/course/view.php?id=9">HiDALGO Training Video Series</a></li>
+<li>WCDA tutorial from <a href="https://moodle.hidalgo-project.eu/course/view.php?id=12">ENCCS/HiDALGO workshop</a></li>
+<li><a href="https://moodle.hidalgo-project.eu/course/view.php?id=6">Webinar on FabSim3 and MUCSLE3</a></li>
+<li>UAP tutorials from <a href="https://moodle.hidalgo-project.eu/course/view.php?id=2">HiPEAK 2020</a> and <a href="https://moodle.hidalgo-project.eu/course/view.php?id=12">ENCCS/HiDALGO workshop</a></li>
+<li><a href="https://moodle.hidalgo-project.eu/course/view.php?id=11">Integration and reproducibility with Ansible and Spack</a></li>
+
+</ul></li>
+<li>documented <b><b>notebooks</b></b> for AI methods:
+<ul>
+<li>location graph extraction</li>
+
+</ul></li>
+
+</ul>
+</section>
+</section>
+</div>
+</div>
+<script src="./reveal.js/dist/reveal.js"></script>
+<script src="./reveal.js/plugin/highlight/highlight.js"></script>
+<script src="./reveal.js/plugin/math/math.js"></script>
+<script>
+// Full list of configuration options available here:
+// https://github.com/hakimel/reveal.js#configuration
+Reveal.initialize({
+
+controls: true,
+progress: true,
+history: false,
+center: true,
+slideNumber: 'c',
+rollingLinks: false,
+keyboard: true,
+mouseWheel: false,
+fragmentInURL: false,
+hashOneBasedIndex: false,
+pdfSeparateFragments: true,
+overview: true,
+width: 1400,
+height: 1000,
+
+transition: 'convex',
+transitionSpeed: 'default',
+
+// Plugins with reveal.js 4.x
+plugins: [ RevealHighlight, RevealMath ],
+
+// Optional libraries used to extend reveal.js
+dependencies: [
+]
+
+});
+</script>
+</body>
+</html>
